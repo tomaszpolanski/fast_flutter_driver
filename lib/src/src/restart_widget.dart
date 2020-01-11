@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rxdart/rxdart.dart';
 
 class RestartWidget<T> extends StatefulWidget {
   const RestartWidget({
@@ -12,7 +11,7 @@ class RestartWidget<T> extends StatefulWidget {
 
   static Future<void> restartApp<T>(T configuration) {
     final state = _RestartWidgetState.global.currentContext
-        .findAncestorStateOfType<_RestartWidgetState>();
+        .findAncestorStateOfType<_RestartWidgetState<T>>();
     return state.restartApp(configuration);
   }
 
@@ -23,7 +22,7 @@ class RestartWidget<T> extends StatefulWidget {
 class _RestartWidgetState<T> extends State<RestartWidget<T>> {
   bool _restarting = false;
   T _configuration;
-  static final global = GlobalKey<_RestartWidgetState>();
+  static final global = GlobalKey();
 
   Future<void> restartApp(T configuration) async {
     setState(() {
@@ -100,7 +99,7 @@ class _CountDown extends StatelessWidget {
     return SizedBox(
       height: 120,
       child: StreamBuilder(
-        stream: Observable.fromIterable(_countdown).asyncMap((text) async =>
+        stream: Stream.fromIterable(_countdown).asyncMap((text) async =>
             Future.delayed(const Duration(seconds: 1), () => text)),
         initialData: '',
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {

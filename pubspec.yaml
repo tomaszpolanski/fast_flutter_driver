@@ -1,23 +1,22 @@
 name: fast_flutter_driver
-description: A starting point for Dart libraries or applications.
-# version: 1.0.0
-# homepage: https://www.example.com
+description: Toolkit for running rapidly flutter driver tests on desktop .
+version: 0.0.1
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
-  colorize: 2.0.0
-  rxdart: 0.22.0
-  window_utils:
-    git:
-      url: git://github.com/tomaszpolanski/window-utils.git
-      ref: disabling-linux-support
-
-dev_dependencies:
   mockito: ^4.1.1
   csv: ^4.0.0
   test: ^1.9.4
   args: ^1.5.1
   process_run: ^0.10.0+1
+  colorize: 2.0.0
+  window_utils:
+    git:
+      url: git://github.com/tomaszpolanski/window-utils.git
+      ref: disabling-linux-support
+
+
+
 
