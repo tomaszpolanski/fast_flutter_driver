@@ -44,7 +44,7 @@ class _RestartWidgetState<T> extends State<RestartWidget<T>> {
           ? const SizedBox()
           : (widget.initial ?? _configuration) == null
               ? _StartingTests()
-              : widget.builder(context, widget.initial ?? _configuration),
+              : widget.builder(context, _configuration ?? widget.initial),
     );
   }
 }
