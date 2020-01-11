@@ -2,7 +2,6 @@ import 'package:args/args.dart';
 import 'package:fast_flutter_driver/src/src/parameters.dart';
 import 'package:fast_flutter_driver/src/src/resolution.dart';
 import 'package:fast_flutter_driver/src/src/url_matcher.dart';
-import 'package:meta/meta.dart';
 
 const url = 'url';
 const screenshots = 'screenshots';
@@ -52,63 +51,70 @@ class TestProperties {
   TestPlatform get platform => platformFromString(_arguments[platformArg]);
 }
 
-class TestConfiguration {
-  const TestConfiguration({
-    @required this.locale,
-    @required this.resolution,
-    this.platform,
-    this.route,
-    this.matchers = const [],
-    this.filePicker,
-  });
+abstract class BaseConfiguration {
+  Resolution get resolution;
+  TestPlatform get platform;
 
-  factory TestConfiguration.fromJson(Map<String, dynamic> json) {
-    final List<dynamic> matchers = json['matchers'];
-    final List<dynamic> filePicker = json['filePicker'];
-    return TestConfiguration(
-      locale: json['locale'],
-      resolution: Resolution.fromJson(json['resolution']),
-      platform: platformFromString(json['platform']),
-      route: TestRoute.fromJson(json['route']),
-      matchers: matchers?.map((it) => TestMatcher.fromJson(it))?.toList() ?? [],
-      filePicker: filePicker?.cast<String>() ?? [],
-    );
-  }
-
-  final String locale;
-  final Resolution resolution;
-  final TestPlatform platform;
-  final TestRoute route;
-  final List<TestMatcher> matchers;
-  final List<String> filePicker;
-
-  TestConfiguration copyWith({
-    String locale,
-    Resolution resolution,
-    TestPlatform platform,
-    TestRoute route,
-    List<TestMatcher> matchers,
-    List<String> filePicker,
-  }) {
-    return TestConfiguration(
-      locale: locale ?? this.locale,
-      resolution: resolution ?? this.resolution,
-      platform: platform ?? this.platform,
-      route: route ?? this.route,
-      matchers: matchers ?? this.matchers,
-      filePicker: filePicker ?? this.filePicker,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'locale': locale,
-        'resolution': resolution,
-        if (platform != null) 'platform': fromEnum(platform),
-        'route': route.toJson(),
-        'matchers': matchers,
-        'filePicker': filePicker,
-      };
+  Map<String, dynamic> toJson();
 }
+//
+//class TestConfiguration {
+//  const TestConfiguration({
+//    @required this.locale,
+//    @required this.resolution,
+//    this.platform,
+//    this.route,
+//    this.matchers = const [],
+//    this.filePicker,
+//  });
+//
+//  factory TestConfiguration.fromJson(Map<String, dynamic> json) {
+//    final List<dynamic> matchers = json['matchers'];
+//    final List<dynamic> filePicker = json['filePicker'];
+//    return TestConfiguration(
+//      locale: json['locale'],
+//      resolution: Resolution.fromJson(json['resolution']),
+//      platform: platformFromString(json['platform']),
+//      route: TestRoute.fromJson(json['route']),
+//      matchers: matchers?.map((it) => TestMatcher.fromJson(it))?.toList() ?? [],
+//      filePicker: filePicker?.cast<String>() ?? [],
+//    );
+//  }
+//
+//  final String locale;
+//  final Resolution resolution;
+//  final TestPlatform platform;
+//  final TestRoute route;
+//  final List<TestMatcher> matchers;
+//  final List<String> filePicker;
+//
+//  TestConfiguration copyWith({
+//    String locale,
+//    Resolution resolution,
+//    TestPlatform platform,
+//    TestRoute route,
+//    List<TestMatcher> matchers,
+//    List<String> filePicker,
+//  }) {
+//    return TestConfiguration(
+//      locale: locale ?? this.locale,
+//      resolution: resolution ?? this.resolution,
+//      platform: platform ?? this.platform,
+//      route: route ?? this.route,
+//      matchers: matchers ?? this.matchers,
+//      filePicker: filePicker ?? this.filePicker,
+//    );
+//  }
+//
+//  Map<String, dynamic> toJson() => {
+//        'locale': locale,
+//        'resolution': resolution,
+//        if (platform != null) 'platform': fromEnum(platform),
+//        'route': route.toJson(),
+//        'matchers': matchers,
+//        'filePicker': filePicker,
+//      };
+//}
 
 class TestMatcher {
   const TestMatcher(this.matcher, {this.request});

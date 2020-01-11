@@ -3,30 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RestartWidget extends StatefulWidget {
+class RestartWidget<T> extends StatefulWidget {
   const RestartWidget({
     @required this.builder,
+    this.initial,
     Key key,
   }) : super(key: key);
 
-  final Widget Function(BuildContext, TestConfiguration) builder;
+  final T initial;
+  final Widget Function(BuildContext, BaseConfiguration) builder;
 
-  static Future<void> restartApp(TestConfiguration configuration) {
+  static Future<void> restartApp<T extends BaseConfiguration>(T configuration) {
     final state = _RestartWidgetState.global.currentContext
         .findAncestorStateOfType<_RestartWidgetState>();
     return state.restartApp(configuration);
   }
 
   @override
-  _RestartWidgetState createState() => _RestartWidgetState();
+  _RestartWidgetState<T> createState() => _RestartWidgetState<T>();
 }
 
-class _RestartWidgetState extends State<RestartWidget> {
+class _RestartWidgetState<T> extends State<RestartWidget> {
   bool _restarting = false;
-  TestConfiguration _configuration;
+  T _configuration;
   static final global = GlobalKey<_RestartWidgetState>();
 
-  Future<void> restartApp(TestConfiguration configuration) async {
+  Future<void> restartApp(T configuration) async {
     setState(() {
       _restarting = true;
       _configuration = configuration;
@@ -42,9 +44,9 @@ class _RestartWidgetState extends State<RestartWidget> {
       key: global,
       child: _restarting
           ? const SizedBox()
-          : _configuration == null
+          : (_configuration ?? widget.initial) == null
               ? _StartingTests()
-              : widget.builder(context, _configuration),
+              : widget.builder(context, _configuration ?? widget.initial),
     );
   }
 }
