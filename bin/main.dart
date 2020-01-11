@@ -12,7 +12,6 @@ import 'package:fast_flutter_driver/src/src/test_generator.dart';
 import 'package:fast_flutter_driver/src/src/tests.dart';
 import 'package:meta/meta.dart';
 import 'package:process_run/shell.dart';
-import 'package:rxdart/rxdart.dart';
 
 const file = 'file';
 const directory = 'directory';
@@ -174,7 +173,7 @@ Future<void> test({
   final completer = Completer<String>();
 
   final StreamController<List<int>> output = StreamController();
-  final PublishSubject<String> input = PublishSubject();
+
   output.stream.transform(utf8.decoder).listen((data) async {
     final match = RegExp(r'is available at: (http://.*/)').firstMatch(data);
     if (match != null) {
@@ -188,10 +187,11 @@ Future<void> test({
 
   final mainFile = _mainDartFile(testFile);
   final command = Commands().flutter.run(mainFile);
+  final StreamController<String> input = StreamController();
   // ignore: unawaited_futures
   Shell(
     stdout: output,
-    stdin: input.map(utf8.encode),
+    stdin: input.stream.map(utf8.encode),
   ).run(command).then((_) {
     input.close();
     output.close();
