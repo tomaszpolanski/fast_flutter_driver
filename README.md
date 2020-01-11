@@ -1,22 +1,9 @@
-A library for Dart developers.
+# Fast Flutter Driver
+Toolkit for running rapidly flutter driver tests on desktop.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+This package simplifies the creation of Flutter Driver tests that can be run in bulk without restarting or rebuilding the application.
+An example how the toolkit works can be found in [this article](https://medium.com/flutter-community/blazingly-fast-flutter-driver-tests-5e375c833aa).
 
 ## Usage
 
-A simple usage example:
-
-```dart
-import 'package:fast_flutter_driver/fast_flutter_driver.dart';
-
-main() {
-  var awesome = new Awesome();
-}
-```
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
+*Coming soon*
