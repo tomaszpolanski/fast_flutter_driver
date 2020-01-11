@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fast_flutter_driver/src/src/file_system.dart';
+import 'package:fast_flutter_driver/src/preparing_tests/file_system.dart';
 import 'package:meta/meta.dart';
 
 Future<void> overrideResolution(
@@ -15,6 +15,7 @@ Future<void> overrideResolution(
 
   final dimensions = resolution.split('x');
   await _updateResolution(
+    filePath: native,
     width: int.parse(dimensions[0]),
     height: int.parse(dimensions[1]),
   );
@@ -36,15 +37,15 @@ Future<void> overrideResolution(
 Future<void> _updateResolution({
   @required int width,
   @required int height,
+  @required String filePath,
 }) async {
-  final path = nativeResolutionFile;
-  final read = await File(path).readAsString();
+  final read = await File(filePath).readAsString();
   final updatedNativeFile = _replaceResolution(
     read,
     width: width,
     height: height,
   );
-  await File(path).writeAsString(updatedNativeFile);
+  await File(filePath).writeAsString(updatedNativeFile);
 }
 
 String _replaceResolution(

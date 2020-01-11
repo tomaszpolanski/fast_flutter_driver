@@ -1,7 +1,7 @@
 import 'package:args/args.dart';
-import 'package:fast_flutter_driver/src/runnin_tests/parameters.dart';
-import 'package:fast_flutter_driver/src/src/parameters.dart';
-import 'package:fast_flutter_driver/src/src/resolution.dart';
+import 'package:fast_flutter_driver/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
+import 'package:fast_flutter_driver/src/running_tests/test/resolution.dart';
 
 ArgParser testParameters = ArgParser()
   ..addOption(

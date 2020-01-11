@@ -1,6 +1,6 @@
 import 'package:args/args.dart';
-import 'package:fast_flutter_driver/src/src/colorizing.dart';
-import 'package:fast_flutter_driver/src/src/parameters.dart';
+import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
+import 'package:fast_flutter_driver/src/utils/colorizing.dart';
 
 const fileArg = 'file';
 const directoryArg = 'directory';

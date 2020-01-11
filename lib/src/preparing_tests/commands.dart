@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fast_flutter_driver/src/src/file_system.dart';
+import 'package:fast_flutter_driver/src/preparing_tests/file_system.dart';
 
 class Commands {
   Flutter get flutter => const Flutter._();

@@ -2,10 +2,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fast_flutter_driver/src/runnin_tests/parameters.dart';
-import 'package:fast_flutter_driver/src/runnin_tests/testing.dart';
-import 'package:fast_flutter_driver/src/src/file_system.dart';
-import 'package:fast_flutter_driver/src/src/parameters.dart';
+import 'package:fast_flutter_driver/src/preparing_tests/file_system.dart';
+import 'package:fast_flutter_driver/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver/src/preparing_tests/testing.dart';
+import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
 
 Future<void> main(List<String> paths) async {
   stdout.writeln('Starting tests');
