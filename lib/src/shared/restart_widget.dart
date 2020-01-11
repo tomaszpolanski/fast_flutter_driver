@@ -3,32 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RestartWidget<T> extends StatefulWidget {
+class RestartWidget extends StatefulWidget {
   const RestartWidget({
     @required this.builder,
     this.initial,
     Key key,
   }) : super(key: key);
 
-  final T initial;
+  final BaseConfiguration initial;
   final Widget Function(BuildContext, BaseConfiguration) builder;
 
-  static Future<void> restartApp<T extends BaseConfiguration>(T configuration) {
+  static Future<void> restartApp<T extends BaseConfiguration>(
+      BaseConfiguration configuration) {
     final state = _RestartWidgetState.global.currentContext
         .findAncestorStateOfType<_RestartWidgetState>();
     return state.restartApp(configuration);
   }
 
   @override
-  _RestartWidgetState<T> createState() => _RestartWidgetState<T>();
+  _RestartWidgetState createState() => _RestartWidgetState();
 }
 
-class _RestartWidgetState<T> extends State<RestartWidget> {
+class _RestartWidgetState extends State<RestartWidget> {
   bool _restarting = false;
-  T _configuration;
+  BaseConfiguration _configuration;
   static final global = GlobalKey<_RestartWidgetState>();
 
-  Future<void> restartApp(T configuration) async {
+  Future<void> restartApp(BaseConfiguration configuration) async {
     setState(() {
       _restarting = true;
       _configuration = configuration;
