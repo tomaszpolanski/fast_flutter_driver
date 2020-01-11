@@ -1,14 +1,9 @@
 import 'package:args/args.dart';
+import 'package:fast_flutter_driver/src/runnin_tests/parameters.dart';
 import 'package:fast_flutter_driver/src/src/parameters.dart';
 import 'package:fast_flutter_driver/src/src/resolution.dart';
 
-const url = 'url';
-const screenshots = 'screenshots';
-const resolutionArg = 'resolution';
-const languageArg = 'language';
-const platformArg = 'platform';
-
-ArgParser testParser = ArgParser()
+ArgParser testParameters = ArgParser()
   ..addOption(
     url,
     abbr: url[0],
@@ -20,8 +15,8 @@ ArgParser testParser = ArgParser()
     help: 'Resolution of device',
   )
   ..addFlag(
-    screenshots,
-    abbr: screenshots[0],
+    screenshotsArg,
+    abbr: screenshotsArg[0],
     help: 'Use screenshots',
   )
   ..addOption(
@@ -37,13 +32,13 @@ ArgParser testParser = ArgParser()
   );
 
 class TestProperties {
-  TestProperties(List<String> args) : _arguments = testParser.parse(args);
+  TestProperties(List<String> args) : _arguments = testParameters.parse(args);
 
   final ArgResults _arguments;
 
   String get vmUrl => _arguments[url];
 
-  bool get screenshotsEnabled => _arguments[screenshots] ?? false;
+  bool get screenshotsEnabled => _arguments[screenshotsArg] ?? false;
 
   String get locale => _arguments[languageArg];
 
