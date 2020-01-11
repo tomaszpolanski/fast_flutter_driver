@@ -46,7 +46,7 @@ Future<void> main(List<String> paths) async {
         await test(
           testFile: result[file],
           withScreenshots: result[screenshots],
-          language: parseLanguage(result[language]),
+          language: result[language],
           resolution: result[resolution],
           platform: platformFromString(result[platformArg]),
         );
@@ -61,7 +61,7 @@ Future<void> main(List<String> paths) async {
         await test(
           testFile: file,
           withScreenshots: result[screenshots],
-          language: parseLanguage(result[language]),
+          language: result[language],
           resolution: result[resolution],
           platform: platformFromString(result[platformArg]),
         );
@@ -77,7 +77,7 @@ Future<void> setUp(ArgResults args, Future<void> Function() test) async {
   if (Platform.isMacOS) {
     await test();
   } else {
-    final native = platformNativeFile;
+    final native = nativeResolutionFile;
     final nativeCopy = '$native\_copy';
     if (exists(native)) {
       await File(native).copy(nativeCopy);
@@ -133,8 +133,7 @@ ArgParser createParser() {
       language,
       abbr: language[0],
       defaultsTo: 'en',
-      help: 'System language, supported languages:\n'
-          '${SupportedLanguage.values.map(fromEnum).join(',')}',
+      help: 'System language',
     )
     ..addOption(
       platformArg,
@@ -166,7 +165,7 @@ Future<void> test({
   @required String testFile,
   @required bool withScreenshots,
   @required String resolution,
-  SupportedLanguage language,
+  String language,
   @required TestPlatform platform,
 }) async {
   assert(testFile != null);
@@ -240,7 +239,7 @@ Future<void> _updateResolution({
   @required int width,
   @required int height,
 }) async {
-  final path = platformNativeFile;
+  final path = nativeResolutionFile;
   final read = await File(path).readAsString();
   final updatedNativeFile = _replaceResolution(
     read,

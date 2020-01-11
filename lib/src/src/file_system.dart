@@ -7,11 +7,11 @@ String platformPath(String path) {
 bool exists(String path) =>
     path != null && File(platformPath(path)).existsSync();
 
-String get platformNativeFile {
-  return platformPath('${Directory.current.path}/$_nativeFile');
+String get nativeResolutionFile {
+  return platformPath('${Directory.current.path}/$_nativeResolutionFile');
 }
 
-String get _nativeFile {
+String get _nativeResolutionFile {
   if (Platform.isWindows) {
     return 'windows/window_configuration.cpp';
   } else if (Platform.isLinux) {
