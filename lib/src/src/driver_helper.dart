@@ -5,7 +5,7 @@ import 'package:fast_flutter_driver/src/src/tests.dart';
 import 'package:flutter/material.dart';
 import 'package:window_utils/window_utils.dart';
 
-Future<String> configureTest<T extends BaseConfiguration>(T config) async {
+Future<String> configureTest(BaseConfiguration config) async {
   if (Platform.isMacOS) {
     await WindowUtils.setSize(
       Size(config.resolution.width, config.resolution.height),
