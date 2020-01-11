@@ -4,9 +4,11 @@ import 'package:flutter/widgets.dart';
 class RestartWidget<T> extends StatefulWidget {
   const RestartWidget({
     @required this.builder,
+    this.initial,
     Key key,
   }) : super(key: key);
 
+  final T initial;
   final Widget Function(BuildContext, T) builder;
 
   static Future<void> restartApp<T>(T configuration) {
@@ -40,9 +42,9 @@ class _RestartWidgetState<T> extends State<RestartWidget<T>> {
       key: global,
       child: _restarting
           ? const SizedBox()
-          : _configuration == null
+          : (widget.initial ?? _configuration) == null
               ? _StartingTests()
-              : widget.builder(context, _configuration),
+              : widget.builder(context, widget.initial ?? _configuration),
     );
   }
 }
