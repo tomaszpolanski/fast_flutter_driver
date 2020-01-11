@@ -34,7 +34,7 @@ Future<void> main(List<String> paths) async {
           withScreenshots: result[screenshotsArg],
           language: result[languageArg],
           resolution: result[resolutionArg],
-          platform: platformFromString(result[platformArg]),
+          platform: TestPlatformEx.fromString(result[platformArg]),
         );
       } else {
         stderr.writeln('Specified file "${result[fileArg]}" does not exist');
@@ -49,7 +49,7 @@ Future<void> main(List<String> paths) async {
           withScreenshots: result[screenshotsArg],
           language: result[languageArg],
           resolution: result[resolutionArg],
-          platform: platformFromString(result[platformArg]),
+          platform: TestPlatformEx.fromString(result[platformArg]),
         );
       }
     });

@@ -8,13 +8,15 @@ enum TestPlatform {
   iOS,
 }
 
-TestPlatform platformFromString(String value) {
-  switch (value?.toLowerCase()) {
-    case 'android':
-      return TestPlatform.android;
-    case 'ios':
-      return TestPlatform.iOS;
-    default:
-      return null;
+abstract class TestPlatformEx {
+  static TestPlatform fromString(String value) {
+    switch (value?.toLowerCase()) {
+      case 'android':
+        return TestPlatform.android;
+      case 'ios':
+        return TestPlatform.iOS;
+      default:
+        return null;
+    }
   }
 }

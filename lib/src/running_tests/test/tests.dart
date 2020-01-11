@@ -44,7 +44,8 @@ class TestProperties {
 
   Resolution get resolution => Resolution.fromSize(_arguments[resolutionArg]);
 
-  TestPlatform get platform => platformFromString(_arguments[platformArg]);
+  TestPlatform get platform =>
+      TestPlatformEx.fromString(_arguments[platformArg]);
 }
 
 abstract class BaseConfiguration {
