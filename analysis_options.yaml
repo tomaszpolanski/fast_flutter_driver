@@ -9,8 +9,7 @@ analyzer:
   language:
     strict-inference: true
     strict-raw-types: true
-  exclude:
-    - dependencies/**
+
     
 linter:
   rules:
