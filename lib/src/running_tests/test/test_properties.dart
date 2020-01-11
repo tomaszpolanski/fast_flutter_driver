@@ -3,34 +3,6 @@ import 'package:fast_flutter_driver/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
 import 'package:fast_flutter_driver/src/running_tests/test/resolution.dart';
 
-ArgParser testParameters = ArgParser()
-  ..addOption(
-    url,
-    abbr: url[0],
-    help: 'Url for dartVmServiceUrl',
-  )
-  ..addOption(
-    resolutionArg,
-    abbr: resolutionArg[0],
-    help: 'Resolution of device',
-  )
-  ..addFlag(
-    screenshotsArg,
-    abbr: screenshotsArg[0],
-    help: 'Use screenshots',
-  )
-  ..addOption(
-    languageArg,
-    abbr: languageArg[0],
-    defaultsTo: 'en',
-    help: 'Language of the device',
-  )
-  ..addOption(
-    platformArg,
-    abbr: platformArg[0],
-    help: 'Overwritten platform of the device',
-  );
-
 class TestProperties {
   TestProperties(List<String> args) : _arguments = testParameters.parse(args);
 

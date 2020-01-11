@@ -11,6 +11,7 @@ import 'package:fast_flutter_driver/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver/src/preparing_tests/test_generator.dart';
 import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
+import 'package:fast_flutter_driver/src/utils/enum.dart';
 import 'package:meta/meta.dart';
 import 'package:process_run/shell.dart';
 
@@ -69,7 +70,7 @@ Future<void> test({
     '-r',
     resolution,
     '-l',
-    fromEnum(language),
+    language,
     if (platform != null) ...['-p', fromEnum(platform)]
   ]));
 

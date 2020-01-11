@@ -1,6 +1,7 @@
 import 'package:args/args.dart';
 import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
 import 'package:fast_flutter_driver/src/utils/colorizing.dart';
+import 'package:fast_flutter_driver/src/utils/enum.dart';
 
 const fileArg = 'file';
 const directoryArg = 'directory';
@@ -15,7 +16,7 @@ ArgParser scriptParameters = ArgParser()
   ..addOption(
     fileArg,
     abbr: fileArg[0],
-    help: 'Run single test file',
+    help: 'Run a single test file',
   )
   ..addOption(
     directoryArg,
@@ -27,18 +28,18 @@ ArgParser scriptParameters = ArgParser()
     languageArg,
     abbr: languageArg[0],
     defaultsTo: 'en',
-    help: 'System language',
+    help: 'Application\'s language',
   )
   ..addOption(
     platformArg,
     abbr: platformArg[0],
-    help: 'Overwritten platform of the device. \n'
+    help: 'Overwrite the platform of a device. \n'
         'Possible options: ${TestPlatform.values.map(fromEnum).join(', ')}',
   )
   ..addOption(
     resolutionArg,
     abbr: resolutionArg[0],
-    help: 'Resolution of the application '
+    help: 'The resolution of an application '
         'in format <width>x<height>, eg 800x600',
     defaultsTo: '400x700',
   )

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:fast_flutter_driver/src/running_tests/app/restart_widget.dart';
 import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
-import 'package:fast_flutter_driver/src/running_tests/test/tests.dart';
+import 'package:fast_flutter_driver/src/running_tests/test/test_properties.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
