@@ -1,7 +1,7 @@
 import 'package:args/args.dart';
-import 'package:fast_flutter_driver/src/preparing_tests/parameters.dart';
-import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
-import 'package:fast_flutter_driver/src/running_tests/test/resolution.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/running_tests/resolution.dart';
 
 class TestProperties {
   TestProperties(List<String> args) : _arguments = testParameters.parse(args);

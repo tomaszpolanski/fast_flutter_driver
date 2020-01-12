@@ -1,7 +1,7 @@
 import 'package:args/args.dart';
-import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
-import 'package:fast_flutter_driver/src/utils/colorizing.dart';
-import 'package:fast_flutter_driver/src/utils/enum.dart';
+import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
+import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
 
 const fileArg = 'file';
 const directoryArg = 'directory';

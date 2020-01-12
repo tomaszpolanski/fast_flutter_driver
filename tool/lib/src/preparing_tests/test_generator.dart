@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fast_flutter_driver/src/preparing_tests/file_system.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 
 Future<void> generateTestFile(String testFile) {
   final testFiles = Directory(File(testFile).parent.parent.path)

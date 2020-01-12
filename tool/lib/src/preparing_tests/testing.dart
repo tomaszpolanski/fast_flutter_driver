@@ -5,13 +5,13 @@ import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:fast_flutter_driver/src/preparing_tests/commands.dart';
-import 'package:fast_flutter_driver/src/preparing_tests/file_system.dart';
-import 'package:fast_flutter_driver/src/preparing_tests/parameters.dart';
-import 'package:fast_flutter_driver/src/preparing_tests/resolution.dart';
-import 'package:fast_flutter_driver/src/preparing_tests/test_generator.dart';
-import 'package:fast_flutter_driver/src/running_tests/test/parameters.dart';
-import 'package:fast_flutter_driver/src/utils/enum.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/commands.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
+import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
 import 'package:meta/meta.dart';
 import 'package:process_run/shell.dart';
 

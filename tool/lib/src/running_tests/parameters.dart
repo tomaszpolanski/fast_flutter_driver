@@ -1,5 +1,6 @@
 import 'package:args/args.dart';
-import 'package:fast_flutter_driver/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
 
 ArgParser testParameters = ArgParser()
   ..addOption(
@@ -32,6 +33,10 @@ ArgParser testParameters = ArgParser()
 enum TestPlatform {
   android,
   iOS,
+}
+
+extension TestPlatformEnum on TestPlatform {
+  String asString() => fromEnum(this);
 }
 
 abstract class TestPlatformEx {
