@@ -10,8 +10,6 @@ executables:
   fastdriver: main
 
 dependencies:
-#  flutter:
-#    sdk: flutter
   mockito: ^4.1.1
   csv: ^4.0.0
   test: ^1.9.4
@@ -19,9 +17,5 @@ dependencies:
   process_run: ^0.10.0+1
   colorize: ^2.0.0
   meta: ^1.1.8
-#  window_utils:
-#    git:
-#      url: git://github.com/tomaszpolanski/window-utils.git
-#      ref: disabling-linux-support
 
 
