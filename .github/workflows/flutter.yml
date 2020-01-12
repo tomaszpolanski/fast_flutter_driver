@@ -13,5 +13,6 @@ jobs:
     - uses: subosito/flutter-action@v1.1.1
       with:
         channel: 'beta'
-    - run: flutter pub get
+    - run: cd tool && flutter pub get
+    - run: cd driver && flutter pub get
     - run: flutter analyze
