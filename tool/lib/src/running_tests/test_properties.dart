@@ -4,20 +4,20 @@ import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/resolution.dart';
 
 class TestProperties {
-  TestProperties(List<String> args) : _arguments = testParameters.parse(args);
+  TestProperties(List<String> args) : arguments = testParameters.parse(args);
 
-  final ArgResults _arguments;
+  final ArgResults arguments;
 
-  String get vmUrl => _arguments[url];
+  String get vmUrl => arguments[url];
 
-  bool get screenshotsEnabled => _arguments[screenshotsArg] ?? false;
+  bool get screenshotsEnabled => arguments[screenshotsArg] ?? false;
 
-  String get locale => _arguments[languageArg];
+  String get locale => arguments[languageArg];
 
-  Resolution get resolution => Resolution.fromSize(_arguments[resolutionArg]);
+  Resolution get resolution => Resolution.fromSize(arguments[resolutionArg]);
 
   TestPlatform get platform =>
-      TestPlatformEx.fromString(_arguments[platformArg]);
+      TestPlatformEx.fromString(arguments[platformArg]);
 }
 
 abstract class BaseConfiguration {
