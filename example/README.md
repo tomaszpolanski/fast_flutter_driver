@@ -11,7 +11,6 @@ flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-de
 - Install [fast_flutter_driver](https://github.com/tomaszpolanski/fast_flutter_driver) script:
 ```shell script
 pub global activate fast_flutter_driver_tool
-flutter packages get
 ```
 - Run:
 ```
