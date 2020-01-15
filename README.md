@@ -12,8 +12,8 @@ An example of how the toolkit works can be found in [this article](https://mediu
 The desktop builds are almost identical to Android/iOS builds in regard to the UI.
 Running tests on a simulator/emulator are painful. This can be even worse on your CI.
 
-Your CI is usually dockerized Linux machine - therefore running Linux flutter driver tests against Linux Flutter application is both fast and reliable.
-This tool allows you to run your Flutter driver tests much faster and more reliably than a build for a simulator/emulator.
+Your CI is usually a dockerized Linux machine - running Linux `flutter driver` tests against Linux Flutter application is both fast and reliable.
+This tool allows you to run your `flutter driver` tests much faster and more reliably than a build for a simulator/emulator.
 
 The application flows that require Android/iOS plugins should still be run on a Simulator/Emulator or a real device.
 
