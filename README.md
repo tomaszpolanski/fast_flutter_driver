@@ -6,7 +6,7 @@ Toolkit for running rapidly flutter driver tests on desktop.
 This package simplifies the creation of Flutter Driver tests that can be run in bulk without restarting or rebuilding the application.
 An example of how the toolkit works can be found in [this article](https://medium.com/flutter-community/blazingly-fast-flutter-driver-tests-5e375c833aa).
 
-## Reasoning for Desktop test
+## Reasoning for Desktop tests
 The desktop builds are almost identical to Android/iOS builds in regard to the UI.
 Running tests on a simulator/emulator are painful. This can be even worse on your CI.
 
@@ -18,7 +18,7 @@ The application flows that require Android/iOS plugins should still be run on a 
 ## Usage
 
 - Add `dev_dependency` to your `pubspec.yaml`
-```
+```yaml
 dev_dependencies:
   fast_flutter_driver:
     git:
@@ -28,7 +28,7 @@ dev_dependencies:
 
 - Create empty dart file `test_driver/generic/generic_test.dart`
 - Create configuration class `test_driver/generic/test_configuration.dart`
-```
+```dart
 import 'package:fast_flutter_driver/tool.dart';
 import 'package:meta/meta.dart';
 
@@ -57,7 +57,7 @@ class TestConfiguration implements BaseConfiguration {
 
 ```
 - Create dart file `test_driver/generic/generic.dart` with content and `MyApplication` as your main (root) application widget.
-```
+```dart
 import 'dart:convert';
 
 import 'package:fast_flutter_driver/driver.dart';
@@ -86,7 +86,7 @@ void main() {
 
 ```
 - Create test eg `test_driver/main_test.dart` 
-```
+```dart
 import 'dart:convert';
 
 import 'package:fast_flutter_driver/tool.dart';
@@ -126,7 +126,7 @@ void main(List<String> args) {
 
 ```
 - Enable desktop builds by running in the terminal:
-```
+```shell script
 flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop
 ```
 - Install [fast_flutter_driver](https://github.com/tomaszpolanski/fast_flutter_driver) script:
@@ -134,7 +134,7 @@ flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-de
 pub global activate fast_flutter_driver_tool
 ```
 - Run:
-```
+```shell script
 fastdriver
 ```
 
