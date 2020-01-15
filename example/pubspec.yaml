@@ -15,9 +15,13 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   fast_flutter_driver:
-    path: ../driver
+    git:
+      url: git://github.com/tomaszpolanski/fast_flutter_driver.git
+      path: driver
   fast_flutter_driver_tool:
-    path: ../tool
+    git:
+      url: git://github.com/tomaszpolanski/fast_flutter_driver.git
+      path: tool
 
 
 flutter:
