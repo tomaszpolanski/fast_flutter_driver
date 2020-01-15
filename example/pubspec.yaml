@@ -16,6 +16,8 @@ dev_dependencies:
     sdk: flutter
   fast_flutter_driver:
     path: ../driver
+  fast_flutter_driver_tool:
+    path: ../tool
 
 
 flutter:

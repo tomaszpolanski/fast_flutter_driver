@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:fast_flutter_driver/src/restart_widget.dart';
-import 'package:fast_flutter_driver_tool/tool.dart';
+import 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';

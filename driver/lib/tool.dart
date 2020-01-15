@@ -1,6 +1,6 @@
 library tool;
 
-export 'package:fast_flutter_driver_tool/tool.dart'
+export 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart'
     show
         BaseConfiguration,
         Resolution,
