@@ -85,7 +85,7 @@ void main() {
 }
 
 ```
-- Create test eg `test_driver/main_test.dart` 
+- Create a test, eg `test_driver/main_test.dart` 
 ```dart
 import 'dart:convert';
 
@@ -129,7 +129,7 @@ void main(List<String> args) {
 ```shell script
 flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop
 ```
-- Install [fast_flutter_driver](https://github.com/tomaszpolanski/fast_flutter_driver) script:
+- Install [fast_flutter_driver](./tool) script:
 ```shell script
 pub global activate fast_flutter_driver_tool
 ```
