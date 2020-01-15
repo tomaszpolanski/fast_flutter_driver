@@ -23,9 +23,6 @@ dependencies:
     git:
       url: git://github.com/tomaszpolanski/window-utils.git
       ref: disabling-linux-support
-  fast_flutter_driver_tool:
-    git:
-      url: git://github.com/tomaszpolanski/fast_flutter_driver.git
-      path: tool
+  fast_flutter_driver_tool: ^0.0.2
 
 
