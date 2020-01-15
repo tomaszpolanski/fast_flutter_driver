@@ -11,6 +11,7 @@ const resolutionArg = 'resolution';
 const helpArg = 'help';
 const url = 'url';
 const platformArg = 'platform';
+const verboseArg = 'verbose';
 
 ArgParser scriptParameters = ArgParser()
   ..addOption(
@@ -53,7 +54,12 @@ ArgParser scriptParameters = ArgParser()
     abbr: helpArg[0],
     help: 'Display this help message',
     negatable: false,
-  );
+  )
+  ..addFlag(verboseArg,
+      abbr: verboseArg[0],
+      help: 'Show verbose loggin',
+      negatable: false,
+      defaultsTo: false);
 
 void printErrorHelp(String command) {
   // ignore: avoid_print

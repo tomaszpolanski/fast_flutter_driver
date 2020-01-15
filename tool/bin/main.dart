@@ -2,20 +2,22 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 
 Future<void> main(List<String> paths) async {
-  stdout.writeln('Starting tests');
   exitCode = -1;
   final parser = scriptParameters;
   final result = parser.parse(paths);
+  final logger = result[verboseArg] ? Logger.verbose() : Logger.standard();
   if (result[helpArg] == true) {
-    print(parser.usage);
+    logger.stdout(parser.usage);
     return;
   }
+  logger.stdout('Starting tests');
 
   Directory('build').createSync(recursive: true);
   if (result[screenshotsArg]) {
@@ -27,35 +29,45 @@ Future<void> main(List<String> paths) async {
   }
 
   if (result[fileArg] != null) {
-    await setUp(result, () async {
-      if (exists(result[fileArg])) {
-        await test(
-          testFile: result[fileArg],
-          withScreenshots: result[screenshotsArg],
-          language: result[languageArg],
-          resolution: result[resolutionArg],
-          platform: TestPlatformEx.fromString(result[platformArg]),
-        );
-      } else {
-        stderr.writeln('Specified file "${result[fileArg]}" does not exist');
-        exitCode = 1;
-      }
-    });
+    await setUp(
+      result,
+      () async {
+        if (exists(result[fileArg])) {
+          await test(
+            logger: logger,
+            testFile: result[fileArg],
+            withScreenshots: result[screenshotsArg],
+            language: result[languageArg],
+            resolution: result[resolutionArg],
+            platform: TestPlatformEx.fromString(result[platformArg]),
+          );
+        } else {
+          logger.stderr('Specified file "${result[fileArg]}" does not exist');
+          exitCode = 1;
+        }
+      },
+      logger: logger,
+    );
   } else if (result[directoryArg] != null) {
-    await setUp(result, () async {
-      for (final file in await _tests(result[directoryArg])) {
-        await test(
-          testFile: file,
-          withScreenshots: result[screenshotsArg],
-          language: result[languageArg],
-          resolution: result[resolutionArg],
-          platform: TestPlatformEx.fromString(result[platformArg]),
-        );
-      }
-    });
+    await setUp(
+      result,
+      () async {
+        for (final file in await _tests(result[directoryArg])) {
+          await test(
+            logger: logger,
+            testFile: file,
+            withScreenshots: result[screenshotsArg],
+            language: result[languageArg],
+            resolution: result[resolutionArg],
+            platform: TestPlatformEx.fromString(result[platformArg]),
+          );
+        }
+      },
+      logger: logger,
+    );
   }
 
-  stdout.writeln('Finishing tests');
+  logger.stdout('All ${logger.ansi.emphasized('done')}.');
   exitCode = 0;
 }
 
