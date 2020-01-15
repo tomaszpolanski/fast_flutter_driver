@@ -5,10 +5,15 @@ class RestartWidget<T> extends StatefulWidget {
   const RestartWidget({
     @required this.builder,
     this.initial,
+    this.backgroundColor,
     Key key,
   }) : super(key: key);
 
   final T initial;
+
+  /// The color of the background when switching between tests
+  /// If not set, the background will be black
+  final Color backgroundColor;
   final Widget Function(BuildContext, T) builder;
 
   static Future<void> restartApp<T>(T configuration) {
@@ -41,7 +46,9 @@ class _RestartWidgetState<T> extends State<RestartWidget<T>> {
     return SizedBox(
       key: global,
       child: _restarting
-          ? const SizedBox()
+          ? widget.backgroundColor != null
+              ? Container(color: widget.backgroundColor)
+              : const SizedBox()
           : (widget.initial ?? _configuration) == null
               ? _StartingTests()
               : widget.builder(context, _configuration ?? widget.initial),
