@@ -1,7 +1,7 @@
 # Fast Flutter Driver
 [![](https://github.com/tomaszpolanski/fast_flutter_driver/workflows/Analyze/badge.svg)](https://github.com/tomaszpolanski/fast_flutter_driver/actions?query=workflow%3A%22Analyze%22)
 
-![](./assets/demo.gif)
+![](./example/assets/demo.gif)
 
 Toolkit for running rapidly flutter driver tests on desktop.
 
