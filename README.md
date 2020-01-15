@@ -4,7 +4,7 @@
 Toolkit for running rapidly flutter driver tests on desktop.
 
 This package simplifies the creation of Flutter Driver tests that can be run in bulk without restarting or rebuilding the application.
-An example how the toolkit works can be found in [this article](https://medium.com/flutter-community/blazingly-fast-flutter-driver-tests-5e375c833aa).
+An example of how the toolkit works can be found in [this article](https://medium.com/flutter-community/blazingly-fast-flutter-driver-tests-5e375c833aa).
 
 ## Usage
 
@@ -47,7 +47,7 @@ class TestConfiguration implements BaseConfiguration {
 }
 
 ```
-- Create dart file `test_driver/generic/generic.dart` with content and `MyApplication` as your main (root) applications widget.
+- Create dart file `test_driver/generic/generic.dart` with content and `MyApplication` as your main (root) application widget.
 ```
 import 'dart:convert';
 
@@ -131,7 +131,7 @@ fastdriver
 
 All done!
 
-## What next
+## What's next
 This was the simplest setup of tests, next you would like to pass different application configuration so every time you run tests, they could be run with a different configuration (eg different page). To do that you need to add more properties to `TestConfiguration`.
 
-A full example how to do that can be found in the `example` folder.
+A full example of how to do that can be found in the `example` folder.
