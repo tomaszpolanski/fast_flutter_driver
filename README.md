@@ -28,7 +28,6 @@ dev_dependencies:
       path: driver
 ```
 
-- Create empty dart file `test_driver/generic/generic_test.dart`
 - Create configuration class `test_driver/generic/test_configuration.dart`
 ```dart
 import 'package:fast_flutter_driver/tool.dart';
