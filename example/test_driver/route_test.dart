@@ -25,6 +25,7 @@ void main(List<String> args) {
       json.encode(
         TestConfiguration(
           resolution: properties.resolution,
+          platform: properties.platform,
           route: route,
         ),
       ),
