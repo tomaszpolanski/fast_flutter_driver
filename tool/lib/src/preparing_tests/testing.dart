@@ -10,7 +10,6 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/commands.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
 import 'package:meta/meta.dart';
@@ -51,12 +50,6 @@ Future<void> test({
       completer.complete(url);
     }
   });
-
-  if (testFile.endsWith('generic_test.dart')) {
-    logger.trace('Generating test file');
-    await generateTestFile(testFile);
-    logger.trace('Done generating test file');
-  }
 
   final mainFile = _mainDartFile(testFile);
   final command = Commands().flutter.run(mainFile);

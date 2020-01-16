@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 
@@ -52,16 +53,14 @@ Future<void> main(List<String> paths) async {
     await setUp(
       result,
       () async {
-        for (final file in await _tests(result[directoryArg])) {
-          await test(
-            logger: logger,
-            testFile: file,
-            withScreenshots: result[screenshotsArg],
-            language: result[languageArg],
-            resolution: result[resolutionArg],
-            platform: TestPlatformEx.fromString(result[platformArg]),
-          );
-        }
+        await test(
+          logger: logger,
+          testFile: await aggregatedTest(result[directoryArg], logger),
+          withScreenshots: result[screenshotsArg],
+          language: result[languageArg],
+          resolution: result[resolutionArg],
+          platform: TestPlatformEx.fromString(result[platformArg]),
+        );
       },
       logger: logger,
     );
@@ -70,12 +69,3 @@ Future<void> main(List<String> paths) async {
   logger.stdout('All ${logger.ansi.emphasized('done')}.');
   exitCode = 0;
 }
-
-Future<List<String>> _tests(String directoryPath) => Directory(directoryPath)
-    .list(recursive: true)
-    .where((file) => file.uri.path.endsWith('_test.dart'))
-    .asyncMap((uri) => uri.path)
-    .where(
-      (path) => File(path.replaceFirst('_test.dart', '.dart')).existsSync(),
-    )
-    .toList();
