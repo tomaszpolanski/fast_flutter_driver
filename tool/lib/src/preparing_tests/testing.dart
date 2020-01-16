@@ -42,7 +42,13 @@ Future<void> test({
 
   final StreamController<List<int>> output = StreamController();
   final completer = Completer<String>();
+  final buildProgress = logger.progress('Building application');
+  Progress syncingProgress;
   output.stream.transform(utf8.decoder).listen((data) async {
+    if (data.contains('Syncing files to')) {
+      buildProgress.finish(showTiming: true);
+      syncingProgress = logger.progress('Syncing files');
+    }
     final match = RegExp(r'is available at: (http://.*/)').firstMatch(data);
     if (match != null) {
       final url = match.group(1);
@@ -54,7 +60,7 @@ Future<void> test({
   final mainFile = _mainDartFile(testFile);
   final command = Commands().flutter.run(mainFile);
   final StreamController<String> input = StreamController();
-  final buildProgress = logger.progress('Building and running the application');
+
   // ignore: unawaited_futures
   Shell(
     stdout: output,
@@ -65,23 +71,65 @@ Future<void> test({
   }).catchError((dynamic _) => printErrorHelp(command));
 
   final url = await completer.future;
-  buildProgress.finish(showTiming: true);
+  syncingProgress?.finish(showTiming: true);
 
+  final testOutput = StreamController<List<int>>();
+  testOutput.stream.transform(utf8.decoder).listen((data) async {
+    final line = data.trim();
+    if (logger.isVerbose) {
+      logger.trace(line);
+    } else {
+      if (line.isEmpty ||
+          line.startsWith('DriverError') ||
+          line.startsWith('===') ||
+          line.startsWith('_rootRun') ||
+          line.startsWith('package:')) {
+        return;
+      }
+      logger.stdout(line);
+    }
+  });
+
+  final testErrorOutput = StreamController<List<int>>();
+  testErrorOutput.stream.transform(utf8.decoder).listen((data) async {
+    final line = data.trim();
+    if (logger.isVerbose) {
+      logger.trace(line);
+    } else {
+      if (line.isEmpty ||
+          line.startsWith('[trace]') ||
+          line.startsWith('[info ]')) {
+        return;
+      }
+      logger.stderr(line);
+    }
+  });
   final stopwatch = Stopwatch()..start();
-  await Shell().run(Commands().flutter.dart(testFile, [
-    '-u',
-    url,
-    if (withScreenshots) '-s',
-    '-r',
-    resolution,
-    '-l',
-    language,
-    if (platform != null) ...['-p', fromEnum(platform)]
-  ]));
-  logger.stdout(
-      'Tests took ${logger.ansi.emphasized('${stopwatch.elapsed.inSeconds}')}s.');
+  try {
+    await Shell(
+      stdout: testOutput,
+      stderr: testErrorOutput,
+    ).run(Commands().flutter.dart(testFile, [
+      '-u',
+      url,
+      if (withScreenshots) '-s',
+      '-r',
+      resolution,
+      '-l',
+      language,
+      if (platform != null) ...['-p', fromEnum(platform)]
+    ]));
+  } catch (e) {
+    logger.stderr('Some tests have failed');
+  } finally {
+    await testOutput.close();
+    await testErrorOutput.close();
+    logger.stdout(
+      'Tests took ${logger.ansi.emphasized('${stopwatch.elapsed.inSeconds}')}s.',
+    );
 
-  input.add('q');
+    input.add('q');
+  }
 }
 
 String _mainDartFile(String testFile) {
