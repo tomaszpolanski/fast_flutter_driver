@@ -73,22 +73,63 @@ Future<void> test({
   final url = await completer.future;
   syncingProgress?.finish(showTiming: true);
 
-  final stopwatch = Stopwatch()..start();
-  await Shell().run(Commands().flutter.dart(testFile, [
-    '-u',
-    url,
-    if (withScreenshots) '-s',
-    '-r',
-    resolution,
-    '-l',
-    language,
-    if (platform != null) ...['-p', fromEnum(platform)]
-  ]));
-  logger.stdout(
-    'Tests took ${logger.ansi.emphasized('${stopwatch.elapsed.inSeconds}')}s.',
-  );
+  final testOutput = StreamController<List<int>>();
+  testOutput.stream.transform(utf8.decoder).listen((data) async {
+    final line = data.trim();
+    if (logger.isVerbose) {
+      logger.trace(line);
+    } else {
+      if (line.isEmpty ||
+          line.startsWith('DriverError') ||
+          line.startsWith('===') ||
+          line.startsWith('_rootRun') ||
+          line.startsWith('package:')) {
+        return;
+      }
+      logger.stdout(line);
+    }
+  });
 
-  input.add('q');
+  final testErrorOutput = StreamController<List<int>>();
+  testErrorOutput.stream.transform(utf8.decoder).listen((data) async {
+    final line = data.trim();
+    if (logger.isVerbose) {
+      logger.trace(line);
+    } else {
+      if (line.isEmpty ||
+          line.startsWith('[trace]') ||
+          line.startsWith('[info ]')) {
+        return;
+      }
+      logger.stderr(line);
+    }
+  });
+  final stopwatch = Stopwatch()..start();
+  try {
+    await Shell(
+      stdout: testOutput,
+      stderr: testErrorOutput,
+    ).run(Commands().flutter.dart(testFile, [
+      '-u',
+      url,
+      if (withScreenshots) '-s',
+      '-r',
+      resolution,
+      '-l',
+      language,
+      if (platform != null) ...['-p', fromEnum(platform)]
+    ]));
+  } catch (e) {
+    logger.stderr('Some tests have failed');
+  } finally {
+    await testOutput.close();
+    await testErrorOutput.close();
+    logger.stdout(
+      'Tests took ${logger.ansi.emphasized('${stopwatch.elapsed.inSeconds}')}s.',
+    );
+
+    input.add('q');
+  }
 }
 
 String _mainDartFile(String testFile) {
