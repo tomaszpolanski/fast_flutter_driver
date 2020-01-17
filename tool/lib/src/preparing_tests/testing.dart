@@ -104,7 +104,6 @@ Future<void> test({
       logger.stderr(line);
     }
   });
-  final stopwatch = Stopwatch()..start();
   try {
     await Shell(
       stdout: testOutput,
@@ -119,15 +118,9 @@ Future<void> test({
       language,
       if (platform != null) ...['-p', fromEnum(platform)]
     ]));
-  } catch (e) {
-    logger.stderr('Some tests have failed');
   } finally {
     await testOutput.close();
     await testErrorOutput.close();
-    logger.stdout(
-      'Tests took ${logger.ansi.emphasized('${stopwatch.elapsed.inSeconds}')}s.',
-    );
-
     input.add('q');
   }
 }

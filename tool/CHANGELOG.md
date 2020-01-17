@@ -1,3 +1,6 @@
+## 0.0.5
+- Returning error code when tests fail
+
 ## 0.0.4+1
 - Release cleanup
 
