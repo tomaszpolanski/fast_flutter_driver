@@ -2,8 +2,28 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream
 import 'package:meta/meta.dart';
 import 'package:process_run/shell.dart';
 
-class CommandLine {
-  CommandLine({
+typedef RunCommand = Future<void> Function(
+  String command, {
+  @required OutputCommandLineStream stdout,
+  InputCommandLineStream stdin,
+  OutputCommandLineStream stderr,
+});
+
+Future<void> run(
+  String command, {
+  @required OutputCommandLineStream stdout,
+  InputCommandLineStream stdin,
+  OutputCommandLineStream stderr,
+}) async {
+  return _CommandLine(
+    stdout: stdout,
+    stdin: stdin,
+    stderr: stderr,
+  ).run(command);
+}
+
+class _CommandLine {
+  _CommandLine({
     @required this.stdout,
     this.stdin,
     this.stderr,

@@ -5,7 +5,8 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:cli_util/cli_logging.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line.dart'
+    as command_line;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/commands.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
@@ -32,6 +33,7 @@ Future<void> setUp(
 Future<String> _buildAndRun(
   String command,
   InputCommandLineStream input,
+  command_line.RunCommand run,
   Logger logger,
 ) {
   final completer = Completer<String>();
@@ -52,7 +54,7 @@ Future<String> _buildAndRun(
     }
   });
   // ignore: unawaited_futures
-  CommandLine(stdout: output, stdin: input).run(command).then((_) {
+  run(command, stdout: output, stdin: input).then((_) {
     input.dispose();
     output.dispose();
   }).catchError((dynamic _) => printErrorHelp(command));
@@ -60,7 +62,11 @@ Future<String> _buildAndRun(
   return completer.future;
 }
 
-Future<void> _runTests(String command, Logger logger) async {
+Future<void> _runTests(
+  String command,
+  command_line.RunCommand run,
+  Logger logger,
+) async {
   final testOutput = OutputCommandLineStream((line) async {
     line = line.trim();
     if (logger.isVerbose) {
@@ -92,10 +98,11 @@ Future<void> _runTests(String command, Logger logger) async {
   });
 
   try {
-    await CommandLine(
+    await run(
+      command,
       stdout: testOutput,
       stderr: testErrorOutput,
-    ).run(command);
+    );
   } finally {
     await testOutput.dispose();
     await testErrorOutput.dispose();
@@ -118,6 +125,7 @@ Future<void> test({
   final url = await _buildAndRun(
     Commands().flutter.run(mainFile),
     input,
+    command_line.run,
     logger,
   );
 
@@ -133,7 +141,7 @@ Future<void> test({
   ]);
 
   try {
-    await _runTests(runTestCommand, logger);
+    await _runTests(runTestCommand, command_line.run, logger);
   } finally {
     input.write('q');
     await input.dispose();
