@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_print
 
 import 'dart:async';
-import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:cli_util/cli_logging.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/commands.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
@@ -14,7 +14,6 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
 import 'package:meta/meta.dart';
-import 'package:process_run/shell.dart';
 
 Future<void> setUp(
   ArgResults args,
@@ -61,10 +60,7 @@ Future<void> test({
     }
   });
   // ignore: unawaited_futures
-  Shell(
-    stdout: output.stream,
-    stdin: input.stream,
-  ).run(flutterRunCommand).then((_) {
+  CommandLine(stdout: output, stdin: input).run(flutterRunCommand).then((_) {
     input.dispose();
     output.dispose();
   }).catchError((dynamic _) => printErrorHelp(flutterRunCommand));
@@ -88,9 +84,8 @@ Future<void> test({
     }
   });
 
-  final testErrorOutput = StreamController<List<int>>();
-  testErrorOutput.stream.transform(utf8.decoder).listen((data) async {
-    final line = data.trim();
+  final testErrorOutput = OutputCommandLineStream((line) async {
+    line = line.trim();
     if (logger.isVerbose) {
       logger.trace(line);
     } else {
@@ -102,9 +97,10 @@ Future<void> test({
       logger.stderr(line);
     }
   });
+
   try {
-    await Shell(
-      stdout: testOutput.stream,
+    await CommandLine(
+      stdout: testOutput,
       stderr: testErrorOutput,
     ).run(Commands().flutter.dart(testFile, [
       '-u',
@@ -118,7 +114,7 @@ Future<void> test({
     ]));
   } finally {
     await testOutput.dispose();
-    await testErrorOutput.close();
+    await testErrorOutput.dispose();
     input.write('q');
   }
 }
