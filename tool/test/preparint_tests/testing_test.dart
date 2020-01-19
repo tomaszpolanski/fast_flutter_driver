@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart';
@@ -40,7 +41,8 @@ void main() {
 
       expect(
         commands,
-        contains('flutter run -d windows --target=generic.dart'),
+        contains(
+            'flutter run -d ${Platform.operatingSystem} --target=generic.dart'),
       );
     });
 
@@ -58,7 +60,8 @@ void main() {
           OutputCommandLineStream stderr,
         }) async {
           commands.add(command);
-          if (command == 'flutter run -d windows --target=generic.dart') {
+          if (command ==
+              'flutter run -d ${Platform.operatingSystem} --target=generic.dart') {
             stdout.stream.add(
               utf8.encode(
                   'is available at: http://127.0.0.1:50512/CKxutzePXlo/'),
