@@ -29,24 +29,15 @@ Future<void> setUp(
   }
 }
 
-Future<void> test({
-  @required Logger logger,
-  @required String testFile,
-  @required bool withScreenshots,
-  @required String resolution,
-  String language,
-  @required TestPlatform platform,
-}) async {
-  assert(testFile != null);
-  logger.stdout('Testing $testFile');
-
+Future<String> _buildAndRun(
+  String command,
+  InputCommandLineStream input,
+  Logger logger,
+) {
   final completer = Completer<String>();
   final buildProgress = logger.progress('Building application');
   Progress syncingProgress;
 
-  final mainFile = _mainDartFile(testFile);
-  final flutterRunCommand = Commands().flutter.run(mainFile);
-  final input = InputCommandLineStream();
   final output = OutputCommandLineStream((String line) async {
     if (line.contains('Syncing files to')) {
       buildProgress.finish(showTiming: true);
@@ -54,20 +45,22 @@ Future<void> test({
     }
     final match = RegExp(r'is available at: (http://.*/)').firstMatch(line);
     if (match != null) {
+      syncingProgress?.finish(showTiming: true);
       final url = match.group(1);
       logger.trace('Observatory url: $url');
       completer.complete(url);
     }
   });
   // ignore: unawaited_futures
-  CommandLine(stdout: output, stdin: input).run(flutterRunCommand).then((_) {
+  CommandLine(stdout: output, stdin: input).run(command).then((_) {
     input.dispose();
     output.dispose();
-  }).catchError((dynamic _) => printErrorHelp(flutterRunCommand));
+  }).catchError((dynamic _) => printErrorHelp(command));
 
-  final url = await completer.future;
-  syncingProgress?.finish(showTiming: true);
+  return completer.future;
+}
 
+Future<void> _runTests(String command, Logger logger) async {
   final testOutput = OutputCommandLineStream((line) async {
     line = line.trim();
     if (logger.isVerbose) {
@@ -102,20 +95,48 @@ Future<void> test({
     await CommandLine(
       stdout: testOutput,
       stderr: testErrorOutput,
-    ).run(Commands().flutter.dart(testFile, [
-      '-u',
-      url,
-      if (withScreenshots) '-s',
-      '-r',
-      resolution,
-      '-l',
-      language,
-      if (platform != null) ...['-p', fromEnum(platform)]
-    ]));
+    ).run(command);
   } finally {
     await testOutput.dispose();
     await testErrorOutput.dispose();
+  }
+}
+
+Future<void> test({
+  @required Logger logger,
+  @required String testFile,
+  @required bool withScreenshots,
+  @required String resolution,
+  String language,
+  @required TestPlatform platform,
+}) async {
+  assert(testFile != null);
+  logger.stdout('Testing $testFile');
+
+  final mainFile = _mainDartFile(testFile);
+  final input = InputCommandLineStream();
+  final url = await _buildAndRun(
+    Commands().flutter.run(mainFile),
+    input,
+    logger,
+  );
+
+  final runTestCommand = Commands().flutter.dart(testFile, [
+    '-u',
+    url,
+    if (withScreenshots) '-s',
+    '-r',
+    resolution,
+    '-l',
+    language,
+    if (platform != null) ...['-p', fromEnum(platform)]
+  ]);
+
+  try {
+    await _runTests(runTestCommand, logger);
+  } finally {
     input.write('q');
+    await input.dispose();
   }
 }
 
