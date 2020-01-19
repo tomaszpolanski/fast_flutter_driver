@@ -7,9 +7,9 @@ import 'package:args/args.dart';
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line.dart'
     as command_line;
-import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart'
+    as streams;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/commands.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
@@ -30,9 +30,50 @@ Future<void> setUp(
   }
 }
 
+Future<void> test({
+  @required streams.OutputFactory outputFactory,
+  @required streams.InputFactory inputFactory,
+  @required command_line.RunCommand run,
+  @required Logger logger,
+  @required String testFile,
+  @required bool withScreenshots,
+  @required String resolution,
+  String language,
+  @required TestPlatform platform,
+}) async {
+  assert(testFile != null);
+  logger.stdout('Testing $testFile');
+
+  final mainFile = _mainDartFile(testFile);
+  final input = inputFactory();
+  final url = await _buildAndRun(
+    Commands().flutter.run(mainFile),
+    input,
+    outputFactory,
+    run,
+    logger,
+  );
+
+  final runTestCommand = Commands().flutter.dart(testFile, {
+    '-u': url,
+    if (withScreenshots) '-${screenshotsArg[0]}': '',
+    '-${resolutionArg[0]}': resolution,
+    '-${languageArg[0]}': language,
+    if (platform != null) '-${platformArg[0]}': fromEnum(platform),
+  });
+
+  try {
+    await _runTests(runTestCommand, outputFactory, run, logger);
+  } finally {
+    input.write('q');
+    await input.dispose();
+  }
+}
+
 Future<String> _buildAndRun(
   String command,
-  InputCommandLineStream input,
+  streams.InputCommandLineStream input,
+  streams.OutputFactory outputFactory,
   command_line.RunCommand run,
   Logger logger,
 ) {
@@ -40,7 +81,7 @@ Future<String> _buildAndRun(
   final buildProgress = logger.progress('Building application');
   Progress syncingProgress;
 
-  final output = OutputCommandLineStream((String line) async {
+  final output = outputFactory((String line) async {
     if (line.contains('Syncing files to')) {
       buildProgress.finish(showTiming: true);
       syncingProgress = logger.progress('Syncing files');
@@ -55,7 +96,6 @@ Future<String> _buildAndRun(
   });
   // ignore: unawaited_futures
   run(command, stdout: output, stdin: input).then((_) {
-    input.dispose();
     output.dispose();
   }).catchError((dynamic _) => printErrorHelp(command));
 
@@ -64,17 +104,18 @@ Future<String> _buildAndRun(
 
 Future<void> _runTests(
   String command,
+  streams.OutputFactory outputFactory,
   command_line.RunCommand run,
   Logger logger,
 ) async {
-  final testOutput = OutputCommandLineStream((line) {
+  final testOutput = outputFactory((line) {
     logger.printTestOutput(
       line,
       ['DriverError', '===', '_rootRun', '===package:'],
     );
   });
 
-  final testErrorOutput = OutputCommandLineStream((line) {
+  final testErrorOutput = outputFactory((line) {
     logger.printTestError(line, ['[trace]', '[info ]']);
   });
 
@@ -90,46 +131,8 @@ Future<void> _runTests(
   }
 }
 
-Future<void> test({
-  @required Logger logger,
-  @required String testFile,
-  @required bool withScreenshots,
-  @required String resolution,
-  String language,
-  @required TestPlatform platform,
-}) async {
-  assert(testFile != null);
-  logger.stdout('Testing $testFile');
-
-  final mainFile = _mainDartFile(testFile);
-  final input = InputCommandLineStream();
-  final url = await _buildAndRun(
-    Commands().flutter.run(mainFile),
-    input,
-    command_line.run,
-    logger,
-  );
-
-  final runTestCommand = Commands().flutter.dart(testFile, {
-    '-u': url,
-    if (withScreenshots) '-${screenshotsArg[0]}': '',
-    '-${resolutionArg[0]}': resolution,
-    '-${languageArg[0]}': language,
-    if (platform != null) '-${platformArg[0]}': fromEnum(platform),
-  });
-
-  try {
-    await _runTests(runTestCommand, command_line.run, logger);
-  } finally {
-    input.write('q');
-    await input.dispose();
-  }
-}
-
 String _mainDartFile(String testFile) {
-  return testFile.endsWith('generic_test.dart')
-      ? testFile.replaceFirst('_test.dart', '.dart')
-      : platformPath('${File(testFile).parent.path}/generic/generic.dart');
+  return testFile.replaceFirst('_test.dart', '.dart');
 }
 
 extension on Logger {

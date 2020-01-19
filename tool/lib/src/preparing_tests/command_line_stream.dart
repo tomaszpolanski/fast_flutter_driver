@@ -6,20 +6,37 @@ abstract class CommandLineStream {
   Future<void> dispose();
 }
 
+typedef OutputFactory = OutputCommandLineStream Function(
+    void Function(String) onData);
+
+OutputCommandLineStream output(void Function(String line) onData) {
+  return OutputCommandLineStream._(onData);
+}
+
 class OutputCommandLineStream implements CommandLineStream {
-  OutputCommandLineStream(void Function(String line) onData) {
-    output.stream.transform(utf8.decoder).listen((data) => onData(data.trim()));
+  OutputCommandLineStream._(void Function(String line) onData) {
+    _output.stream
+        .transform(utf8.decoder)
+        .listen((data) => onData(data.trim()));
   }
 
-  StreamController<List<int>> output = StreamController();
+  final StreamController<List<int>> _output = StreamController();
 
-  StreamSink<List<int>> get stream => output;
+  StreamSink<List<int>> get stream => _output;
 
   @override
-  Future<void> dispose() => output.close();
+  Future<void> dispose() => _output.close();
+}
+
+typedef InputFactory = InputCommandLineStream Function();
+
+InputCommandLineStream input() {
+  return InputCommandLineStream._();
 }
 
 class InputCommandLineStream implements CommandLineStream {
+  InputCommandLineStream._();
+
   StreamController<String> input = StreamController();
 
   Stream<List<int>> get stream => input.stream.map(utf8.encode);
