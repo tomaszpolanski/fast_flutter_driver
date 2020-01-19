@@ -129,16 +129,13 @@ Future<void> test({
     logger,
   );
 
-  final runTestCommand = Commands().flutter.dart(testFile, [
-    '-u',
-    url,
-    if (withScreenshots) '-s',
-    '-r',
-    resolution,
-    '-l',
-    language,
-    if (platform != null) ...['-p', fromEnum(platform)]
-  ]);
+  final runTestCommand = Commands().flutter.dart(testFile, {
+    '-u': url,
+    if (withScreenshots) '-s': '',
+    '-r': resolution,
+    '-l': language,
+    if (platform != null) '-p': fromEnum(platform),
+  });
 
   try {
     await _runTests(runTestCommand, command_line.run, logger);

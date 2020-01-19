@@ -16,4 +16,5 @@ dependencies:
   meta: ^1.1.8
   cli_util: ^0.1.3+2
 
-
+dev_dependencies:
+  test: ^1.6.3
