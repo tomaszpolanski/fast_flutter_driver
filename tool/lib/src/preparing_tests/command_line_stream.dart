@@ -8,7 +8,7 @@ abstract class CommandLineStream {
 
 class OutputCommandLineStream implements CommandLineStream {
   OutputCommandLineStream(void Function(String line) onData) {
-    output.stream.transform(utf8.decoder).listen(onData);
+    output.stream.transform(utf8.decoder).listen((data) => onData(data.trim()));
   }
 
   StreamController<List<int>> output = StreamController();

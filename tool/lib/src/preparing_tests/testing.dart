@@ -67,34 +67,15 @@ Future<void> _runTests(
   command_line.RunCommand run,
   Logger logger,
 ) async {
-  final testOutput = OutputCommandLineStream((line) async {
-    line = line.trim();
-    if (logger.isVerbose) {
-      logger.trace(line);
-    } else {
-      if (line.isEmpty ||
-          line.startsWith('DriverError') ||
-          line.startsWith('===') ||
-          line.startsWith('_rootRun') ||
-          line.startsWith('package:')) {
-        return;
-      }
-      logger.stdout(line);
-    }
+  final testOutput = OutputCommandLineStream((line) {
+    logger.printTestOutput(
+      line,
+      ['DriverError', '===', '_rootRun', '===package:'],
+    );
   });
 
-  final testErrorOutput = OutputCommandLineStream((line) async {
-    line = line.trim();
-    if (logger.isVerbose) {
-      logger.trace(line);
-    } else {
-      if (line.isEmpty ||
-          line.startsWith('[trace]') ||
-          line.startsWith('[info ]')) {
-        return;
-      }
-      logger.stderr(line);
-    }
+  final testErrorOutput = OutputCommandLineStream((line) {
+    logger.printTestError(line, ['[trace]', '[info ]']);
   });
 
   try {
@@ -131,10 +112,10 @@ Future<void> test({
 
   final runTestCommand = Commands().flutter.dart(testFile, {
     '-u': url,
-    if (withScreenshots) '-s': '',
-    '-r': resolution,
-    '-l': language,
-    if (platform != null) '-p': fromEnum(platform),
+    if (withScreenshots) '-${screenshotsArg[0]}': '',
+    '-${resolutionArg[0]}': resolution,
+    '-${languageArg[0]}': language,
+    if (platform != null) '-${platformArg[0]}': fromEnum(platform),
   });
 
   try {
@@ -149,4 +130,29 @@ String _mainDartFile(String testFile) {
   return testFile.endsWith('generic_test.dart')
       ? testFile.replaceFirst('_test.dart', '.dart')
       : platformPath('${File(testFile).parent.path}/generic/generic.dart');
+}
+
+extension on Logger {
+  void printTestError(String line, List<String> blackListed) {
+    _print(line, blackListed, this.stderr);
+  }
+
+  void printTestOutput(String line, List<String> blackListed) {
+    _print(line, blackListed, this.stdout);
+  }
+
+  void _print(
+    String line,
+    List<String> blackListed,
+    void Function(String) print,
+  ) {
+    if (isVerbose) {
+      trace(line);
+    } else {
+      if (line.isEmpty || blackListed.any(line.startsWith)) {
+        return;
+      }
+      print(line);
+    }
+  }
 }
