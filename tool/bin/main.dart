@@ -3,6 +3,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line.dart'
+    as command_line;
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
@@ -35,6 +38,9 @@ Future<void> main(List<String> paths) async {
       () async {
         if (exists(result[fileArg])) {
           await test(
+            outputFactory: output,
+            inputFactory: input,
+            run: command_line.run,
             logger: logger,
             testFile: result[fileArg],
             withScreenshots: result[screenshotsArg],
@@ -54,6 +60,9 @@ Future<void> main(List<String> paths) async {
       result,
       () async {
         await test(
+          outputFactory: output,
+          inputFactory: input,
+          run: command_line.run,
           logger: logger,
           testFile: await aggregatedTest(result[directoryArg], logger),
           withScreenshots: result[screenshotsArg],
