@@ -11,6 +11,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 
 Future<void> main(List<String> paths) async {
   exitCode = -1;
@@ -51,28 +52,39 @@ Future<void> main(List<String> paths) async {
         } else {
           logger.stderr('Specified file "${result[fileArg]}" does not exist');
           exitCode = 1;
+          return;
         }
       },
       logger: logger,
     );
   } else if (result[directoryArg] != null) {
-    await setUp(
-      result,
-      () async {
-        await test(
-          outputFactory: output,
-          inputFactory: input,
-          run: command_line.run,
-          logger: logger,
-          testFile: await aggregatedTest(result[directoryArg], logger),
-          withScreenshots: result[screenshotsArg],
-          language: result[languageArg],
-          resolution: result[resolutionArg],
-          platform: TestPlatformEx.fromString(result[platformArg]),
-        );
-      },
-      logger: logger,
-    );
+    final testSetupFile =
+        platformPath('${result[directoryArg]}/generic/generic.dart');
+    if (exists(testSetupFile)) {
+      await setUp(
+        result,
+        () async {
+          await test(
+            outputFactory: output,
+            inputFactory: input,
+            run: command_line.run,
+            logger: logger,
+            testFile: await aggregatedTest(result[directoryArg], logger),
+            withScreenshots: result[screenshotsArg],
+            language: result[languageArg],
+            resolution: result[resolutionArg],
+            platform: TestPlatformEx.fromString(result[platformArg]),
+          );
+        },
+        logger: logger,
+      );
+    } else {
+      logger.stderr(
+        'Test file setup "$testSetupFile" ${red('does not')} exist',
+      );
+      exitCode = 1;
+      return;
+    }
   }
 
   logger.stdout('All ${logger.ansi.emphasized('done')}.');
