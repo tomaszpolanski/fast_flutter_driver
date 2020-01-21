@@ -4,8 +4,14 @@ import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 
 const aggregatedTestFile = 'generic_test.dart';
+const setupMainFile = 'generic.dart';
 
 Future<String> aggregatedTest(String directoryPath, Logger logger) async {
+  final setupFile =
+      File(platformPath('$directoryPath/generic/$aggregatedTestFile'));
+  if (!setupFile.existsSync()) {
+    return null;
+  }
   final test = File(platformPath('$directoryPath/generic/$aggregatedTestFile'));
   if (!test.existsSync()) {
     test.createSync();
@@ -13,6 +19,7 @@ Future<String> aggregatedTest(String directoryPath, Logger logger) async {
   logger?.trace('Generating test file');
   await _generateTestFile(test);
   logger?.trace('Done generating test file');
+
   return test.path;
 }
 
