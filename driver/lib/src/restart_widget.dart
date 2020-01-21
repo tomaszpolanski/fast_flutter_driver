@@ -1,20 +1,23 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class RestartWidget<T> extends StatefulWidget {
   const RestartWidget({
-    @required this.builder,
+    @required Widget Function(BuildContext, T) builder,
     this.initial,
     this.backgroundColor,
     Key key,
-  }) : super(key: key);
+  })  : _builder = builder,
+        super(key: key);
 
   final T initial;
 
   /// The color of the background when switching between tests
   /// If not set, the background will be black
   final Color backgroundColor;
-  final Widget Function(BuildContext, T) builder;
+
+  final Widget Function(BuildContext, T) _builder;
 
   static Future<void> restartApp<T>(T configuration) {
     final state = _RestartWidgetState.global.currentContext
@@ -24,6 +27,14 @@ class RestartWidget<T> extends StatefulWidget {
 
   @override
   _RestartWidgetState<T> createState() => _RestartWidgetState<T>();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<T>('initial', initial))
+      ..add(ColorProperty('backgroundColor', backgroundColor));
+  }
 }
 
 class _RestartWidgetState<T> extends State<RestartWidget<T>> {
@@ -51,7 +62,7 @@ class _RestartWidgetState<T> extends State<RestartWidget<T>> {
               : const SizedBox()
           : (widget.initial ?? _configuration) == null
               ? _StartingTests()
-              : widget.builder(context, _configuration ?? widget.initial),
+              : widget._builder(context, _configuration ?? widget.initial),
     );
   }
 }
