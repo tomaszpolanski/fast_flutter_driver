@@ -4,19 +4,20 @@ import 'package:flutter/widgets.dart';
 
 class RestartWidget<T> extends StatefulWidget {
   const RestartWidget({
-    @required this.builder,
+    @required Widget Function(BuildContext, T) builder,
     this.initial,
     this.backgroundColor,
     Key key,
-  }) : super(key: key);
+  })  : _builder = builder,
+        super(key: key);
 
   final T initial;
 
   /// The color of the background when switching between tests
   /// If not set, the background will be black
   final Color backgroundColor;
-  // ignore: diagnostic_describe_all_properties
-  final Widget Function(BuildContext, T) builder;
+
+  final Widget Function(BuildContext, T) _builder;
 
   static Future<void> restartApp<T>(T configuration) {
     final state = _RestartWidgetState.global.currentContext
@@ -61,7 +62,7 @@ class _RestartWidgetState<T> extends State<RestartWidget<T>> {
               : const SizedBox()
           : (widget.initial ?? _configuration) == null
               ? _StartingTests()
-              : widget.builder(context, _configuration ?? widget.initial),
+              : widget._builder(context, _configuration ?? widget.initial),
     );
   }
 }
