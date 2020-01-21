@@ -11,6 +11,6 @@ jobs:
       with:
         channel: 'beta'
     - run: cd tool && flutter pub get && flutter pub run test
-    - run: cd driver && flutter pub get
+    - run: cd driver && flutter pub get && flutter test
     - run: cd example && flutter pub get
     - run: flutter analyze
