@@ -10,6 +10,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line.dart'
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart'
     as streams;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/commands.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
@@ -43,7 +44,6 @@ Future<void> test({
 }) async {
   assert(testFile != null);
   logger.stdout('Testing $testFile');
-
   final mainFile = _mainDartFile(testFile);
   final input = inputFactory();
   final url = await _buildAndRun(
@@ -108,15 +108,21 @@ Future<void> _runTests(
   command_line.RunCommand run,
   Logger logger,
 ) async {
+  const notShowLines = [
+    'DriverError',
+    '===',
+    '_rootRun',
+    '===package:',
+    '[trace]',
+    '[info ]',
+    'FlutterDriver'
+  ];
   final testOutput = outputFactory((line) {
-    logger.printTestOutput(
-      line,
-      ['DriverError', '===', '_rootRun', '===package:'],
-    );
+    logger.printTestOutput(line, notShowLines);
   });
 
   final testErrorOutput = outputFactory((line) {
-    logger.printTestError(line, ['[trace]', '[info ]']);
+    logger.printTestError(line, notShowLines);
   });
 
   try {
@@ -132,7 +138,9 @@ Future<void> _runTests(
 }
 
 String _mainDartFile(String testFile) {
-  return testFile.replaceFirst('_test.dart', '.dart');
+  return testFile.endsWith('generic_test.dart')
+      ? testFile.replaceFirst('_test.dart', '.dart')
+      : platformPath('${File(testFile).parent.path}/generic/generic.dart');
 }
 
 extension on Logger {

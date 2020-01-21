@@ -14,7 +14,7 @@ import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 
 Future<void> main(List<String> paths) async {
-  exitCode = -1;
+  exitCode = 2;
   final parser = scriptParameters;
   final result = parser.parse(paths);
   final logger = result[verboseArg] ? Logger.verbose() : Logger.standard();
@@ -33,58 +33,34 @@ Future<void> main(List<String> paths) async {
     }
   }
 
-  if (result[fileArg] != null) {
-    await setUp(
-      result,
-      () async {
-        if (exists(result[fileArg])) {
-          await test(
-            outputFactory: output,
-            inputFactory: input,
-            run: command_line.run,
-            logger: logger,
-            testFile: result[fileArg],
-            withScreenshots: result[screenshotsArg],
-            language: result[languageArg],
-            resolution: result[resolutionArg],
-            platform: TestPlatformEx.fromString(result[platformArg]),
-          );
-        } else {
-          logger.stderr('Specified file "${result[fileArg]}" does not exist');
-          exitCode = 1;
-          return;
-        }
-      },
-      logger: logger,
+  final testFile =
+      result[fileArg] ?? await aggregatedTest(result[directoryArg], logger);
+  if (testFile != null) {
+    await setUp(result, () async {
+      if (exists(testFile)) {
+        await test(
+          outputFactory: output,
+          inputFactory: input,
+          run: command_line.run,
+          logger: logger,
+          testFile: testFile,
+          withScreenshots: result[screenshotsArg],
+          language: result[languageArg],
+          resolution: result[resolutionArg],
+          platform: TestPlatformEx.fromString(result[platformArg]),
+        );
+      } else {
+        logger.stderr('Specified file "${result[fileArg]}" does not exist');
+        exitCode = 1;
+        return;
+      }
+    }, logger: logger);
+  } else {
+    logger.stderr(
+      'Test file setup "${result[directoryArg]}" ${red('does not')} exist',
     );
-  } else if (result[directoryArg] != null) {
-    final testSetupFile =
-        platformPath('${result[directoryArg]}/generic/generic.dart');
-    if (exists(testSetupFile)) {
-      await setUp(
-        result,
-        () async {
-          await test(
-            outputFactory: output,
-            inputFactory: input,
-            run: command_line.run,
-            logger: logger,
-            testFile: await aggregatedTest(result[directoryArg], logger),
-            withScreenshots: result[screenshotsArg],
-            language: result[languageArg],
-            resolution: result[resolutionArg],
-            platform: TestPlatformEx.fromString(result[platformArg]),
-          );
-        },
-        logger: logger,
-      );
-    } else {
-      logger.stderr(
-        'Test file setup "$testSetupFile" ${red('does not')} exist',
-      );
-      exitCode = 1;
-      return;
-    }
+    exitCode = 1;
+    return;
   }
 
   logger.stdout('All ${logger.ansi.emphasized('done')}.');
