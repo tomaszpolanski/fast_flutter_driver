@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -14,6 +15,7 @@ class RestartWidget<T> extends StatefulWidget {
   /// The color of the background when switching between tests
   /// If not set, the background will be black
   final Color backgroundColor;
+  // ignore: diagnostic_describe_all_properties
   final Widget Function(BuildContext, T) builder;
 
   static Future<void> restartApp<T>(T configuration) {
@@ -24,6 +26,14 @@ class RestartWidget<T> extends StatefulWidget {
 
   @override
   _RestartWidgetState<T> createState() => _RestartWidgetState<T>();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<T>('initial', initial))
+      ..add(ColorProperty('backgroundColor', backgroundColor));
+  }
 }
 
 class _RestartWidgetState<T> extends State<RestartWidget<T>> {

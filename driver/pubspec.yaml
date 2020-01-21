@@ -25,4 +25,6 @@ dependencies:
       ref: disabling-linux-support
   fast_flutter_driver_tool: ^0.0.2
 
-
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
