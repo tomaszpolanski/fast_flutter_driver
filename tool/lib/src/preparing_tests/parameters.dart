@@ -71,7 +71,7 @@ To ${green('fix')} it:
   • Clean workspace by running:
     ${green('flutter clean')}
   • Enable desktop by running: 
-    ${green('flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop')}'
+    ${green('flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop')}
   • Run the tests again in verbose mode:
     ${green('$command -v')}''',
   );

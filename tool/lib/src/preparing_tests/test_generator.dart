@@ -7,8 +7,7 @@ const aggregatedTestFile = 'generic_test.dart';
 const setupMainFile = 'generic.dart';
 
 Future<String> aggregatedTest(String directoryPath, Logger logger) async {
-  final setupFile =
-      File(platformPath('$directoryPath/generic/$aggregatedTestFile'));
+  final setupFile = File(platformPath('$directoryPath/generic/$setupMainFile'));
   if (!setupFile.existsSync()) {
     return null;
   }
