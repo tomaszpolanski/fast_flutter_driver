@@ -1,3 +1,7 @@
+## 0.0.5+1
+- Fixing aggregated test lookup
+- Improved error loggin
+
 ## 0.0.5
 - Returning error code when tests fail
 
