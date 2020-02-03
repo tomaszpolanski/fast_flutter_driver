@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'dart:async';
 import 'dart:io';
 
@@ -19,7 +18,7 @@ Future<void> main(List<String> paths) async {
   final result = parser.parse(paths);
   final logger = result[verboseArg] ? Logger.verbose() : Logger.standard();
   if (result[helpArg] == true) {
-    logger.stdout(parser.usage);
+    logger..stdout('Usage: fastdriver <path>')..stdout(parser.usage);
     return;
   }
   logger.stdout('Starting tests');
@@ -33,36 +32,43 @@ Future<void> main(List<String> paths) async {
     }
   }
 
-  final testFile =
-      result[fileArg] ?? await aggregatedTest(result[directoryArg], logger);
-  if (testFile != null) {
+  final testFile = await _testFile(
+    result[fileArg] ??
+        result[directoryArg] ??
+        (result.rest.length == 1 ? result.rest.first : null) ??
+        'test_driver',
+    logger,
+  );
+  if (testFile != null && exists(testFile)) {
     await setUp(result, () async {
-      if (exists(testFile)) {
-        await test(
-          outputFactory: output,
-          inputFactory: input,
-          run: command_line.run,
-          logger: logger,
-          testFile: testFile,
-          withScreenshots: result[screenshotsArg],
-          language: result[languageArg],
-          resolution: result[resolutionArg],
-          platform: TestPlatformEx.fromString(result[platformArg]),
-        );
-      } else {
-        logger.stderr('Specified file "${result[fileArg]}" does not exist');
-        exitCode = 1;
-        return;
-      }
+      await test(
+        outputFactory: output,
+        inputFactory: input,
+        run: command_line.run,
+        logger: logger,
+        testFile: testFile,
+        withScreenshots: result[screenshotsArg],
+        language: result[languageArg],
+        resolution: result[resolutionArg],
+        platform: TestPlatformEx.fromString(result[platformArg]),
+      );
     }, logger: logger);
   } else {
-    logger.stderr(
-      'Test file setup "${result[directoryArg]}" ${red('does not')} exist',
-    );
+    logger.stderr('Specified path "$testFile" ${red('does not')} exist');
     exitCode = 1;
     return;
   }
 
   logger.stdout('All ${logger.ansi.emphasized('done')}.');
   exitCode = 0;
+}
+
+Future<String> _testFile(String path, Logger logger) async {
+  if (File(path).existsSync()) {
+    return path;
+  } else if (Directory(path).existsSync()) {
+    return aggregatedTest(path, logger);
+  } else {
+    return path;
+  }
 }

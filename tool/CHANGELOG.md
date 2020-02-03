@@ -1,3 +1,6 @@
+## 0.0.6
+- Removing the need for specifying `-f` or `-d` 
+
 ## 0.0.5+1
 - Fixing aggregated test lookup
 - Improved error loggin

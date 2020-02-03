@@ -17,13 +17,12 @@ ArgParser scriptParameters = ArgParser()
   ..addOption(
     fileArg,
     abbr: fileArg[0],
-    help: 'Run a single test file',
+    help: 'Deprecated',
   )
   ..addOption(
     directoryArg,
     abbr: directoryArg[0],
-    defaultsTo: 'test_driver',
-    help: 'Run all the tests in the directory recursively',
+    help: 'Deprecated',
   )
   ..addOption(
     languageArg,
