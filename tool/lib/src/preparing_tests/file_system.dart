@@ -1,14 +1,14 @@
 import 'dart:io';
 
-String platformPath(String path) {
-  return Platform.isWindows ? path.replaceAll('/', '\\') : path;
-}
+import 'package:path/path.dart' as p;
+
+String platformPath(String path) => p.normalize(path);
 
 bool exists(String path) =>
     path != null && File(platformPath(path)).existsSync();
 
 String get nativeResolutionFile {
-  return platformPath('${Directory.current.path}/$_nativeResolutionFile');
+  return platformPath(p.join(Directory.current.path, _nativeResolutionFile));
 }
 
 String get _nativeResolutionFile {
