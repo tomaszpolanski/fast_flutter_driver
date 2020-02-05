@@ -1,3 +1,9 @@
+## 0.1.0+1
+- Updating the documentation
+
+## 0.1.0
+- Releasing stable version
+
 ## 0.0.6
 - Removing the need for specifying `-f` or `-d` 
 
