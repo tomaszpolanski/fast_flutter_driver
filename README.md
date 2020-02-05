@@ -17,6 +17,9 @@ This tool allows you to run your `flutter driver` tests much faster and more rel
 
 The application flows that require Android/iOS plugins should still be run on a Simulator/Emulator or a real device.
 
+## Example
+You can build and execute [the example](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example) that works on any desktop system.
+
 ## Usage
 
 - Add `dev_dependency` to your `pubspec.yaml`
