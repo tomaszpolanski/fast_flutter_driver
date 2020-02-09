@@ -28,5 +28,3 @@ flutter:
     platforms:
       macos:
         pluginClass: WindowUtils
-      windows:
-        pluginClass: WindowUtils
