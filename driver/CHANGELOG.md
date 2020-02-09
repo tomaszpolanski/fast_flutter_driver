@@ -1,5 +1,5 @@
 ## 0.1.0
-- Using modified version of [windows_utils](https://pub.dev/packages/window_utils) due to an issue in Linux
+- Embedding [windows_utils](https://pub.dev/packages/window_utils) due to an issue in Linux
 
 ## 0.0.2
 
