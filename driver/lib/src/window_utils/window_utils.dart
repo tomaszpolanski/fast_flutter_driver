@@ -109,17 +109,6 @@ class WindowUtils {
   }
 }
 
-enum DragPosition {
-  top,
-  left,
-  right,
-  bottom,
-  topLeft,
-  bottomLeft,
-  topRight,
-  bottomRight
-}
-
 enum CursorType {
   arrow,
   beamVertical,
