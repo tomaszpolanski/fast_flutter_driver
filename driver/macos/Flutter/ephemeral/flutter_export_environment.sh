@@ -6,3 +6,4 @@ export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_FRAMEWORK_DIR=/home/kriger/Documents/flutter/bin/cache/artifacts/engine/darwin-x64"
 export "FLUTTER_BUILD_NAME=0.1.0"
 export "FLUTTER_BUILD_NUMBER=0.1.0"
+//
