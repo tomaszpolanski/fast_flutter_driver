@@ -16,10 +16,16 @@ dependencies:
   process_run: ^0.10.0+1
   colorize: ^2.0.0
   meta: ^1.1.8
-  window_utils:
-    path: ./dependencies/window-utils
   fast_flutter_driver_tool: ^0.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      macos:
+        pluginClass: WindowUtils
+      windows:
+        pluginClass: WindowUtils
