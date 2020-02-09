@@ -123,7 +123,7 @@ public class WindowUtils: NSObject, FlutterPlugin {
             switch type {
             case "arrow": cursor = NSCursor.arrow
             case "beamVertical": cursor = NSCursor.iBeam
-            case "beamHorizontial": cursor = NSCursor.iBeamCursorForVerticalLayout
+            case "beamHorizontal": cursor = NSCursor.iBeamCursorForVerticalLayout
             case "crossHair": cursor = NSCursor.crosshair
             case "closedHand": cursor = NSCursor.closedHand
             case "openHand": cursor = NSCursor.openHand

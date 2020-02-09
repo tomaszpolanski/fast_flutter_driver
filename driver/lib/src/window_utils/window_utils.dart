@@ -165,7 +165,7 @@ enum CursorType {
   resizeUp,
   resizeLeftRight,
   resizeUpDown,
-  beamHorizontial,
+  beamHorizontal,
   disappearingItem,
   notAllowed,
   dragLink,
