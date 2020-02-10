@@ -38,3 +38,5 @@ driver/macos/Flutter/ephemeral/Flutter-Generated.xcconfig
 driver/macos/Flutter/ephemeral/flutter_export_environment.sh
 driver/windows/flutter/generated_plugin_registrant.cc
 driver/windows/flutter/generated_plugin_registrant.h
+example/macos/Podfile
+example/ios/Podfile

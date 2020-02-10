@@ -2,15 +2,15 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name             = 'window_utils'
-  s.version          = '0.0.3'
-  s.summary          = 'A new flutter plugin project.'
+  s.name             = 'fast_flutter_driver'
+  s.version          = '0.1.0'
+  s.summary          = 'Window utils for macOs'
   s.description      = <<-DESC
-A new flutter plugin project.
+Window utils for macOs
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Your Company' => 'polanski.tomek@gmail.com' }
   s.source           = { :path => '.' }
   s.source_files     = 'Classes/**/*'
   s.dependency 'FlutterMacOS'
