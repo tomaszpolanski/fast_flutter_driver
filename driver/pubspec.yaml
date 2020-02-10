@@ -1,13 +1,11 @@
 name: fast_flutter_driver
 description: Toolkit for running rapidly flutter driver tests on desktop.
-version: 0.0.2
+version: 0.1.0
 homepage: https://github.com/tomaszpolanski/fast_flutter_driver
 
 environment:
   sdk: '>=2.6.0 <3.0.0'
-
-executables:
-  fastdriver: main
+  flutter: ">=1.12.8 <2.0.0"
 
 dependencies:
   flutter:
@@ -19,12 +17,14 @@ dependencies:
   process_run: ^0.10.0+1
   colorize: ^2.0.0
   meta: ^1.1.8
-  window_utils:
-    git:
-      url: git://github.com/tomaszpolanski/window-utils.git
-      ref: disabling-linux-support
   fast_flutter_driver_tool: ^0.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      macos:
+        pluginClass: WindowUtils

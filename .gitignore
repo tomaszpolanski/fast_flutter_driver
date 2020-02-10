@@ -34,3 +34,9 @@ ios/Flutter/flutter_export_environment.sh
 .flutter-plugins-dependencies
 windows/window_configuration.cpp_copy
 example/test_driver/generic/generic_test.dart
+driver/macos/Flutter/ephemeral/Flutter-Generated.xcconfig
+driver/macos/Flutter/ephemeral/flutter_export_environment.sh
+driver/windows/flutter/generated_plugin_registrant.cc
+driver/windows/flutter/generated_plugin_registrant.h
+example/macos/Podfile
+example/ios/Podfile

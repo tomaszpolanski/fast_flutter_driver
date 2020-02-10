@@ -1,3 +1,6 @@
+## 0.1.0
+- Embedding [windows_utils](https://pub.dev/packages/window_utils) due to an issue in Linux
+
 ## 0.0.2
 
 - Adding `Delayed` widget to help with debugging

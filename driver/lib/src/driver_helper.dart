@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:fast_flutter_driver/src/restart_widget.dart';
+import 'package:fast_flutter_driver/src/window_utils/window_utils.dart';
 import 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
-import 'package:window_utils/window_utils.dart';
 
 Future<String> configureTest(BaseConfiguration config) async {
   if (Platform.isMacOS) {
