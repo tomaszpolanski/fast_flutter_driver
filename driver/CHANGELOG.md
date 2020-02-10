@@ -1,3 +1,6 @@
+## 0.1.1
+- Updating Fast Flutter Driver tool version
+
 ## 0.1.0
 - Embedding [windows_utils](https://pub.dev/packages/window_utils) due to an issue in Linux
 
