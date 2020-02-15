@@ -53,6 +53,7 @@ Future<void> test({
     outputFactory,
     run,
     logger,
+    device,
   );
 
   final runTestCommand = Commands().flutter.dart(testFile, {
@@ -77,9 +78,10 @@ Future<String> _buildAndRun(
   streams.OutputFactory outputFactory,
   command_line.RunCommand run,
   Logger logger,
+  String device,
 ) {
   final completer = Completer<String>();
-  final buildProgress = logger.progress('Building application');
+  final buildProgress = logger.progress('Building application for $device');
   Progress syncingProgress;
 
   final output = outputFactory((String line) async {

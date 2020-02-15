@@ -41,7 +41,6 @@ Make sure that those components are installed:
 
 
 ## Running the tests
-
 - Install [fast_flutter_driver](https://github.com/tomaszpolanski/fast_flutter_driver) script:
 ```shell script
 pub global activate fast_flutter_driver_tool
@@ -49,4 +48,9 @@ pub global activate fast_flutter_driver_tool
 - Run:
 ```
 fastdriver
+```
+
+To run the tests on a specyfic device like an emulator just pass the device id that you get from `flutter devices`:
+```
+fastdriver --device emulator-5554
 ```

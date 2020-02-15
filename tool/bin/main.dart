@@ -33,10 +33,7 @@ Future<void> main(List<String> paths) async {
   }
 
   final testFile = await _testFile(
-    result[fileArg] ??
-        result[directoryArg] ??
-        (result.rest.length == 1 ? result.rest.first : null) ??
-        'test_driver',
+    (result.rest.length == 1 ? result.rest.first : null) ?? 'test_driver',
     logger,
   );
   if (testFile != null && exists(testFile)) {
