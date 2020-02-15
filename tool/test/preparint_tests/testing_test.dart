@@ -37,12 +37,42 @@ void main() {
         language: 'pl',
         resolution: '800x600',
         platform: TestPlatform.android,
+        device: null,
       );
 
       expect(
         commands,
         contains(
             'flutter run -d ${Platform.operatingSystem} --target=generic.dart'),
+      );
+    });
+
+    test('builds application for specyfic device', () {
+      final commands = <String>[];
+      const device = 'some_special_device';
+      tested.test(
+        outputFactory: streams.output,
+        inputFactory: streams.input,
+        run: (
+          String command, {
+          OutputCommandLineStream stdout,
+          InputCommandLineStream stdin,
+          OutputCommandLineStream stderr,
+        }) async {
+          commands.add(command);
+        },
+        logger: logger,
+        testFile: 'generic_test.dart',
+        withScreenshots: false,
+        language: 'pl',
+        resolution: '800x600',
+        platform: TestPlatform.android,
+        device: device,
+      );
+
+      expect(
+        commands,
+        contains('flutter run -d $device --target=generic.dart'),
       );
     });
 
@@ -74,6 +104,7 @@ void main() {
         language: 'pl',
         resolution: '800x600',
         platform: TestPlatform.android,
+        device: null,
       );
 
       expect(

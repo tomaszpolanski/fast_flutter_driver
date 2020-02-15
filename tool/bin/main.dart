@@ -51,6 +51,7 @@ Future<void> main(List<String> paths) async {
         language: result[languageArg],
         resolution: result[resolutionArg],
         platform: TestPlatformEx.fromString(result[platformArg]),
+        device: result[deviceArg],
       );
     }, logger: logger);
   } else {

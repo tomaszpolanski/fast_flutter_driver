@@ -40,6 +40,7 @@ Future<void> test({
   @required bool withScreenshots,
   @required String resolution,
   String language,
+  @required String device,
   @required TestPlatform platform,
 }) async {
   assert(testFile != null);
@@ -47,7 +48,7 @@ Future<void> test({
   final mainFile = _mainDartFile(testFile);
   final input = inputFactory();
   final url = await _buildAndRun(
-    Commands().flutter.run(mainFile),
+    Commands().flutter.run(mainFile, device),
     input,
     outputFactory,
     run,

@@ -11,6 +11,7 @@ const resolutionArg = 'resolution';
 const helpArg = 'help';
 const url = 'url';
 const platformArg = 'platform';
+const deviceArg = 'device';
 const verboseArg = 'verbose';
 
 ArgParser scriptParameters = ArgParser()
@@ -47,6 +48,10 @@ ArgParser scriptParameters = ArgParser()
     screenshotsArg,
     abbr: screenshotsArg[0],
     help: 'Enables screenshots during test run',
+  )
+  ..addOption(
+    deviceArg,
+    help: 'Runs testing on a specyfic device',
   )
   ..addFlag(
     helpArg,
