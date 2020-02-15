@@ -1,28 +1,25 @@
 import 'package:args/args.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/devices.dart'
+    as devices;
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
 
-const fileArg = 'file';
-const directoryArg = 'directory';
 const languageArg = 'language';
 const screenshotsArg = 'screenshots';
 const resolutionArg = 'resolution';
 const helpArg = 'help';
 const url = 'url';
 const platformArg = 'platform';
+const deviceArg = 'device';
 const verboseArg = 'verbose';
 
 ArgParser scriptParameters = ArgParser()
   ..addOption(
-    fileArg,
-    abbr: fileArg[0],
-    help: 'Deprecated',
-  )
-  ..addOption(
-    directoryArg,
-    abbr: directoryArg[0],
-    help: 'Deprecated',
+    deviceArg,
+    abbr: deviceArg[0],
+    help: 'Runs testing on a specyfic device',
+    defaultsTo: devices.device,
   )
   ..addOption(
     languageArg,

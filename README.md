@@ -3,7 +3,7 @@
 
 ![](./example/assets/demo.gif)
 
-Toolkit for running rapidly flutter driver tests on desktop.
+Toolkit for running rapidly flutter driver tests on desktop that also supports mobile rapid tests.
 
 [This package](https://pub.dev/packages/fast_flutter_driver_tool) simplifies the creation of Flutter Driver tests that can be run in bulk without restarting or rebuilding the application.
 An example of how the toolkit works can be found in [this article](https://medium.com/flutter-community/blazingly-fast-flutter-driver-tests-5e375c833aa).

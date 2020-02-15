@@ -40,6 +40,7 @@ Future<void> test({
   @required bool withScreenshots,
   @required String resolution,
   String language,
+  @required String device,
   @required TestPlatform platform,
 }) async {
   assert(testFile != null);
@@ -47,11 +48,12 @@ Future<void> test({
   final mainFile = _mainDartFile(testFile);
   final input = inputFactory();
   final url = await _buildAndRun(
-    Commands().flutter.run(mainFile),
+    Commands().flutter.run(mainFile, device),
     input,
     outputFactory,
     run,
     logger,
+    device,
   );
 
   final runTestCommand = Commands().flutter.dart(testFile, {
@@ -76,9 +78,10 @@ Future<String> _buildAndRun(
   streams.OutputFactory outputFactory,
   command_line.RunCommand run,
   Logger logger,
+  String device,
 ) {
   final completer = Completer<String>();
-  final buildProgress = logger.progress('Building application');
+  final buildProgress = logger.progress('Building application for $device');
   Progress syncingProgress;
 
   final output = outputFactory((String line) async {

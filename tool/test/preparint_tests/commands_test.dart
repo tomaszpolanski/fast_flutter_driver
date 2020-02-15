@@ -3,6 +3,24 @@ import 'package:test/test.dart';
 
 void main() {
   group('Flutter', () {
+    group('run', () {
+      const testFile = 'file.dart';
+      test('uses device', () {
+        const device = 'some_device';
+        final tested = Commands().flutter.run(testFile, device);
+        expect(tested, contains('-d $device'));
+      });
+    });
+
+    group('attach', () {
+      const testFile = 'file.dart';
+      test('uses device', () {
+        const device = 'some_device';
+        final tested = Commands().flutter.attach(testFile, device);
+        expect(tested, contains('-d $device'));
+      });
+    });
+
     group('dart', () {
       const testFile = 'file.dart';
       test('when no parameters', () {

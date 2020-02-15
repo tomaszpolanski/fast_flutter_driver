@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart'
     as streams;
+import 'package:fast_flutter_driver_tool/src/preparing_tests/devices.dart'
+    as devices;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
     as tested;
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
@@ -37,12 +38,41 @@ void main() {
         language: 'pl',
         resolution: '800x600',
         platform: TestPlatform.android,
+        device: devices.device,
       );
 
       expect(
         commands,
-        contains(
-            'flutter run -d ${Platform.operatingSystem} --target=generic.dart'),
+        contains('flutter run -d ${devices.device} --target=generic.dart'),
+      );
+    });
+
+    test('builds application for specyfic device', () {
+      final commands = <String>[];
+      const device = 'some_special_device';
+      tested.test(
+        outputFactory: streams.output,
+        inputFactory: streams.input,
+        run: (
+          String command, {
+          OutputCommandLineStream stdout,
+          InputCommandLineStream stdin,
+          OutputCommandLineStream stderr,
+        }) async {
+          commands.add(command);
+        },
+        logger: logger,
+        testFile: 'generic_test.dart',
+        withScreenshots: false,
+        language: 'pl',
+        resolution: '800x600',
+        platform: TestPlatform.android,
+        device: device,
+      );
+
+      expect(
+        commands,
+        contains('flutter run -d $device --target=generic.dart'),
       );
     });
 
@@ -61,7 +91,7 @@ void main() {
         }) async {
           commands.add(command);
           if (command ==
-              'flutter run -d ${Platform.operatingSystem} --target=generic.dart') {
+              'flutter run -d ${devices.device} --target=generic.dart') {
             stdout.stream.add(
               utf8.encode(
                   'is available at: http://127.0.0.1:50512/CKxutzePXlo/'),
@@ -74,6 +104,7 @@ void main() {
         language: 'pl',
         resolution: '800x600',
         platform: TestPlatform.android,
+        device: devices.device,
       );
 
       expect(
