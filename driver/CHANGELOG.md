@@ -1,3 +1,6 @@
+## 0.1.1+2
+- Enabled iOS fastdriver tests
+
 ## 0.1.1+1
 - Updating Fast Flutter Driver tool dependency version
 
