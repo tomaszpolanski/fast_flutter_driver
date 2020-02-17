@@ -33,6 +33,12 @@ brew upgrade cocoapods
 pod setup
 gem install cocoapods
 ```
+- In case you are getting error `ArgumentError - invalid byte sequence in US-ASCII` when installing Pods, set proper encoding:
+```
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+```
 ### Windows
 - Install Visual Studio Community 2019 with [Desktop development with C++](https://devblogs.microsoft.com/cppblog/windows-desktop-development-with-c-in-visual-studio/#installation). 
 Make sure that those components are installed:
