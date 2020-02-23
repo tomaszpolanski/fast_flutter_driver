@@ -1,6 +1,12 @@
 # Fast Flutter Driver
 [![](https://github.com/tomaszpolanski/fast_flutter_driver/workflows/Analyze/badge.svg)](https://github.com/tomaszpolanski/fast_flutter_driver/actions?query=workflow%3A%22Analyze%22)
 
+| Plugin | Pub |
+|--------|-----|
+| [Command Line Tool](./.tool/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver_tool.svg)](https://pub.dev/packages/fast_flutter_driver_tool) |
+| [UI Helper](./.driver/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)](https://pub.dev/packages/fast_flutter_driver) |
+
+
 ![](./example/assets/demo.gif)
 
 Toolkit for running rapidly flutter driver tests on desktop that also supports mobile rapid tests.
