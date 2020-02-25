@@ -1,6 +1,11 @@
 import 'package:fast_flutter_driver/tool.dart';
 import 'package:meta/meta.dart';
 
+/// To this file you can add any serializable parameters.
+/// This configuration will passed to you Flutter application and you can
+/// use it to setup the state of your app, e.g. setup language,
+/// change UI to iOS or Android, login users or even mock endpoints
+/// with responses
 class TestConfiguration implements BaseConfiguration {
   const TestConfiguration({
     @required this.resolution,
