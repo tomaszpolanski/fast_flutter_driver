@@ -1,17 +1,33 @@
 # Fast Flutter Driver example
 
-An example on how to use Fast Flutter Driver
+An example of how to use Fast Flutter Driver.
+This example can be run on a mobile device/emulator/simulator or on desktop.
 
-## Enable desktop builds
+## Installation
+- Get [fast_flutter_driver](https://github.com/tomaszpolanski/fast_flutter_driver) command line tool:
+```shell script
+pub global activate fast_flutter_driver_tool
+```
+
+## Running on Mobile
+To run the tests on a specific device, just pass the device id that you get from `flutter devices`:
+```
+fastdriver --device emulator-5554
+```
+
+## Enabling and running on Desktop
+You need first to setup Flutter for desktop if you had not done it before.
+
+### Enable desktop builds
 
 Last tested version of Flutter that works with this repo is `v1.14.6`:
-  * **Important**: Use `version` otherwise desktop won't be picked up: `v1.14.6`
+  * **Important**: Use `version` otherwise desktop won't be picked up: `v1.14.6`
 
 Enable desktop builds by running in the terminal:
 ```
 flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop
 ```
-### Linux
+#### Linux
 - Add the following to `.bash_profile` but replace `$HOME/flutter/` with path to your Flutter folder
 ```
 # Add Flutter
@@ -19,7 +35,7 @@ export PATH="$PATH:$HOME/flutter/bin"
 # Add Dart
 export PATH="$PATH:$HOME/flutter/bin/cache/dart-sdk/bin"
 ```
-### Mac
+#### Mac
 - Add the following to `.bash_profile` but replace `$HOME/flutter/` with path to your Flutter folder
 ```
 # Add Flutter
@@ -39,24 +55,20 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 ```
-### Windows
+#### Windows
 - Install Visual Studio Community 2019 with [Desktop development with C++](https://devblogs.microsoft.com/cppblog/windows-desktop-development-with-c-in-visual-studio/#installation). 
 Make sure that those components are installed:
-* `MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.23)`	
+* `MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.23)`   
 * `Windows 10 SDK (10.0.17763.0)` 
 
 
-## Running the tests
-- Install [fast_flutter_driver](https://github.com/tomaszpolanski/fast_flutter_driver) script:
-```shell script
-pub global activate fast_flutter_driver_tool
-```
-- Run:
-```
+### Running on Desktop
+If you don't specify the device you want to run the tests against, then desktop device is used by default:
+```bash
 fastdriver
 ```
 
-To run the tests on a specyfic device like an emulator just pass the device id that you get from `flutter devices`:
-```
-fastdriver --device emulator-5554
-```
+## How to write your tests
+All tests located files that end with `_test.dart` in `test_driver` folder will be run in separation.
+
+Check out [simple_test.dart](test_driver/simple_test.dart) to see the basic structure of a test.

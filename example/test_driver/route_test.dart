@@ -39,15 +39,11 @@ void main(List<String> args) {
       routes.page3,
       routes.page4,
     ].forEach((route) {
-      test(
-        route,
-        () async {
-          await restart(route);
+      test(route, () async {
+        await restart(route);
 
-          await driver.waitFor(find.text(route));
-        },
-        timeout: const Timeout(Duration(seconds: 1)),
-      );
+        await driver.waitFor(find.text(route));
+      });
     });
   });
 
