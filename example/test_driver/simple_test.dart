@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:driver_extensions/driver_extensions.dart';
 import 'package:example/routes.dart' as routes;
 import 'package:fast_flutter_driver/tool.dart';
 import 'package:flutter_driver/flutter_driver.dart';
@@ -64,5 +65,11 @@ void main(List<String> args) {
     test('- checking type', () async {
       await driver.waitFor(find.byType('Page1'));
     });
+  });
+
+  /// You can use [driver_extensions](https://pub.dev/packages/driver_extensions)
+  /// for better failure messages
+  test('using driver_extensions', () async {
+    await driver.waitForElement(find.byType('Page1'));
   });
 }
