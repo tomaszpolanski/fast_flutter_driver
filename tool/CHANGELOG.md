@@ -1,3 +1,6 @@
+## 0.2.1+2
+- Removing debug `print`
+
 ## 0.2.1+1
 - Improving lookup of already installed script version
 

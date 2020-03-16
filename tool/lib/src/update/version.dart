@@ -29,7 +29,6 @@ Future<String> _lockVersion() async {
     if (line.contains('fast_flutter_driver_tool')) {
       foundPackage = true;
     } else if (foundPackage) {
-      print(line);
       final version = RegExp(r'version: "(.*)"').firstMatch(line)?.group(1);
       if (version != null) {
         return version;
