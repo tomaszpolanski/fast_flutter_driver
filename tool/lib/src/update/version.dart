@@ -7,10 +7,36 @@ import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
 Future<String> currentVersion() async {
+  return (await _yamlVersion()) ?? (await _lockVersion());
+}
+
+Future<String> _yamlVersion() async {
   final pathToYaml =
       join(dirname(Platform.script.toFilePath()), '../pubspec.yaml');
-  final yaml = loadYaml(await File(pathToYaml).readAsString());
-  return yaml['version'];
+  final file = File(pathToYaml);
+  if (file.existsSync()) {
+    final yaml = loadYaml(await File(pathToYaml).readAsString());
+    return yaml['version'];
+  }
+  return null;
+}
+
+Future<String> _lockVersion() async {
+  final pathToLock =
+      join(dirname(Platform.script.toFilePath()), '../pubspec.lock');
+  bool foundPackage = false;
+  for (final line in await File(pathToLock).readAsLines()) {
+    if (line.contains('fast_flutter_driver_tool')) {
+      foundPackage = true;
+    } else if (foundPackage) {
+      print(line);
+      final version = RegExp(r'version: "(.*)"').firstMatch(line)?.group(1);
+      if (version != null) {
+        return version;
+      }
+    }
+  }
+  return null;
 }
 
 Future<String> remoteVersion() async {

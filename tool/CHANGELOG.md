@@ -1,3 +1,6 @@
+## 0.2.1+1
+- Improving lookup of already installed script version
+
 ## 0.2.1
 - New version available notification
 
