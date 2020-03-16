@@ -1,3 +1,6 @@
+## 0.2.1
+- New version available notification
+
 ## 0.2.0
 - Removing `-f` and replacing `-d` option. Just passing a file or folder to `fastdirver` without any flags, will run that file/directory
 - Allowing to run fast tests on mobile device by using `-d` or `--device` option
