@@ -13,6 +13,7 @@ const url = 'url';
 const platformArg = 'platform';
 const deviceArg = 'device';
 const verboseArg = 'verbose';
+const versionArg = 'version';
 
 ArgParser scriptParameters = ArgParser()
   ..addOption(
@@ -51,11 +52,19 @@ ArgParser scriptParameters = ArgParser()
     help: 'Display this help message',
     negatable: false,
   )
-  ..addFlag(verboseArg,
-      abbr: verboseArg[0],
-      help: 'Show verbose loggin',
-      negatable: false,
-      defaultsTo: false);
+  ..addFlag(
+    verboseArg,
+    abbr: verboseArg[0],
+    help: 'Show verbose loggin',
+    negatable: false,
+    defaultsTo: false,
+  )
+  ..addFlag(
+    versionArg,
+    help: 'Script\'s version',
+    negatable: false,
+    defaultsTo: false,
+  );
 
 void printErrorHelp(String command) {
   // ignore: avoid_print
