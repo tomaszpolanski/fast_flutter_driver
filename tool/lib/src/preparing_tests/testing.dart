@@ -118,7 +118,8 @@ Future<void> _runTests(
     '===package:',
     '[trace]',
     '[info ]',
-    'FlutterDriver'
+    'FlutterDriver',
+    'VMServiceFlutterDriver'
   ];
   final testOutput = outputFactory((line) {
     logger.printTestOutput(line, notShowLines);
