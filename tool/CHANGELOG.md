@@ -1,5 +1,9 @@
+## 0.2.2
+- Fixing resolution changes for Linux for `1.15.17`+
+
 ## 0.2.1+3
 - Not printing `VMServiceFlutterDriver` (happening on version `1.15.17`+) lines when running tests 
+
 
 ## 0.2.1+2
 - Removing debug `print`

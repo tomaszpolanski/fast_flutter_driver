@@ -53,27 +53,39 @@ String _replaceResolution(
   @required int width,
   @required int height,
 }) {
-  if (Platform.isWindows) {
-    return nativeContent
-        .replaceAllMapped(
-          RegExp(r'kFlutterWindowWidth = (\d+);'),
-          (m) => 'kFlutterWindowWidth = $width;',
-        )
-        .replaceAllMapped(
-          RegExp(r'kFlutterWindowHeight = (\d+);'),
-          (m) => 'kFlutterWindowHeight = $height;',
-        );
-  } else if (Platform.isLinux) {
-    return nativeContent
-        .replaceAllMapped(
-          RegExp(r'window_properties.width = (\d+);'),
-          (m) => 'window_properties.width = $width;',
-        )
-        .replaceAllMapped(
-          RegExp(r'window_properties.height = (\d+);'),
-          (m) => 'window_properties.height = $height;',
-        );
+  return nativeContent
+      .replaceWidth(width)
+      .replaceHeight(height)
+      .replaceLegacyWidth(width)
+      .replaceLegacyHeight(height);
+}
+
+extension on String {
+  String replaceWidth(int width) {
+    return replaceAllMapped(
+      RegExp(r'kFlutterWindowWidth = (\d+);'),
+      (m) => 'kFlutterWindowWidth = $width;',
+    );
   }
-  assert(false);
-  return null;
+
+  String replaceHeight(int height) {
+    return replaceAllMapped(
+      RegExp(r'kFlutterWindowHeight = (\d+);'),
+      (m) => 'kFlutterWindowHeight = $height;',
+    );
+  }
+
+  String replaceLegacyWidth(int width) {
+    return replaceAllMapped(
+      RegExp(r'window_properties.width = (\d+);'),
+      (m) => 'window_properties.width = $width;',
+    );
+  }
+
+  String replaceLegacyHeight(int height) {
+    return replaceAllMapped(
+      RegExp(r'window_properties.height = (\d+);'),
+      (m) => 'window_properties.height = $height;',
+    );
+  }
 }
