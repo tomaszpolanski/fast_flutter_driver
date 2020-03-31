@@ -1,3 +1,6 @@
+## 0.2.2+1
+- Fixing running of a single file inside a subfolder eg. `test_driver/page1/simple_test.dart`
+
 ## 0.2.2
 - Fixing resolution changes for Linux for `1.15.17`+
 
