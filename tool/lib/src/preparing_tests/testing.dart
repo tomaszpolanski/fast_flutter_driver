@@ -16,6 +16,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart';
 
 Future<void> setUp(
   ArgResults args,
@@ -144,7 +145,22 @@ Future<void> _runTests(
 String _mainDartFile(String testFile) {
   return testFile.endsWith('generic_test.dart')
       ? testFile.replaceFirst('_test.dart', '.dart')
-      : platformPath('${File(testFile).parent.path}/generic/generic.dart');
+      : platformPath(_findGenericFile(File(testFile).parent));
+}
+
+String _findGenericFile(Directory currentDir) {
+  print(currentDir.path);
+  final Directory genericDir =
+      currentDir.listSync().whereType<Directory>().firstWhere(
+            (directory) =>
+                File(join(directory.path, 'generic.dart')).existsSync(),
+            orElse: () => null,
+          );
+  if (genericDir != null) {
+    return join(genericDir.path, 'generic.dart');
+  } else {
+    return _findGenericFile(currentDir.parent);
+  }
 }
 
 extension on Logger {
