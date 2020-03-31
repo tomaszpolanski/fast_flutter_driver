@@ -149,7 +149,6 @@ String _mainDartFile(String testFile) {
 }
 
 String _findGenericFile(Directory currentDir) {
-  print(currentDir.path);
   final Directory genericDir =
       currentDir.listSync().whereType<Directory>().firstWhere(
             (directory) =>

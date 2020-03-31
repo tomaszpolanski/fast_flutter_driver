@@ -1,3 +1,6 @@
+## 0.2.2+2
+- Removing debug `print`
+
 ## 0.2.2+1
 - Fixing running of a single file inside a subfolder eg. `test_driver/page1/simple_test.dart`
 
