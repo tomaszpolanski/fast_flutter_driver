@@ -26,7 +26,7 @@ ArgParser scriptParameters = ArgParser()
     languageArg,
     abbr: languageArg[0],
     defaultsTo: 'en',
-    help: 'Application\'s language',
+    help: "Application's language",
   )
   ..addOption(
     platformArg,
@@ -61,7 +61,7 @@ ArgParser scriptParameters = ArgParser()
   )
   ..addFlag(
     versionArg,
-    help: 'Script\'s version',
+    help: "Script's version",
     negatable: false,
     defaultsTo: false,
   );

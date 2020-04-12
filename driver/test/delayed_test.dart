@@ -7,6 +7,7 @@ void main() {
     const duration = Duration(seconds: 10);
     await tester.pumpWidget(
       const Delayed(
+        // ignore: avoid_redundant_argument_values
         delay: duration,
         child: Placeholder(),
       ),
@@ -21,6 +22,7 @@ void main() {
     const duration = Duration(seconds: 10);
     await tester.pumpWidget(
       const Delayed(
+        // ignore: avoid_redundant_argument_values
         delay: duration,
         child: Placeholder(),
       ),

@@ -41,7 +41,7 @@ Future<void> _writeGeneratedTest(List<String> testFiles, File test) async {
     ..writeln('');
   for (final test in testFiles) {
     file.writeln(
-        'import \'../../${test.replaceAll('\\', '/')}\' as ${_importName(test)};');
+        "import '../../${test.replaceAll(r'\', '/')}' as ${_importName(test)};");
   }
   file..writeln('')..writeln('void main(List<String> args) {');
   for (final test in testFiles) {
@@ -53,5 +53,5 @@ Future<void> _writeGeneratedTest(List<String> testFiles, File test) async {
 
 String _importName(String path) => path
     .replaceAll('/', '_')
-    .replaceAll('\\', '_')
+    .replaceAll(r'\', '_')
     .replaceAll('_test.dart', '');
