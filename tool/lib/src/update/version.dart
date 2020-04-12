@@ -29,7 +29,7 @@ Future<String> _lockVersion() async {
     if (line.contains('fast_flutter_driver_tool')) {
       foundPackage = true;
     } else if (foundPackage) {
-      final version = RegExp(r'version: "(.*)"').firstMatch(line)?.group(1);
+      final version = RegExp('version: "(.*)"').firstMatch(line)?.group(1);
       if (version != null) {
         return version;
       }
@@ -42,7 +42,7 @@ Future<String> remoteVersion() async {
   final response =
       await http.get('https://pub.dev/packages/fast_flutter_driver_tool');
 
-  return RegExp(r'fast_flutter_driver_tool (.*)</h2>')
+  return RegExp('fast_flutter_driver_tool (.*)</h2>')
       .firstMatch(response.body)
       .group(1);
 }
@@ -55,7 +55,7 @@ Future<void> checkForUpdates() async {
     if (current != latest) {
       print('${green('New verison')} (${bold(latest)}) available!');
       print(
-        "To update, run \'${green('pub global activate fast_flutter_driver_tool')}\'",
+        "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
       );
     }
   } catch (_) {

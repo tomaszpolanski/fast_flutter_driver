@@ -8,7 +8,7 @@ Future<void> overrideResolution(
   Future<void> Function() test,
 ) async {
   final native = nativeResolutionFile;
-  final nativeCopy = '$native\_copy';
+  final nativeCopy = '$native\_copy'; // ignore: unnecessary_string_escapes
   if (exists(native)) {
     await File(native).copy(nativeCopy);
   }

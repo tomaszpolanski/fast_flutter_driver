@@ -90,7 +90,7 @@ Future<String> _buildAndRun(
       buildProgress.finish(showTiming: true);
       syncingProgress = logger.progress('Syncing files');
     }
-    final match = RegExp(r'is available at: (http://.*/)').firstMatch(line);
+    final match = RegExp('is available at: (http://.*/)').firstMatch(line);
     if (match != null) {
       syncingProgress?.finish(showTiming: true);
       final url = match.group(1);
