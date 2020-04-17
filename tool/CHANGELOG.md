@@ -1,5 +1,6 @@
-## 0.2.3
+## 0.3.0
 - Allowing execution tests in subfolder eg. `test_driver/page1/`
+- **BRAKING CHANGE** you need to run `fastdriver` from the root directory of your project - the directory that contains `pubspec.yaml`
 
 ## 0.2.2+2
 - Removing debug `print`

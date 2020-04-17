@@ -28,10 +28,7 @@ Future<void> main(List<String> paths) async {
   }
   // ignore: unawaited_futures
   checkForUpdates();
-  final isRootDir = Directory.current.findOrNull('pubspec.yaml') != null;
-  if (!isRootDir) {
-    logger.stderr(
-        'Please run ${bold('fastdriver')} from the root of your project (directory that contains ${bold('pubspec.yaml')})');
+  if (!validRootDirectory(logger)) {
     return;
   }
 
@@ -51,20 +48,24 @@ Future<void> main(List<String> paths) async {
     logger,
   );
   if (testFile != null && exists(testFile)) {
-    await setUp(result, () async {
-      await test(
-        outputFactory: output,
-        inputFactory: input,
-        run: command_line.run,
-        logger: logger,
-        testFile: testFile,
-        withScreenshots: result[screenshotsArg],
-        language: result[languageArg],
-        resolution: result[resolutionArg],
-        platform: TestPlatformEx.fromString(result[platformArg]),
-        device: result[deviceArg],
-      );
-    }, logger: logger);
+    await setUp(
+      result,
+      () async {
+        await test(
+          outputFactory: output,
+          inputFactory: input,
+          run: command_line.run,
+          logger: logger,
+          testFile: testFile,
+          withScreenshots: result[screenshotsArg],
+          language: result[languageArg],
+          resolution: result[resolutionArg],
+          platform: TestPlatformEx.fromString(result[platformArg]),
+          device: result[deviceArg],
+        );
+      },
+      logger: logger,
+    );
   } else {
     logger.stderr('Specified path "$testFile" ${red('does not')} exist');
     exitCode = 1;
