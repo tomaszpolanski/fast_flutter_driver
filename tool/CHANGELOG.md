@@ -1,3 +1,6 @@
+## 0.2.3
+- Allowing execution tests in subfolder eg. `test_driver/page1/`
+
 ## 0.2.2+2
 - Removing debug `print`
 

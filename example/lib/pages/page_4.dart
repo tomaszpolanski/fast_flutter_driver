@@ -7,7 +7,7 @@ class Page4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
+    return const BasePage(
       title: routes.page4,
       color: Colors.greenAccent,
     );

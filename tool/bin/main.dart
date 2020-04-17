@@ -28,6 +28,13 @@ Future<void> main(List<String> paths) async {
   }
   // ignore: unawaited_futures
   checkForUpdates();
+  final isRootDir = Directory.current.findOrNull('pubspec.yaml') != null;
+  if (!isRootDir) {
+    logger.stderr(
+        'Please run ${bold('fastdriver')} from the root of your project (directory that contains ${bold('pubspec.yaml')})');
+    return;
+  }
+
   logger.stdout('Starting tests');
 
   Directory('build').createSync(recursive: true);

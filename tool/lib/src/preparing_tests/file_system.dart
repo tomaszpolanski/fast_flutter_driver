@@ -28,3 +28,14 @@ String get _nativeResolutionFile {
   assert(false);
   return null;
 }
+
+extension DirectoryEx on Directory {
+  String findOrNull(String name, {bool recursive = false}) {
+    return listSync(recursive: recursive)
+        .firstWhere(
+          (element) => p.basename(element.path) == name,
+          orElse: () => null,
+        )
+        ?.path;
+  }
+}
