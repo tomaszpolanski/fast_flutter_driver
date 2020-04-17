@@ -28,6 +28,10 @@ Future<void> main(List<String> paths) async {
   }
   // ignore: unawaited_futures
   checkForUpdates();
+  if (!validRootDirectory(logger)) {
+    return;
+  }
+
   logger.stdout('Starting tests');
 
   Directory('build').createSync(recursive: true);
@@ -44,20 +48,24 @@ Future<void> main(List<String> paths) async {
     logger,
   );
   if (testFile != null && exists(testFile)) {
-    await setUp(result, () async {
-      await test(
-        outputFactory: output,
-        inputFactory: input,
-        run: command_line.run,
-        logger: logger,
-        testFile: testFile,
-        withScreenshots: result[screenshotsArg],
-        language: result[languageArg],
-        resolution: result[resolutionArg],
-        platform: TestPlatformEx.fromString(result[platformArg]),
-        device: result[deviceArg],
-      );
-    }, logger: logger);
+    await setUp(
+      result,
+      () async {
+        await test(
+          outputFactory: output,
+          inputFactory: input,
+          run: command_line.run,
+          logger: logger,
+          testFile: testFile,
+          withScreenshots: result[screenshotsArg],
+          language: result[languageArg],
+          resolution: result[resolutionArg],
+          platform: TestPlatformEx.fromString(result[platformArg]),
+          device: result[deviceArg],
+        );
+      },
+      logger: logger,
+    );
   } else {
     logger.stderr('Specified path "$testFile" ${red('does not')} exist');
     exitCode = 1;

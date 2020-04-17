@@ -2,34 +2,40 @@ import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
+import 'package:path/path.dart' as p;
 
 const aggregatedTestFile = 'generic_test.dart';
 const setupMainFile = 'generic.dart';
 
 Future<String> aggregatedTest(String directoryPath, Logger logger) async {
-  final setupFile = File(platformPath('$directoryPath/generic/$setupMainFile'));
-  if (!setupFile.existsSync()) {
+  final setupFile = Directory.current.findOrNull(
+    setupMainFile,
+    recursive: true,
+  );
+  if (setupFile == null) {
     return null;
   }
-  final test = File(platformPath('$directoryPath/generic/$aggregatedTestFile'));
-  if (!test.existsSync()) {
-    test.createSync();
+
+  final genericTestFile =
+      File(platformPath(p.join(p.dirname(setupFile), aggregatedTestFile)));
+  if (!genericTestFile.existsSync()) {
+    genericTestFile.createSync();
   }
   logger?.trace('Generating test file');
-  await _generateTestFile(test);
+  await _generateTestFile(genericTestFile, Directory(directoryPath));
   logger?.trace('Done generating test file');
 
-  return test.path;
+  return genericTestFile.path;
 }
 
-Future<void> _generateTestFile(File test) {
-  final testFiles = Directory(test.parent.parent.path)
+Future<void> _generateTestFile(File genericTestFile, Directory testDir) {
+  final testFiles = testDir
       .listSync(recursive: true)
       .where((file) => file.path.endsWith('_test.dart'))
       .where((file) => !file.path.endsWith(aggregatedTestFile))
       .map((file) => file.path)
       .toList(growable: false);
-  return _writeGeneratedTest(testFiles, test);
+  return _writeGeneratedTest(testFiles, genericTestFile);
 }
 
 Future<void> _writeGeneratedTest(List<String> testFiles, File test) async {
