@@ -24,6 +24,14 @@ void main() {
 
         when(mockDir.path).thenReturn(name);
         when(mockDir.existsSync()).thenReturn(true);
+        when(mockDir.listSync(recursive: anyNamed('recursive'))).thenReturn([]);
+
+        return mockDir;
+      },
+      getCurrentDirectory: () {
+        final mockDir = _MockDirectory();
+        when(mockDir.listSync(recursive: anyNamed('recursive')))
+            .thenReturn([File('pubspec.yaml')]);
         return mockDir;
       },
     );
