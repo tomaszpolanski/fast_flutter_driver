@@ -8,10 +8,15 @@ const aggregatedTestFile = 'generic_test.dart';
 const setupMainFile = 'generic.dart';
 
 Future<String> aggregatedTest(String directoryPath, Logger logger) async {
-  final setupFile = Directory.current.findOrNull(
-    setupMainFile,
-    recursive: true,
-  );
+  final dir = Directory(directoryPath);
+  final setupFile = dir.findOrNull(
+        setupMainFile,
+        recursive: true,
+      ) ??
+      Directory.current.findOrNull(
+        setupMainFile,
+        recursive: true,
+      );
   if (setupFile == null) {
     return null;
   }
