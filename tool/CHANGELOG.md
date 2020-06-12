@@ -1,5 +1,9 @@
+## 0.3.0+2
+- Supporting changing resolution on Windows in Flutter 1.19.+
+
 ## 0.3.0+1
 - Fixing bug when the first `generic.dart` config file was picked up instead of the one from specified folder
+
 ## 0.3.0
 - Allowing execution tests in subfolder eg. `test_driver/page1/`
 - **BRAKING CHANGE** you need to run `fastdriver` from the root directory of your project - the directory that contains `pubspec.yaml`
