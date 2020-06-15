@@ -9,7 +9,7 @@
 
 ![](./example/assets/demo.gif)
 
-Toolkit for running rapidly flutter driver tests on desktop that also supports mobile rapid tests.
+Toolkit for running rapidly flutter driver tests on desktop/mobile.
 
 [This package](https://pub.dev/packages/fast_flutter_driver_tool) simplifies the creation of Flutter Driver tests that can be run in bulk without restarting or rebuilding the application.
 An example of how the toolkit works can be found in [this article](https://medium.com/flutter-community/blazingly-fast-flutter-driver-tests-5e375c833aa).
@@ -22,6 +22,9 @@ Your CI is usually a dockerized Linux machine - running Linux `flutter driver` t
 This tool allows you to run your `flutter driver` tests much faster and more reliably than a build for a simulator/emulator.
 
 The application flows that require Android/iOS plugins should still be run on a Simulator/Emulator or a real device.
+
+## Running also on Android/iOS
+While running tests against Desktop will find the majority of bugs, it is recommended to run sometimes against actual devices. There are bugs in Dart (like implementing your generics in an invalid way) that can cause a native crash on a mobile device and work properly on the desktop.It's prudent to run `fastdriver` tests before every release on a mobile device.
 
 ## Example
 You can build and execute [the example](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example) that works on any desktop system.

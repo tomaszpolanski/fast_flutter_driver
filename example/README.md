@@ -20,13 +20,9 @@ You need first to setup Flutter for desktop if you had not done it before.
 
 ### Enable desktop builds
 
-Last tested version of Flutter that works with this repo is `v1.17.0`:
-  * **Important**: Use `version` otherwise desktop won't be picked up: `v1.17.0`
+Latest tested version of Flutter that works with this repo is `1.19.0-4.1.pre`:
+  * **Important**: Use `version` otherwise desktop won't be picked up: `1.19.0-4.1.pre`
 
-Enable desktop builds by running in the terminal:
-```
-flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop
-```
 #### Linux
 - Add the following to `.bash_profile` but replace `$HOME/flutter/` with path to your Flutter folder
 ```
