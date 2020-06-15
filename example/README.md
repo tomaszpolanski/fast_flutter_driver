@@ -20,7 +20,7 @@ You need first to setup Flutter for desktop if you had not done it before.
 
 ### Enable desktop builds
 
-Last tested version of Flutter that works with this repo is `1.19.0-4.1.pre`:
+Latest tested version of Flutter that works with this repo is `1.19.0-4.1.pre`:
   * **Important**: Use `version` otherwise desktop won't be picked up: `1.19.0-4.1.pre`
 
 #### Linux
