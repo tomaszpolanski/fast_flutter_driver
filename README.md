@@ -136,10 +136,6 @@ void main(List<String> args) {
 }
 
 ```
-- Enable desktop builds by running in the terminal:
-```shell script
-flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop
-```
 - Install [fast_flutter_driver](./tool) script:
 ```shell script
 pub global activate fast_flutter_driver_tool
