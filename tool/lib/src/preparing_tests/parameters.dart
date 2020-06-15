@@ -57,13 +57,11 @@ ArgParser scriptParameters = ArgParser()
     abbr: verboseArg[0],
     help: 'Show verbose loggin',
     negatable: false,
-    defaultsTo: false,
   )
   ..addFlag(
     versionArg,
     help: "Script's version",
     negatable: false,
-    defaultsTo: false,
   );
 
 void printErrorHelp(String command) {
