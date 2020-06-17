@@ -1,3 +1,6 @@
+## 1.0.0
+- Promoting stable version
+
 ## 0.1.2
 - Supporting dynamic window resizing for Windows
 
