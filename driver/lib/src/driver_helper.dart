@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fast_flutter_driver/src/restart_widget.dart';
 import 'package:fast_flutter_driver/src/window_utils/window_utils.dart';
 import 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart';
@@ -8,11 +6,9 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/material.dart';
 
 Future<String> configureTest(BaseConfiguration config) async {
-  if (Platform.isMacOS) {
-    await WindowUtils.setSize(
-      Size(config.resolution.width, config.resolution.height),
-    );
-  }
+  await WindowUtils.setSize(
+    Size(config.resolution.width, config.resolution.height),
+  );
 
   final platform = config.platform.targetPlatform;
   if (debugDefaultTargetPlatformOverride != platform) {

@@ -24,7 +24,7 @@ Future<void> setUp(
   @required Logger logger,
 }) async {
   final String screenResolution = args[resolutionArg];
-  if (Platform.isMacOS || screenResolution == null) {
+  if (Platform.isMacOS || Platform.isWindows || screenResolution == null) {
     return test();
   } else {
     logger.trace('Overriding resolution');

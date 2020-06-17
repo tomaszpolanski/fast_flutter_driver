@@ -14,17 +14,7 @@ String get nativeResolutionFile {
 }
 
 String get _nativeResolutionFile {
-  if (Platform.isWindows) {
-    final configFile = File(
-      platformPath(p.join(
-        Directory.current.path,
-        'windows/window_configuration.cpp',
-      )),
-    );
-    return configFile.existsSync()
-        ? 'windows/window_configuration.cpp'
-        : 'windows/runner/window_configuration.cpp';
-  } else if (Platform.isLinux) {
+  if (Platform.isLinux) {
     final configFile = File(
       platformPath(p.join(
         Directory.current.path,
