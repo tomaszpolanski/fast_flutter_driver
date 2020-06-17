@@ -1,3 +1,9 @@
+## 1.0.0
+- Promoting stable version
+
+## 0.3.0+3
+-  Supporting dynamic window resizing for Windows
+
 ## 0.3.0+2
 - Supporting changing resolution on Windows in Flutter 1.19.+
 
