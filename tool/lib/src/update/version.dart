@@ -53,7 +53,7 @@ Future<void> checkForUpdates() async {
     final current = versions[0];
     final latest = versions[1];
     if (current != latest) {
-      print('${green('New verison')} (${bold(latest)}) available!');
+      print('${green('New version')} (${bold(latest)}) available!');
       print(
         "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
       );
