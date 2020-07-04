@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:cli_util/cli_logging.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart'
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/streams.dart'
     as streams;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/devices.dart'
     as devices;
@@ -26,9 +25,9 @@ void main() {
         inputFactory: streams.input,
         run: (
           String command, {
-          OutputCommandLineStream stdout,
-          InputCommandLineStream stdin,
-          OutputCommandLineStream stderr,
+          streams.OutputCommandLineStream stdout,
+          streams.InputCommandLineStream stdin,
+          streams.OutputCommandLineStream stderr,
         }) async {
           commands.add(command);
         },
@@ -55,9 +54,9 @@ void main() {
         inputFactory: streams.input,
         run: (
           String command, {
-          OutputCommandLineStream stdout,
-          InputCommandLineStream stdin,
-          OutputCommandLineStream stderr,
+          streams.OutputCommandLineStream stdout,
+          streams.InputCommandLineStream stdin,
+          streams.OutputCommandLineStream stderr,
         }) async {
           commands.add(command);
         },
@@ -80,14 +79,12 @@ void main() {
       final commands = <String>[];
       await tested.test(
         outputFactory: streams.output,
-        inputFactory: () {
-          return _MockInputCommandLineStream();
-        },
+        inputFactory: () => _MockInputCommandLineStream(),
         run: (
           String command, {
-          OutputCommandLineStream stdout,
-          InputCommandLineStream stdin,
-          OutputCommandLineStream stderr,
+          streams.OutputCommandLineStream stdout,
+          streams.InputCommandLineStream stdin,
+          streams.OutputCommandLineStream stderr,
         }) async {
           commands.add(command);
           if (command ==
@@ -119,4 +116,4 @@ void main() {
 class _MockLogger extends Mock implements Logger {}
 
 class _MockInputCommandLineStream extends Mock
-    implements InputCommandLineStream {}
+    implements streams.InputCommandLineStream {}
