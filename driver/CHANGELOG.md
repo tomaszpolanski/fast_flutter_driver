@@ -1,3 +1,6 @@
+## 1.0.0+1
+- Updating README
+
 ## 1.0.0
 - Promoting stable version
 

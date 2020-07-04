@@ -1,5 +1,6 @@
 ## 1.0.0+1
 - (@akaiser) Fixing a typo
+- Updating README
 
 ## 1.0.0
 - Promoting stable version
