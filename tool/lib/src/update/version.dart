@@ -9,8 +9,11 @@ import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
 Future<String> currentVersion(PathProvider paths) async {
-  return (await _yamlVersion(paths.scriptDir)) ??
-      (await _lockVersion(paths.scriptDir));
+  final yamlVersion = await _yamlVersion(paths.scriptDir);
+  if (yamlVersion == null) {
+    return _lockVersion(paths.scriptDir);
+  }
+  return yamlVersion;
 }
 
 Future<String> _yamlVersion(String scriptDir) async {
