@@ -1,0 +1,23 @@
+coverage:
+  range: 80..100
+  status:
+    project:
+      default: off
+      tool:
+        flags: tool
+      driver:
+        flags: driver
+      example:
+        flags: example
+
+flags:
+  # filter the folder(s) you wish to measure by that flag
+  tool:
+    paths:
+      - tool/lib/
+  driver:
+    paths:
+      - driver/lib/
+  example:
+    paths:
+      - example/lib/
