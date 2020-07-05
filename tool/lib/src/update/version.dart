@@ -39,9 +39,7 @@ Future<String> _lockVersion() async {
   return null;
 }
 
-class PackageNotFound implements Exception {
-  const PackageNotFound();
-}
+class PackageNotFound implements Exception {}
 
 Future<String> remoteVersion(
     Future<Response> Function(String url) httpGet) async {
@@ -51,7 +49,7 @@ Future<String> remoteVersion(
   final match =
       RegExp('fast_flutter_driver_tool (.*)</h2>').firstMatch(response.body);
   if (match == null) {
-    throw const PackageNotFound();
+    throw PackageNotFound();
   }
   return match.group(1);
 }
