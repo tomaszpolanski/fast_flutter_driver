@@ -6,8 +6,13 @@ void main() {
   group('remoteVersion', () {
     test('throws exception if version not found', () async {
       Future<Response> get(String url) async => Response('', 200);
+      try {
+        await remoteVersion(get);
+      } on PackageNotFound {
+        return;
+      }
 
-      expect(() async => remoteVersion(get), throwsA(isA<PackageNotFound>()));
+      fail('Did not throw the exception');
     });
 
     test('fetches data from the pub.dev', () async {
