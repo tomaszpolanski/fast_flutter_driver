@@ -1,5 +1,6 @@
 # Fast Flutter Driver
-[![](https://github.com/tomaszpolanski/fast_flutter_driver/workflows/Analyze/badge.svg)](https://github.com/tomaszpolanski/fast_flutter_driver/actions?query=workflow%3A%22Analyze%22)
+![Build](https://github.com/tomaszpolanski/fast_flutter_driver/workflows/Build/badge.svg)
+
 
 | Plugin | Pub |
 |--------|-----|
