@@ -9,7 +9,8 @@ import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
 Future<String> currentVersion(PathProvider paths) async {
-  return (await _yamlVersion(paths.scriptDir)) ?? (await _lockVersion());
+  return (await _yamlVersion(paths.scriptDir)) ??
+      (await _lockVersion(paths.scriptDir));
 }
 
 Future<String> _yamlVersion(String scriptDir) async {
@@ -22,9 +23,8 @@ Future<String> _yamlVersion(String scriptDir) async {
   return null;
 }
 
-Future<String> _lockVersion() async {
-  final pathToLock =
-      join(dirname(Platform.script.toFilePath()), '../pubspec.lock');
+Future<String> _lockVersion(String scriptDir) async {
+  final pathToLock = join(scriptDir, '../pubspec.lock');
   bool foundPackage = false;
   for (final line in await File(pathToLock).readAsLines()) {
     if (line.contains('fast_flutter_driver_tool')) {

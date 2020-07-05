@@ -71,6 +71,42 @@ void main() {
         );
       });
     });
+
+    group('when lock', () {
+      const lockFileContent = '''
+  fast_flutter_driver_tool:
+    dependency: transitive
+    description:
+      name: fast_flutter_driver_tool
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
+''';
+      test('reads lock file', () async {
+        await IOOverrides.runZoned(
+          () async {
+            final pathProvider = _MockPathProvider();
+            when(pathProvider.scriptDir).thenReturn('/root/');
+            final version = await currentVersion(pathProvider);
+
+            expect(version, '2.2.0');
+          },
+          createFile: (name) {
+            if (name == '/root/../pubspec.lock') {
+              final File file = _MockFile();
+              when(file.existsSync()).thenReturn(true);
+              when(file.readAsLines())
+                  .thenAnswer((_) async => lockFileContent.split('\n'));
+              return file;
+            } else {
+              final File file = _MockFile();
+              when(file.existsSync()).thenReturn(false);
+              return file;
+            }
+          },
+        );
+      });
+    });
   });
 }
 
