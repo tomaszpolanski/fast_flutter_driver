@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
@@ -38,18 +39,27 @@ Future<String> _lockVersion() async {
   return null;
 }
 
-Future<String> remoteVersion() async {
-  final response =
-      await http.get('https://pub.dev/packages/fast_flutter_driver_tool');
+class PackageNotFound implements Exception {
+  const PackageNotFound();
+}
 
-  return RegExp('fast_flutter_driver_tool (.*)</h2>')
-      .firstMatch(response.body)
-      .group(1);
+Future<String> remoteVersion(
+    Future<Response> Function(String url) httpGet) async {
+  final response =
+      await httpGet('https://pub.dev/packages/fast_flutter_driver_tool');
+
+  final match =
+      RegExp('fast_flutter_driver_tool (.*)</h2>').firstMatch(response.body);
+  if (match == null) {
+    throw const PackageNotFound();
+  }
+  return match.group(1);
 }
 
 Future<void> checkForUpdates() async {
   try {
-    final versions = await Future.wait([currentVersion(), remoteVersion()]);
+    final versions =
+        await Future.wait([currentVersion(), remoteVersion(http.get)]);
     final current = versions[0];
     final latest = versions[1];
     if (current != latest) {
