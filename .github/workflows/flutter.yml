@@ -11,8 +11,6 @@ jobs:
       with:
         channel: 'beta'
     - run: cd tool && flutter doctor && flutter pub get && flutter pub run test 
-    - run: cd tool && pub global activate coverage && dart --disable-service-auth-codes --enable-vm-service=8111 --pause-isolates-on-exit test/rxdart_test.dart &
-    - run: cd tool && nohup pub global run coverage:collect_coverage --port=8111 --out=coverage.json --wait-paused --resume-isolates && pub global run coverage:format_coverage --lcov --in=coverage.json --out=lcov.info --packages=.packages --report-on=lib
     - run: cd driver && flutter pub get && flutter test
     - run: cd example && flutter pub get
     - run: flutter analyze
