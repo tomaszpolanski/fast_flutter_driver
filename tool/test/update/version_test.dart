@@ -47,13 +47,16 @@ void main() {
       expect(version, expectedVersion);
     });
   });
-  group('remoteVersion', () {
+  group('currentVersion', () {
+    _MockPathProvider pathProvider;
+    setUp(() {
+      pathProvider = _MockPathProvider();
+      when(pathProvider.scriptDir).thenReturn('/root/');
+    });
     group('when yaml', () {
       test('reads yaml file', () async {
         await IOOverrides.runZoned(
           () async {
-            final pathProvider = _MockPathProvider();
-            when(pathProvider.scriptDir).thenReturn('/root/');
             final version = await currentVersion(pathProvider);
 
             expect(version, '1.0.0+1');
@@ -85,8 +88,6 @@ void main() {
       test('reads lock file', () async {
         await IOOverrides.runZoned(
           () async {
-            final pathProvider = _MockPathProvider();
-            when(pathProvider.scriptDir).thenReturn('/root/');
             final version = await currentVersion(pathProvider);
 
             expect(version, '2.2.0');
