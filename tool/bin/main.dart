@@ -10,6 +10,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 
@@ -23,7 +24,7 @@ Future<void> main(List<String> paths) async {
     logger..stdout('Usage: fastdriver <path>')..stdout(parser.usage);
     return;
   } else if (result[versionArg] == true) {
-    logger.stdout(await currentVersion());
+    logger.stdout(await currentVersion(PathProvider()));
     return;
   }
   // ignore: unawaited_futures

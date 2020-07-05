@@ -1,21 +1,22 @@
 // ignore_for_file: avoid_print
 import 'dart:io';
 
+import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
-Future<String> currentVersion() async {
-  return (await _yamlVersion()) ?? (await _lockVersion());
+Future<String> currentVersion(PathProvider paths) async {
+  return (await _yamlVersion(paths.scriptDir)) ?? (await _lockVersion());
 }
 
-Future<String> _yamlVersion() async {
-  final pathToYaml =
-      join(dirname(Platform.script.toFilePath()), '../pubspec.yaml');
+Future<String> _yamlVersion(String scriptDir) async {
+  final pathToYaml = join(scriptDir, '../pubspec.yaml');
   final file = File(pathToYaml);
   if (file.existsSync()) {
-    final yaml = loadYaml(await File(pathToYaml).readAsString());
+    final yaml = loadYaml(await file.readAsString());
     return yaml['version'];
   }
   return null;
@@ -38,18 +39,25 @@ Future<String> _lockVersion() async {
   return null;
 }
 
-Future<String> remoteVersion() async {
-  final response =
-      await http.get('https://pub.dev/packages/fast_flutter_driver_tool');
+class PackageNotFound implements Exception {}
 
-  return RegExp('fast_flutter_driver_tool (.*)</h2>')
-      .firstMatch(response.body)
-      .group(1);
+Future<String> remoteVersion(
+    Future<Response> Function(String url) httpGet) async {
+  final response =
+      await httpGet('https://pub.dev/packages/fast_flutter_driver_tool');
+
+  final match =
+      RegExp('fast_flutter_driver_tool (.*)</h2>').firstMatch(response.body);
+  if (match == null) {
+    throw PackageNotFound();
+  }
+  return match.group(1);
 }
 
 Future<void> checkForUpdates() async {
   try {
-    final versions = await Future.wait([currentVersion(), remoteVersion()]);
+    final versions = await Future.wait(
+        [currentVersion(PathProvider()), remoteVersion(http.get)]);
     final current = versions[0];
     final latest = versions[1];
     if (current != latest) {
