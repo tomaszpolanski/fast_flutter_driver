@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Fast fail the script on failures.
+# Fast fail the script on failures
 set -e
 
 OBS_PORT=9292
