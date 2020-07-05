@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line.dart'
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/command_line.dart'
     as command_line;
-import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line_stream.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/streams.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
@@ -68,7 +68,7 @@ Future<void> main(List<String> paths) async {
     );
   } else {
     logger.stderr('Specified path "$testFile" ${red('does not')} exist');
-    exitCode = 1;
+    exitCode = 0;
     return;
   }
 

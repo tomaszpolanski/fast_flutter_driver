@@ -7,7 +7,8 @@ abstract class CommandLineStream {
 }
 
 typedef OutputFactory = OutputCommandLineStream Function(
-    void Function(String) onData);
+  void Function(String) onData,
+);
 
 OutputCommandLineStream output(void Function(String line) onData) {
   return OutputCommandLineStream._(onData);
