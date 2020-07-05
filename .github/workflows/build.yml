@@ -42,7 +42,7 @@ jobs:
     strategy:
       matrix:
         package: ["driver"]
-        channel: ["stable", "beta"]
+        channel: ["dev", "beta"]
 
     steps:
       - uses: actions/checkout@v2
