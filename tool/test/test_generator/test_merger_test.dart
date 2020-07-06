@@ -40,9 +40,9 @@ void main() {
         return mockDir;
       },
       createFile: (name) {
-        if (name.endsWith('all_tests.dart')) {
-          print('QQQ $name'); // ignore: avoid_print
-          return mergedFile = MemoryFileSystem.test().file(name);
+        const testFile = 'all_tests.dart';
+        if (name.endsWith(testFile)) {
+          return mergedFile = MemoryFileSystem.test().file(testFile);
         } else {
           final file = _MockFile();
           when(file.path).thenReturn(name);
