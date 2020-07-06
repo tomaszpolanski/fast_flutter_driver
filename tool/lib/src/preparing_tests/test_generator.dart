@@ -27,20 +27,24 @@ Future<String> aggregatedTest(String directoryPath, Logger logger) async {
     genericTestFile.createSync();
   }
   logger?.trace('Generating test file');
-  await _generateTestFile(genericTestFile, Directory(directoryPath));
+  await generateTestFile(genericTestFile, Directory(directoryPath));
   logger?.trace('Done generating test file');
 
   return genericTestFile.path;
 }
 
-Future<void> _generateTestFile(File genericTestFile, Directory testDir) {
-  final testFiles = testDir
+Future<void> generateTestFile(File genericTestFile, Directory testDir) {
+  final files = testFiles(testDir, aggregatedTestFile);
+  return _writeGeneratedTest(files, genericTestFile);
+}
+
+List<String> testFiles(Directory testDir, String excludedFile) {
+  return testDir
       .listSync(recursive: true)
       .where((file) => file.path.endsWith('_test.dart'))
-      .where((file) => !file.path.endsWith(aggregatedTestFile))
+      .where((file) => !file.path.endsWith(excludedFile))
       .map((file) => file.path)
       .toList(growable: false);
-  return _writeGeneratedTest(testFiles, genericTestFile);
 }
 
 Future<void> _writeGeneratedTest(List<String> testFiles, File test) async {
