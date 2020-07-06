@@ -6,10 +6,9 @@ import 'package:path/path.dart' as p;
 
 Future<void> main() async {
   final testDir = Directory(p.join(Directory.current.path, 'test'));
-  final genericTestFile =
-      File(platformPath(p.join(testDir.path, 'all_tests.dart')));
-  if (!genericTestFile.existsSync()) {
-    genericTestFile.createSync();
-  }
+  final genericTestFile = File(
+    platformPath(p.join(testDir.path, 'all_tests.dart')),
+  )..createSync();
+
   await generateTestFile(genericTestFile, testDir, '', hasArguments: false);
 }
