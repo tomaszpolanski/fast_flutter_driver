@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator/test_generator.dart';
 import 'package:file/memory.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-
-import 'file:///C:/Users/tpolanski/Documents/GitHub/fast_flutter_driver/tool/lib/src/preparing_tests/test_generator/test_generator.dart';
 
 void main() {
   group('testFiles', () {
