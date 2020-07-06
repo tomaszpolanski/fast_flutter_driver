@@ -7,7 +7,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/comman
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/streams.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator/test_generator.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';

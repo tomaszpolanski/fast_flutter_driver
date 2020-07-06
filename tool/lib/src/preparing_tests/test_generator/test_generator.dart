@@ -27,15 +27,19 @@ Future<String> aggregatedTest(String directoryPath, Logger logger) async {
     genericTestFile.createSync();
   }
   logger?.trace('Generating test file');
-  await generateTestFile(genericTestFile, Directory(directoryPath));
+  await generateTestFile(genericTestFile, Directory(directoryPath), '../../');
   logger?.trace('Done generating test file');
 
   return genericTestFile.path;
 }
 
-Future<void> generateTestFile(File genericTestFile, Directory testDir) {
+Future<void> generateTestFile(
+  File genericTestFile,
+  Directory testDir,
+  String importPrefix,
+) {
   final files = testFiles(testDir, aggregatedTestFile);
-  return _writeGeneratedTest(files, genericTestFile);
+  return _writeGeneratedTest(files, genericTestFile, importPrefix);
 }
 
 List<String> testFiles(Directory testDir, String excludedFile) {
@@ -47,7 +51,11 @@ List<String> testFiles(Directory testDir, String excludedFile) {
       .toList(growable: false);
 }
 
-Future<void> _writeGeneratedTest(List<String> testFiles, File test) async {
+Future<void> _writeGeneratedTest(
+  List<String> testFiles,
+  File test,
+  String importPrefix,
+) async {
   final file = test.openWrite()
     ..writeln('// ignore_for_file: directives_ordering')
     ..writeln(
@@ -56,7 +64,7 @@ Future<void> _writeGeneratedTest(List<String> testFiles, File test) async {
     ..writeln('');
   for (final test in testFiles) {
     file.writeln(
-        "import '../../${test.replaceAll(r'\', '/')}' as ${_importName(test)};");
+        "import '$importPrefix${test.replaceAll(r'\', '/')}' as ${_importName(test)};");
   }
   file..writeln('')..writeln('void main(List<String> args) {');
   for (final test in testFiles) {
