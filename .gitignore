@@ -40,3 +40,4 @@ driver/windows/flutter/generated_plugin_registrant.h
 example/macos/Podfile
 example/ios/Podfile
 example/linux/flutter/generated_plugins.cmake
+tool/test/all_tests.dart
