@@ -31,7 +31,7 @@ Future<String> aggregatedTest(String directoryPath, Logger logger) async {
   await generateTestFile(
     genericTestFile,
     Directory(directoryPath),
-    '../../',
+    '../',
     hasArguments: true,
   );
   logger?.trace('Done generating test file');
