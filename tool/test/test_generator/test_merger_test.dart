@@ -41,7 +41,8 @@ void main() {
       },
       createFile: (name) {
         if (name.endsWith('all_tests.dart')) {
-          return mergedFile = MemoryFileSystem().file(name);
+          print('QQQ $name'); // ignore: avoid_print
+          return mergedFile = MemoryFileSystem.test().file(name);
         } else {
           final file = _MockFile();
           when(file.path).thenReturn(name);
