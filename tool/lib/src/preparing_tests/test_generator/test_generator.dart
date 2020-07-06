@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
+import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 
 const aggregatedTestFile = 'generic_test.dart';
@@ -27,23 +28,52 @@ Future<String> aggregatedTest(String directoryPath, Logger logger) async {
     genericTestFile.createSync();
   }
   logger?.trace('Generating test file');
-  await _generateTestFile(genericTestFile, Directory(directoryPath));
+  await generateTestFile(
+    genericTestFile,
+    Directory(directoryPath),
+    '../',
+    hasArguments: true,
+  );
   logger?.trace('Done generating test file');
 
   return genericTestFile.path;
 }
 
-Future<void> _generateTestFile(File genericTestFile, Directory testDir) {
-  final testFiles = testDir
-      .listSync(recursive: true)
-      .where((file) => file.path.endsWith('_test.dart'))
-      .where((file) => !file.path.endsWith(aggregatedTestFile))
-      .map((file) => file.path)
-      .toList(growable: false);
-  return _writeGeneratedTest(testFiles, genericTestFile);
+Future<void> generateTestFile(
+  File genericTestFile,
+  Directory testDir,
+  String importPrefix, {
+  @required bool hasArguments,
+}) {
+  final files = testFiles(testDir, aggregatedTestFile).map((e) {
+    final fromContentRoot = e.replaceFirst(testDir.path, '');
+    return fromContentRoot.startsWith('/') || fromContentRoot.startsWith(r'\')
+        ? fromContentRoot.substring(1)
+        : fromContentRoot;
+  }).toList();
+  return _writeGeneratedTest(
+    files,
+    genericTestFile,
+    importPrefix,
+    hasArguments: hasArguments,
+  );
 }
 
-Future<void> _writeGeneratedTest(List<String> testFiles, File test) async {
+List<String> testFiles(Directory testDir, String excludedFile) {
+  return testDir
+      .listSync(recursive: true)
+      .where((file) => file.path.endsWith('_test.dart'))
+      .where((file) => !file.path.endsWith(excludedFile))
+      .map((file) => file.path)
+      .toList(growable: false);
+}
+
+Future<void> _writeGeneratedTest(
+  List<String> testFiles,
+  File test,
+  String importPrefix, {
+  @required bool hasArguments,
+}) async {
   final file = test.openWrite()
     ..writeln('// ignore_for_file: directives_ordering')
     ..writeln(
@@ -52,11 +82,13 @@ Future<void> _writeGeneratedTest(List<String> testFiles, File test) async {
     ..writeln('');
   for (final test in testFiles) {
     file.writeln(
-        "import '../../${test.replaceAll(r'\', '/')}' as ${_importName(test)};");
+        "import '$importPrefix${test.replaceAll(r'\', '/')}' as ${_importName(test)};");
   }
-  file..writeln('')..writeln('void main(List<String> args) {');
+  file
+    ..writeln('')
+    ..writeln('void main(${hasArguments ? 'List<String> args' : ''}) {');
   for (final test in testFiles) {
-    file.writeln('  ${_importName(test)}.main(args);');
+    file.writeln('  ${_importName(test)}.main(${hasArguments ? 'args' : ''});');
   }
   file.writeln('}');
   await file.close();

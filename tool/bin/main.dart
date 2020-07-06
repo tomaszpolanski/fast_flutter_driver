@@ -7,7 +7,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/comman
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/streams.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator/test_generator.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
@@ -69,7 +69,6 @@ Future<void> main(List<String> paths) async {
     );
   } else {
     logger.stderr('Specified path "$testFile" ${red('does not')} exist');
-    exitCode = 0;
     return;
   }
 

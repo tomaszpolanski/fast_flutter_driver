@@ -25,7 +25,15 @@ jobs:
         working-directory: ${{ matrix.package }}
         run: dartanalyzer --fatal-infos --fatal-warnings .
 
+      - name: Aggregate tests
+        working-directory: ${{ matrix.package }}
+        run: dart lib/src/preparing_tests/test_generator/test_merger.dart
+        
       - name: Run tests
+        working-directory: ${{ matrix.package }}
+        run: pub run test
+        
+      - name: Gather coverage
         working-directory: ${{ matrix.package }}
         run: ../dev/cov.sh
 
