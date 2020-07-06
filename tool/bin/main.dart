@@ -69,7 +69,6 @@ Future<void> main(List<String> paths) async {
     );
   } else {
     logger.stderr('Specified path "$testFile" ${red('does not')} exist');
-    exitCode = 0;
     return;
   }
 
