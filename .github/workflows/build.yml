@@ -31,6 +31,10 @@ jobs:
         
       - name: Run tests
         working-directory: ${{ matrix.package }}
+        run: pub run test
+        
+      - name: Gather coverage
+        working-directory: ${{ matrix.package }}
         run: ../dev/cov.sh
 
       - name: Upload coverage to codecov
