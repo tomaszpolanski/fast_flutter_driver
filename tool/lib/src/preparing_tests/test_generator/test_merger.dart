@@ -5,7 +5,9 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator/test
 import 'package:path/path.dart' as p;
 
 Future<void> main() async {
-  final testDir = Directory(p.join(Directory.current.path, 'test'));
+  final testDir = Directory(
+    platformPath(p.join(Directory.current.path, 'test')),
+  );
   final genericTestFile = File(
     platformPath(p.join(testDir.path, 'all_tests.dart')),
   )..createSync();
