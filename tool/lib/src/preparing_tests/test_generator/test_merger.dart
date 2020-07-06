@@ -11,5 +11,5 @@ Future<void> main() async {
   if (!genericTestFile.existsSync()) {
     genericTestFile.createSync();
   }
-  await generateTestFile(genericTestFile, testDir, '../../');
+  await generateTestFile(genericTestFile, testDir, '', hasArguments: false);
 }
