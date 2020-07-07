@@ -109,6 +109,10 @@ jobs:
         working-directory: ${{ matrix.package }}
       
       - name: Run Flutter Tests
+        run: flutter run -d linux --target=test_driver/generic/generic.dart
+        working-directory: ${{ matrix.package }}
+        
+      - name: Run Flutter Tests
         run: fastdriver -v
         working-directory: ${{ matrix.package }}
 
