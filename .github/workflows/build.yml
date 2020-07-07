@@ -100,7 +100,7 @@ jobs:
         working-directory: ${{ matrix.package }}
   
       - name: Install fastdriver
-        run: pub global activate fast_flutter_driver_tool
+        run: pub global activate fast_flutter_driver_tool && flutter config --enable-linux-desktop
         working-directory: ${{ matrix.package }}
     
       - name: Install fastdriver
