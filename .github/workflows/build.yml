@@ -76,3 +76,36 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: ${{ matrix.package }}
           file: ./${{ matrix.package }}/coverage/lcov.info
+        
+  build_example:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        package: ["example"]
+        channel: [ "beta"]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: ${{ matrix.channel }}
+
+      - name: Install dependencies
+        run: flutter packages get
+        working-directory: ${{ matrix.package }}
+
+      - name: Analyze
+        run: flutter analyze
+        working-directory: ${{ matrix.package }}
+  
+      - name: Install fastdriver
+        run: pub global activate fast_flutter_driver_tool
+        working-directory: ${{ matrix.package }}
+      
+      - name: Run Flutter Tests
+        run: fastdriver
+        working-directory: ${{ matrix.package }}
+
+
+
