@@ -109,7 +109,7 @@ jobs:
         working-directory: ${{ matrix.package }}
       
       - name: Run Flutter Tests
-        run: fastdriver
+        run: fastdriver -v
         working-directory: ${{ matrix.package }}
 
 
