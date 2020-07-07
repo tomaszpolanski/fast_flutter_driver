@@ -83,7 +83,7 @@ jobs:
     strategy:
       matrix:
         package: ["example"]
-        channel: ["dev", "beta"]
+        channel: ["dev"]
 
     steps:
       - uses: actions/checkout@v2
