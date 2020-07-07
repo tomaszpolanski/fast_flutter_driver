@@ -102,6 +102,11 @@ jobs:
       - name: Install fastdriver
         run: pub global activate fast_flutter_driver_tool
         working-directory: ${{ matrix.package }}
+    
+      - name: Install fastdriver
+        run: |
+          echo "::add-path::$HOME/.pub-cache/bin"
+        working-directory: ${{ matrix.package }}
       
       - name: Run Flutter Tests
         run: fastdriver
