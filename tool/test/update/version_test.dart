@@ -215,7 +215,6 @@ void main() {
     });
 
     test('when failed', () async {
-      const remoteVersion = '2.0.0';
       const currentVersion = '2.0.0';
       await IOOverrides.runZoned(
         () async {
