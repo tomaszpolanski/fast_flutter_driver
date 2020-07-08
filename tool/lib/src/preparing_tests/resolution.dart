@@ -9,13 +9,14 @@ Future<void> overrideResolution(
 ) async {
   final native = nativeResolutionFile;
   final nativeCopy = '$native\_copy'; // ignore: unnecessary_string_escapes
-  if (exists(native)) {
-    await File(native).copy(nativeCopy);
+  final resolutionFile = File(native);
+  if (resolutionFile.existsSync()) {
+    await resolutionFile.copy(nativeCopy);
   }
 
   final dimensions = resolution.split('x');
   await _updateResolution(
-    filePath: native,
+    resolutionFile: resolutionFile,
     width: int.parse(dimensions[0]),
     height: int.parse(dimensions[1]),
   );
@@ -37,15 +38,15 @@ Future<void> overrideResolution(
 Future<void> _updateResolution({
   @required int width,
   @required int height,
-  @required String filePath,
+  @required File resolutionFile,
 }) async {
-  final read = await File(filePath).readAsString();
+  final read = await resolutionFile.readAsString();
   final updatedNativeFile = _replaceResolution(
     read,
     width: width,
     height: height,
   );
-  await File(filePath).writeAsString(updatedNativeFile);
+  await resolutionFile.writeAsString(updatedNativeFile);
 }
 
 String _replaceResolution(
