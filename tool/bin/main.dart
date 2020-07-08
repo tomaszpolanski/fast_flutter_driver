@@ -28,7 +28,7 @@ Future<void> main(List<String> paths) async {
     return;
   }
   // ignore: unawaited_futures
-  checkForUpdates();
+  checkForUpdates(logger);
   if (!validRootDirectory(logger)) {
     return;
   }

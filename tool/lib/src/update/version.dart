@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 import 'dart:io';
 
+import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:http/http.dart' as http;
@@ -57,17 +58,18 @@ Future<String> remoteVersion(
   return match.group(1);
 }
 
-Future<void> checkForUpdates() async {
+Future<void> checkForUpdates(Logger logger) async {
   try {
     final versions = await Future.wait(
         [currentVersion(PathProvider()), remoteVersion(http.get)]);
     final current = versions[0];
     final latest = versions[1];
     if (current != latest) {
-      print('${green('New version')} (${bold(latest)}) available!');
-      print(
-        "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
-      );
+      logger
+        ..stdout('${green('New version')} (${bold(latest)}) available!')
+        ..stdout(
+          "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
+        );
     }
   } catch (_) {
     // Don't prevent running script because checking version failed
