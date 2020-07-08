@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
-import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -11,19 +10,17 @@ import '../bin/main.dart' as main_file;
 
 void main() {
   VersionChecker versionChecker;
+  Logger logger;
 
   setUp(() {
     versionChecker = _MockVersionChecker();
+    logger = _MockLogger();
   });
   group('commands', () {
     test('help', () async {
-      final logger = _MockLogger();
-
       await main_file.run(
         ['-h'],
         loggerFactory: (_) => logger,
-        pathProvider: PathProvider(),
-        httpGet: (_) => null,
         versionCheckerFactory: (_) => versionChecker,
       );
 
@@ -35,31 +32,15 @@ void main() {
 
     test('version', () async {
       const version = '1.0.0+1';
-      final pathProvider = _MockPathProvider();
-
       when(versionChecker.currentVersion()).thenAnswer((_) async => version);
-      final logger = _MockLogger();
 
-      await IOOverrides.runZoned(
-        () async {
-          await main_file.run(
-            ['--version'],
-            loggerFactory: (_) => logger,
-            pathProvider: pathProvider,
-            httpGet: (_) => null,
-            versionCheckerFactory: (_) => versionChecker,
-          );
-
-          expect(verify(logger.stdout(captureAny)).captured.single, version);
-        },
-        createFile: (name) {
-          final File file = _MockFile();
-          when(file.existsSync()).thenReturn(true);
-          when(file.readAsString())
-              .thenAnswer((_) async => 'version: $version');
-          return file;
-        },
+      await main_file.run(
+        ['--version'],
+        loggerFactory: (_) => logger,
+        versionCheckerFactory: (_) => versionChecker,
       );
+
+      expect(verify(logger.stdout(captureAny)).captured.single, version);
     });
   });
 
@@ -67,13 +48,9 @@ void main() {
     test('when invalid', () async {
       await IOOverrides.runZoned(
         () async {
-          final logger = _MockLogger();
-
           await main_file.run(
             [''],
             loggerFactory: (_) => logger,
-            pathProvider: PathProvider(),
-            httpGet: (_) => null,
             versionCheckerFactory: (_) => versionChecker,
           );
           expect(
@@ -98,9 +75,7 @@ void main() {
       () async {
         await main_file.run(
           ['-s'],
-          loggerFactory: (_) => _MockLogger(),
-          pathProvider: PathProvider(),
-          httpGet: (_) => null,
+          loggerFactory: (_) => logger,
           versionCheckerFactory: (_) => versionChecker,
         );
 
@@ -131,9 +106,5 @@ void main() {
 class _MockDirectory extends Mock implements Directory {}
 
 class _MockLogger extends Mock implements Logger {}
-
-class _MockFile extends Mock implements File {}
-
-class _MockPathProvider extends Mock implements PathProvider {}
 
 class _MockVersionChecker extends Mock implements VersionChecker {}

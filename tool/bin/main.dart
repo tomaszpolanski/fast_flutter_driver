@@ -13,7 +13,6 @@ import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
@@ -22,8 +21,6 @@ Future<void> main(List<String> paths) {
   return run(
     paths,
     loggerFactory: (verbose) => verbose ? Logger.verbose() : Logger.standard(),
-    pathProvider: PathProvider(),
-    httpGet: http.get,
     versionCheckerFactory: (logger) => VersionChecker(
       pathProvider: PathProvider(),
       httpGet: http.get,
@@ -35,8 +32,6 @@ Future<void> main(List<String> paths) {
 Future<void> run(
   List<String> paths, {
   @required Logger Function(bool) loggerFactory,
-  @required PathProvider pathProvider,
-  @required Future<Response> Function(String url) httpGet,
   @required VersionChecker Function(Logger) versionCheckerFactory,
 }) async {
   final parser = scriptParameters;
