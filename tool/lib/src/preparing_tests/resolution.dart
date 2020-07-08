@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:meta/meta.dart';
 
 Future<void> overrideResolution(
   String resolution,
-  Future<void> Function() test,
-) async {
+  Future<void> Function() test, {
+  @required Logger logger,
+}) async {
   final native = nativeResolutionFile;
   final nativeCopy = '$native\_copy'; // ignore: unnecessary_string_escapes
   final resolutionFile = File(native);
@@ -28,8 +30,9 @@ Future<void> overrideResolution(
       await File(native).delete();
       await File(nativeCopy).rename(native);
     } else {
-      stderr
-          .writeln('Was not able to restore native as the copy does not exist');
+      logger.stderr(
+        'Was not able to restore native as the copy does not exist',
+      );
       exitCode = 1;
     }
   }

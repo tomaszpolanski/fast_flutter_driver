@@ -26,7 +26,7 @@ Future<void> setUp(
     return test();
   } else {
     logger.trace('Overriding resolution');
-    await overrideResolution(screenResolution, test);
+    await overrideResolution(screenResolution, test, logger: logger);
   }
 }
 
