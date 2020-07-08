@@ -19,7 +19,7 @@ ArgParser scriptParameters = ArgParser()
   ..addOption(
     deviceArg,
     abbr: deviceArg[0],
-    help: 'Runs testing on a specyfic device',
+    help: 'Runs testing on a given device',
     defaultsTo: devices.device,
   )
   ..addOption(
