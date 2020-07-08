@@ -15,30 +15,20 @@ Future<void> run(
   InputCommandLineStream stdin,
   OutputCommandLineStream stderr,
 }) async {
-  return _CommandLine(
-    stdout: stdout,
-    stdin: stdin,
-    stderr: stderr,
-  ).run(command);
+  return _CommandLine(out: stdout, sin: stdin, err: stderr).run(command);
 }
 
 class _CommandLine {
   _CommandLine({
-    @required this.stdout,
-    this.stdin,
-    this.stderr,
-  }) : _shell = Shell(
-          stdout: stdout.stream,
-          stdin: stdin?.stream,
-          stderr: stderr?.stream,
-        );
+    @required this.out,
+    this.sin,
+    this.err,
+  }) : _s = Shell(stdout: out.stream, stdin: sin?.stream, stderr: err?.stream);
 
-  final Shell _shell;
-  final InputCommandLineStream stdin;
-  final OutputCommandLineStream stdout;
-  final OutputCommandLineStream stderr;
+  final Shell _s;
+  final InputCommandLineStream sin;
+  final OutputCommandLineStream out;
+  final OutputCommandLineStream err;
 
-  Future<void> run(String command) async {
-    await _shell.run(command);
-  }
+  Future<void> run(String command) => _s.run(command);
 }
