@@ -13,6 +13,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
+import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 
@@ -22,11 +23,11 @@ Future<void> setUp(
   @required Logger logger,
 }) async {
   final String screenResolution = args[resolutionArg];
-  if (Platform.isMacOS || Platform.isWindows || screenResolution == null) {
-    return test();
-  } else {
+  if (System.isLinux && screenResolution != null) {
     logger.trace('Overriding resolution');
     await overrideResolution(screenResolution, test, logger: logger);
+  } else {
+    return test();
   }
 }
 
