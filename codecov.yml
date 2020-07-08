@@ -10,6 +10,9 @@ coverage:
       example:
         flags: example
 
+ignore:
+  - "**/*.dart"     
+
 flags:
   # filter the folder(s) you wish to measure by that flag
   tool:
@@ -22,5 +25,4 @@ flags:
     paths:
       - example/lib/
 
-ignore:
-   - "**/*_impl.dart"         
+    
