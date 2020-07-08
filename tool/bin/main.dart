@@ -24,6 +24,11 @@ Future<void> main(List<String> paths) {
     loggerFactory: (verbose) => verbose ? Logger.verbose() : Logger.standard(),
     pathProvider: PathProvider(),
     httpGet: http.get,
+    versionCheckerFactory: (logger) => VersionChecker(
+      pathProvider: PathProvider(),
+      httpGet: http.get,
+      logger: logger,
+    ),
   );
 }
 
@@ -32,17 +37,18 @@ Future<void> run(
   @required Logger Function(bool) loggerFactory,
   @required PathProvider pathProvider,
   @required Future<Response> Function(String url) httpGet,
+  @required VersionChecker Function(Logger) versionCheckerFactory,
 }) async {
-  exitCode = 2;
   final parser = scriptParameters;
   final result = parser.parse(paths);
   final logger = loggerFactory(result[verboseArg]);
+  final versionChecker = versionCheckerFactory(logger);
 
   if (result[helpArg] == true) {
     logger.stdout('Usage: fastdriver <path>\n${parser.usage}');
     return;
   } else if (result[versionArg] == true) {
-    logger.stdout(await currentVersion(pathProvider));
+    logger.stdout(await versionChecker.currentVersion());
     return;
   } else if (!isValidRootDirectory) {
     logger.stderr(
@@ -51,7 +57,7 @@ Future<void> run(
     return;
   }
   // ignore: unawaited_futures
-  checkForUpdates(logger: logger, pathProvider: pathProvider, httpGet: httpGet);
+  versionChecker.checkForUpdates();
 
   logger.stdout('Starting tests');
 

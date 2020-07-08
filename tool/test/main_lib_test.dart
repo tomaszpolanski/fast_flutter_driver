@@ -3,12 +3,18 @@ import 'dart:io';
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
+import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../bin/main.dart' as main_file;
 
 void main() {
+  VersionChecker versionChecker;
+
+  setUp(() {
+    versionChecker = _MockVersionChecker();
+  });
   group('commands', () {
     test('help', () async {
       final logger = _MockLogger();
@@ -18,6 +24,7 @@ void main() {
         loggerFactory: (_) => logger,
         pathProvider: PathProvider(),
         httpGet: (_) => null,
+        versionCheckerFactory: (_) => versionChecker,
       );
 
       expect(
@@ -29,7 +36,8 @@ void main() {
     test('version', () async {
       const version = '1.0.0+1';
       final pathProvider = _MockPathProvider();
-      when(pathProvider.scriptDir).thenReturn('/root/');
+
+      when(versionChecker.currentVersion()).thenAnswer((_) async => version);
       final logger = _MockLogger();
 
       await IOOverrides.runZoned(
@@ -39,6 +47,7 @@ void main() {
             loggerFactory: (_) => logger,
             pathProvider: pathProvider,
             httpGet: (_) => null,
+            versionCheckerFactory: (_) => versionChecker,
           );
 
           expect(verify(logger.stdout(captureAny)).captured.single, version);
@@ -65,6 +74,7 @@ void main() {
             loggerFactory: (_) => logger,
             pathProvider: PathProvider(),
             httpGet: (_) => null,
+            versionCheckerFactory: (_) => versionChecker,
           );
           expect(
             verify(logger.stderr(captureAny)).captured.single,
@@ -91,6 +101,7 @@ void main() {
           loggerFactory: (_) => _MockLogger(),
           pathProvider: PathProvider(),
           httpGet: (_) => null,
+          versionCheckerFactory: (_) => versionChecker,
         );
 
         verify(directory.deleteSync(recursive: true)).called(1);
@@ -124,3 +135,5 @@ class _MockLogger extends Mock implements Logger {}
 class _MockFile extends Mock implements File {}
 
 class _MockPathProvider extends Mock implements PathProvider {}
+
+class _MockVersionChecker extends Mock implements VersionChecker {}

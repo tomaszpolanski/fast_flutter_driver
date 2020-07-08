@@ -8,11 +8,25 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
+  VersionChecker tested;
+  Logger logger;
+  PathProvider pathProvider;
+
+  setUp(() {
+    logger = _MockLogger();
+    pathProvider = _MockPathProvider();
+  });
+
   group('remoteVersion', () {
     test('throws exception if version not found', () async {
       Future<Response> get(String url) async => Response('', 200);
+      tested = VersionChecker(
+        logger: logger,
+        pathProvider: pathProvider,
+        httpGet: get,
+      );
       try {
-        await remoteVersion(get);
+        await tested.remoteVersion();
       } on PackageNotFound {
         return;
       }
@@ -27,8 +41,13 @@ void main() {
         return Response('', 200);
       }
 
+      tested = VersionChecker(
+        logger: logger,
+        pathProvider: pathProvider,
+        httpGet: get,
+      );
       try {
-        await remoteVersion(get);
+        await tested.remoteVersion();
       } on PackageNotFound {
         // ignore
       }
@@ -42,24 +61,32 @@ void main() {
             '<h2 class="title">fast_flutter_driver_tool $expectedVersion</h2>',
             200,
           );
+      tested = VersionChecker(
+        logger: logger,
+        pathProvider: pathProvider,
+        httpGet: get,
+      );
 
-      final version = await remoteVersion(get);
+      final version = await tested.remoteVersion();
 
       expect(version, expectedVersion);
     });
   });
 
   group('currentVersion', () {
-    _MockPathProvider pathProvider;
     setUp(() {
-      pathProvider = _MockPathProvider();
       when(pathProvider.scriptDir).thenReturn('/root/');
     });
     group('when yaml', () {
       test('reads yaml file', () async {
+        tested = VersionChecker(
+          logger: logger,
+          pathProvider: pathProvider,
+          httpGet: (_) => null,
+        );
         await IOOverrides.runZoned(
           () async {
-            final version = await currentVersion(pathProvider);
+            final version = await tested.currentVersion();
 
             expect(version, '1.0.0+1');
           },
@@ -88,9 +115,14 @@ void main() {
     version: "2.2.0"
 ''';
       test('reads lock file', () async {
+        tested = VersionChecker(
+          logger: logger,
+          pathProvider: pathProvider,
+          httpGet: (_) => null,
+        );
         await IOOverrides.runZoned(
           () async {
-            final version = await currentVersion(pathProvider);
+            final version = await tested.currentVersion();
 
             expect(version, '2.2.0');
           },
@@ -113,12 +145,8 @@ void main() {
   });
 
   group('checkForUpdates', () {
-    _MockPathProvider pathProvider;
-    Logger logger;
     setUp(() {
-      pathProvider = _MockPathProvider();
       when(pathProvider.scriptDir).thenReturn('/root/');
-      logger = _MockLogger();
     });
 
     test('when available', () async {
@@ -130,11 +158,12 @@ void main() {
                 '<h2 class="title">fast_flutter_driver_tool $remoteVersion</h2>',
                 200,
               );
-          await checkForUpdates(
+          tested = VersionChecker(
             logger: logger,
-            httpGet: get,
             pathProvider: pathProvider,
+            httpGet: get,
           );
+          await tested.checkForUpdates();
 
           final messages = verify(logger.stdout(captureAny)).captured;
           expect(
@@ -168,11 +197,12 @@ void main() {
                 '<h2 class="title">fast_flutter_driver_tool $remoteVersion</h2>',
                 200,
               );
-          await checkForUpdates(
+          tested = VersionChecker(
             logger: logger,
-            httpGet: get,
             pathProvider: pathProvider,
+            httpGet: get,
           );
+          await tested.checkForUpdates();
 
           verifyNever(logger.stdout(any));
         },
