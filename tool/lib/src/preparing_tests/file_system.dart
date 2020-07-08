@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
+import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:path/path.dart' as p;
 
 String platformPath(String path) => p.normalize(path);
@@ -14,7 +15,7 @@ String get nativeResolutionFile {
 }
 
 String get _nativeResolutionFile {
-  if (Platform.isLinux) {
+  if (System.isLinux) {
     final configFile = File(
       platformPath(p.join(
         Directory.current.path,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
+import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -48,6 +49,73 @@ void main() {
     });
   });
 
+  group('nativeResolutionFile', () {
+    group('for linux', () {
+      setUp(() {
+        linuxOverride = true;
+      });
+
+      tearDown(() {
+        linuxOverride = null;
+      });
+
+      test('legacy config file', () {
+        IOOverrides.runZoned(
+          () async {
+            final tested = nativeResolutionFile;
+
+            expect(tested, endsWith('main.cc'));
+          },
+          getCurrentDirectory: () {
+            final mockDir = _MockDirectory();
+            when(mockDir.path).thenReturn('');
+            return mockDir;
+          },
+          createFile: (name) {
+            final file = _MockFile();
+            when(file.existsSync()).thenReturn(name == 'linux/main.cc');
+            return file;
+          },
+        );
+      });
+
+      test('current config file', () {
+        IOOverrides.runZoned(
+          () async {
+            final tested = nativeResolutionFile;
+
+            expect(tested, endsWith('window_configuration.cc'));
+          },
+          getCurrentDirectory: () {
+            final mockDir = _MockDirectory();
+            when(mockDir.path).thenReturn('');
+            return mockDir;
+          },
+          createFile: (name) {
+            final file = _MockFile();
+            when(file.existsSync()).thenReturn(
+              name.endsWith('window_configuration.cc'),
+            );
+            return file;
+          },
+        );
+      });
+    });
+
+    group('for non linux', () {
+      setUp(() {
+        linuxOverride = false;
+      });
+
+      tearDown(() {
+        linuxOverride = null;
+      });
+
+      test('should not be called', () {
+        expect(() => nativeResolutionFile, throwsA(isA<AssertionError>()));
+      });
+    });
+  });
   group('exists', () {
     test('path is null', () {
       final tested = exists(null);
