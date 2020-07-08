@@ -47,6 +47,7 @@ void main() {
       expect(version, expectedVersion);
     });
   });
+
   group('currentVersion', () {
     _MockPathProvider pathProvider;
     setUp(() {

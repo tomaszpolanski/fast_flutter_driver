@@ -9,6 +9,51 @@ import 'package:test/test.dart';
 import '../bin/main.dart' as main_file;
 
 void main() {
+  group('commands', () {
+    test('help', () async {
+      final logger = _MockLogger();
+
+      await main_file.run(
+        ['-h'],
+        loggerFactory: (_) => logger,
+        pathProvider: PathProvider(),
+        httpGet: (_) => null,
+      );
+
+      expect(
+        verify(logger.stdout(captureAny)).captured.single,
+        startsWith('Usage: fastdriver <path>'),
+      );
+    });
+
+    test('version', () async {
+      const version = '1.0.0+1';
+      final pathProvider = _MockPathProvider();
+      when(pathProvider.scriptDir).thenReturn('/root/');
+      final logger = _MockLogger();
+
+      await IOOverrides.runZoned(
+        () async {
+          await main_file.run(
+            ['--version'],
+            loggerFactory: (_) => logger,
+            pathProvider: pathProvider,
+            httpGet: (_) => null,
+          );
+
+          expect(verify(logger.stdout(captureAny)).captured.single, version);
+        },
+        createFile: (name) {
+          final File file = _MockFile();
+          when(file.existsSync()).thenReturn(true);
+          when(file.readAsString())
+              .thenAnswer((_) async => 'version: $version');
+          return file;
+        },
+      );
+    });
+  });
+
   test('deletes screenshots if the folder exists and passing the flag', () {
     Directory directory;
 
@@ -48,3 +93,7 @@ void main() {
 class _MockDirectory extends Mock implements Directory {}
 
 class _MockLogger extends Mock implements Logger {}
+
+class _MockFile extends Mock implements File {}
+
+class _MockPathProvider extends Mock implements PathProvider {}

@@ -39,7 +39,7 @@ Future<void> run(
   final logger = loggerFactory(result[verboseArg]);
 
   if (result[helpArg] == true) {
-    logger..stdout('Usage: fastdriver <path>')..stdout(parser.usage);
+    logger.stdout('Usage: fastdriver <path>\n${parser.usage}');
     return;
   } else if (result[versionArg] == true) {
     logger.stdout(await currentVersion(pathProvider));
