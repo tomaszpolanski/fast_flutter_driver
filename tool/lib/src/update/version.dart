@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
@@ -46,7 +46,8 @@ Future<String> _lockVersion(String scriptDir) async {
 class PackageNotFound implements Exception {}
 
 Future<String> remoteVersion(
-    Future<Response> Function(String url) httpGet) async {
+  Future<Response> Function(String url) httpGet,
+) async {
   final response =
       await httpGet('https://pub.dev/packages/fast_flutter_driver_tool');
 
@@ -58,10 +59,14 @@ Future<String> remoteVersion(
   return match.group(1);
 }
 
-Future<void> checkForUpdates(Logger logger) async {
+Future<void> checkForUpdates({
+  @required Logger logger,
+  @required PathProvider pathProvider,
+  @required Future<Response> Function(String url) httpGet,
+}) async {
   try {
     final versions = await Future.wait(
-        [currentVersion(PathProvider()), remoteVersion(http.get)]);
+        [currentVersion(pathProvider), remoteVersion(httpGet)]);
     final current = versions[0];
     final latest = versions[1];
     if (current != latest) {

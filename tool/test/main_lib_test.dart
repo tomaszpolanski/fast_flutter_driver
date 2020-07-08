@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -12,7 +14,12 @@ void main() {
 
     IOOverrides.runZoned(
       () async {
-        await main_file.main(['-s']);
+        await main_file.run(
+          ['-s'],
+          loggerFactory: (_) => _MockLogger(),
+          pathProvider: () => PathProvider(),
+          httpGet: (_) => null,
+        );
 
         verify(directory.deleteSync(recursive: true)).called(1);
       },
@@ -39,3 +46,5 @@ void main() {
 }
 
 class _MockDirectory extends Mock implements Directory {}
+
+class _MockLogger extends Mock implements Logger {}

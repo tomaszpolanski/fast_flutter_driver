@@ -13,22 +13,40 @@ import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 
-Future<void> main(List<String> paths) async {
+Future<void> main(List<String> paths) {
+  exitCode = 2;
+  return run(
+    paths,
+    loggerFactory: (verbose) => verbose ? Logger.verbose() : Logger.standard(),
+    pathProvider: PathProvider(),
+    httpGet: http.get,
+  );
+}
+
+Future<void> run(
+  List<String> paths, {
+  @required Logger Function(bool) loggerFactory,
+  @required PathProvider pathProvider,
+  @required Future<Response> Function(String url) httpGet,
+}) async {
   exitCode = 2;
   final parser = scriptParameters;
   final result = parser.parse(paths);
-  final logger = result[verboseArg] ? Logger.verbose() : Logger.standard();
+  final logger = loggerFactory(result[verboseArg]);
 
   if (result[helpArg] == true) {
     logger..stdout('Usage: fastdriver <path>')..stdout(parser.usage);
     return;
   } else if (result[versionArg] == true) {
-    logger.stdout(await currentVersion(PathProvider()));
+    logger.stdout(await currentVersion(pathProvider));
     return;
   }
   // ignore: unawaited_futures
-  checkForUpdates(logger);
+  checkForUpdates(logger: logger, pathProvider: pathProvider, httpGet: httpGet);
   if (!validRootDirectory(logger)) {
     return;
   }
