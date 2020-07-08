@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_print
 import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
@@ -48,8 +47,9 @@ class PackageNotFound implements Exception {}
 Future<String> remoteVersion(
   Future<Response> Function(String url) httpGet,
 ) async {
-  final response =
-      await httpGet('https://pub.dev/packages/fast_flutter_driver_tool');
+  final response = await httpGet(
+    'https://pub.dev/packages/fast_flutter_driver_tool',
+  );
 
   final match =
       RegExp('fast_flutter_driver_tool (.*)</h2>').firstMatch(response.body);
