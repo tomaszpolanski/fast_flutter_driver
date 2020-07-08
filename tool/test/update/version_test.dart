@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:http/http.dart';
@@ -7,11 +8,25 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
+  VersionChecker tested;
+  Logger logger;
+  PathProvider pathProvider;
+
+  setUp(() {
+    logger = _MockLogger();
+    pathProvider = _MockPathProvider();
+  });
+
   group('remoteVersion', () {
     test('throws exception if version not found', () async {
       Future<Response> get(String url) async => Response('', 200);
+      tested = VersionChecker(
+        logger: logger,
+        pathProvider: pathProvider,
+        httpGet: get,
+      );
       try {
-        await remoteVersion(get);
+        await tested.remoteVersion();
       } on PackageNotFound {
         return;
       }
@@ -26,8 +41,13 @@ void main() {
         return Response('', 200);
       }
 
+      tested = VersionChecker(
+        logger: logger,
+        pathProvider: pathProvider,
+        httpGet: get,
+      );
       try {
-        await remoteVersion(get);
+        await tested.remoteVersion();
       } on PackageNotFound {
         // ignore
       }
@@ -41,23 +61,32 @@ void main() {
             '<h2 class="title">fast_flutter_driver_tool $expectedVersion</h2>',
             200,
           );
+      tested = VersionChecker(
+        logger: logger,
+        pathProvider: pathProvider,
+        httpGet: get,
+      );
 
-      final version = await remoteVersion(get);
+      final version = await tested.remoteVersion();
 
       expect(version, expectedVersion);
     });
   });
+
   group('currentVersion', () {
-    _MockPathProvider pathProvider;
     setUp(() {
-      pathProvider = _MockPathProvider();
       when(pathProvider.scriptDir).thenReturn('/root/');
     });
     group('when yaml', () {
       test('reads yaml file', () async {
+        tested = VersionChecker(
+          logger: logger,
+          pathProvider: pathProvider,
+          httpGet: (_) => null,
+        );
         await IOOverrides.runZoned(
           () async {
-            final version = await currentVersion(pathProvider);
+            final version = await tested.currentVersion();
 
             expect(version, '1.0.0+1');
           },
@@ -86,9 +115,14 @@ void main() {
     version: "2.2.0"
 ''';
       test('reads lock file', () async {
+        tested = VersionChecker(
+          logger: logger,
+          pathProvider: pathProvider,
+          httpGet: (_) => null,
+        );
         await IOOverrides.runZoned(
           () async {
-            final version = await currentVersion(pathProvider);
+            final version = await tested.currentVersion();
 
             expect(version, '2.2.0');
           },
@@ -109,8 +143,109 @@ void main() {
       });
     });
   });
+
+  group('checkForUpdates', () {
+    setUp(() {
+      when(pathProvider.scriptDir).thenReturn('/root/');
+    });
+
+    test('when available', () async {
+      const remoteVersion = '2.0.0';
+      const currentVersion = '1.0.0';
+      await IOOverrides.runZoned(
+        () async {
+          Future<Response> get(String url) async => Response(
+                '<h2 class="title">fast_flutter_driver_tool $remoteVersion</h2>',
+                200,
+              );
+          tested = VersionChecker(
+            logger: logger,
+            pathProvider: pathProvider,
+            httpGet: get,
+          );
+          final result = await tested.checkForUpdates();
+
+          expect(result.local, currentVersion);
+          expect(result.remote, remoteVersion);
+        },
+        createFile: (name) {
+          if (name == '/root/../pubspec.yaml') {
+            final File file = _MockFile();
+            when(file.existsSync()).thenReturn(true);
+            when(file.readAsString())
+                .thenAnswer((_) async => 'version: $currentVersion');
+            return file;
+          }
+          return null;
+        },
+      );
+    });
+
+    test('when up to date', () async {
+      const remoteVersion = '2.0.0';
+      const currentVersion = '2.0.0';
+      await IOOverrides.runZoned(
+        () async {
+          Future<Response> get(String url) async => Response(
+                '<h2 class="title">fast_flutter_driver_tool $remoteVersion</h2>',
+                200,
+              );
+          tested = VersionChecker(
+            logger: logger,
+            pathProvider: pathProvider,
+            httpGet: get,
+          );
+
+          final result = await tested.checkForUpdates();
+
+          expect(result.local, currentVersion);
+          expect(result.remote, remoteVersion);
+        },
+        createFile: (name) {
+          if (name == '/root/../pubspec.yaml') {
+            final File file = _MockFile();
+            when(file.existsSync()).thenReturn(true);
+            when(file.readAsString())
+                .thenAnswer((_) async => 'version: $currentVersion');
+            return file;
+          }
+          return null;
+        },
+      );
+    });
+
+    test('when failed', () async {
+      const currentVersion = '2.0.0';
+      await IOOverrides.runZoned(
+        () async {
+          Future<Response> get(String url) async => Response('', 404);
+          tested = VersionChecker(
+            logger: logger,
+            pathProvider: pathProvider,
+            httpGet: get,
+          );
+
+          final result = await tested.checkForUpdates();
+
+          expect(result, isNull);
+        },
+        createFile: (name) {
+          if (name == '/root/../pubspec.yaml') {
+            final File file = _MockFile();
+            when(file.existsSync()).thenReturn(true);
+            when(file.readAsString())
+                .thenAnswer((_) async => 'version: $currentVersion');
+            return file;
+          }
+          return null;
+        },
+      );
+    });
+  });
 }
 
 class _MockFile extends Mock implements File {}
 
 class _MockPathProvider extends Mock implements PathProvider {}
+
+class _MockLogger extends Mock implements Logger {}

@@ -1,9 +1,11 @@
 import 'package:args/args.dart';
+import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/devices.dart'
     as devices;
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
+import 'package:meta/meta.dart';
 
 const languageArg = 'language';
 const screenshotsArg = 'screenshots';
@@ -19,7 +21,7 @@ ArgParser scriptParameters = ArgParser()
   ..addOption(
     deviceArg,
     abbr: deviceArg[0],
-    help: 'Runs testing on a specyfic device',
+    help: 'Runs testing on a given device',
     defaultsTo: devices.device,
   )
   ..addOption(
@@ -64,9 +66,8 @@ ArgParser scriptParameters = ArgParser()
     negatable: false,
   );
 
-void printErrorHelp(String command) {
-  // ignore: avoid_print
-  print(
+void printErrorHelp(String command, {@required Logger logger}) {
+  logger.stdout(
     '''
 ${red('Failed')} to run command '${yellow(command)}'
 To ${green('fix')} it:

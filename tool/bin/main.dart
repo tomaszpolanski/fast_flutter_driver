@@ -13,25 +13,57 @@ import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
+import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 
-Future<void> main(List<String> paths) async {
+Future<void> main(List<String> paths) {
   exitCode = 2;
+  return run(
+    paths,
+    loggerFactory: (verbose) => verbose ? Logger.verbose() : Logger.standard(),
+    versionCheckerFactory: (logger) => VersionChecker(
+      pathProvider: PathProvider(),
+      httpGet: http.get,
+      logger: logger,
+    ),
+  );
+}
+
+Future<void> run(
+  List<String> paths, {
+  @required Logger Function(bool) loggerFactory,
+  @required VersionChecker Function(Logger) versionCheckerFactory,
+}) async {
   final parser = scriptParameters;
   final result = parser.parse(paths);
-  final logger = result[verboseArg] ? Logger.verbose() : Logger.standard();
+  final logger = loggerFactory(result[verboseArg]);
+  final versionChecker = versionCheckerFactory(logger);
 
   if (result[helpArg] == true) {
-    logger..stdout('Usage: fastdriver <path>')..stdout(parser.usage);
+    logger.stdout('Usage: fastdriver <path>\n${parser.usage}');
     return;
   } else if (result[versionArg] == true) {
-    logger.stdout(await currentVersion(PathProvider()));
+    logger.stdout(await versionChecker.currentVersion());
+    return;
+  } else if (!isValidRootDirectory) {
+    logger.stderr(
+        'Please run ${bold('fastdriver')} from the root of your project '
+        '(directory that contains ${bold('pubspec.yaml')})');
     return;
   }
   // ignore: unawaited_futures
-  checkForUpdates();
-  if (!validRootDirectory(logger)) {
-    return;
-  }
+  versionChecker.checkForUpdates().then((AppVersion version) {
+    if (version != null && version.local != version.remote) {
+      {
+        logger
+          ..stdout(
+              '${green('New version')} (${bold(version.remote)}) available!')
+          ..stdout(
+            "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
+          );
+      }
+    }
+  });
 
   logger.stdout('Starting tests');
 
@@ -51,20 +83,18 @@ Future<void> main(List<String> paths) async {
   if (testFile != null && exists(testFile)) {
     await setUp(
       result,
-      () async {
-        await test(
-          outputFactory: output,
-          inputFactory: input,
-          run: command_line.run,
-          logger: logger,
-          testFile: testFile,
-          withScreenshots: result[screenshotsArg],
-          language: result[languageArg],
-          resolution: result[resolutionArg],
-          platform: TestPlatformEx.fromString(result[platformArg]),
-          device: result[deviceArg],
-        );
-      },
+      () => test(
+        outputFactory: output,
+        inputFactory: input,
+        run: command_line.run,
+        logger: logger,
+        testFile: testFile,
+        withScreenshots: result[screenshotsArg],
+        language: result[languageArg],
+        resolution: result[resolutionArg],
+        platform: TestPlatformEx.fromString(result[platformArg]),
+        device: result[deviceArg],
+      ),
       logger: logger,
     );
   } else {

@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:async';
 import 'dart:io';
 
@@ -101,7 +99,7 @@ Future<String> _buildAndRun(
   // ignore: unawaited_futures
   run(command, stdout: output, stdin: input).then((_) {
     output.dispose();
-  }).catchError((dynamic _) => printErrorHelp(command));
+  }).catchError((dynamic _) => printErrorHelp(command, logger: logger));
 
   return completer.future;
 }
