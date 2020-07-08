@@ -62,6 +62,22 @@ void main() {
         'Overriding resolution',
       );
     });
+
+    test('runs tests straight away on non linux', () async {
+      linuxOverride = false;
+      bool haveRunTests = false;
+
+      await tested.setUp(
+        scriptParameters.parse(['-r', '1x1']),
+        () async {
+          haveRunTests = true;
+        },
+        logger: logger,
+      );
+
+      verifyNever(logger.trace(any));
+      expect(haveRunTests, isTrue);
+    });
   });
 
   group('test', () {
