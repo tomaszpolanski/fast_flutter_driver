@@ -52,7 +52,18 @@ Future<void> run(
     return;
   }
   // ignore: unawaited_futures
-  versionChecker.checkForUpdates();
+  versionChecker.checkForUpdates().then((AppVersion version) {
+    if (version != null && version.local != version.remote) {
+      {
+        logger
+          ..stdout(
+              '${green('New version')} (${bold(version.remote)}) available!')
+          ..stdout(
+            "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
+          );
+      }
+    }
+  });
 
   logger.stdout('Starting tests');
 

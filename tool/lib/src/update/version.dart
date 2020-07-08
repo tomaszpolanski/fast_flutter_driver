@@ -66,7 +66,7 @@ class VersionChecker {
     return match.group(1);
   }
 
-  Future<void> checkForUpdates() async {
+  Future<AppVersion> checkForUpdates() async {
     try {
       final versions = await Future.wait([currentVersion(), remoteVersion()]);
       final current = versions[0];
@@ -78,10 +78,19 @@ class VersionChecker {
             "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
           );
       }
+      return AppVersion(local: current, remote: latest);
     } catch (_) {
       // Don't prevent running script because checking version failed
+      return null;
     }
   }
 }
 
 class PackageNotFound implements Exception {}
+
+class AppVersion {
+  const AppVersion({@required this.local, @required this.remote});
+
+  final String local;
+  final String remote;
+}

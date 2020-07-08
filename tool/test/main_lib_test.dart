@@ -68,9 +68,51 @@ void main() {
     });
   });
 
+  group('update', () {
+    test('available', () async {
+      const local = '1.0.0+1';
+      const remote = '2.0.0+1';
+      when(versionChecker.checkForUpdates()).thenAnswer(
+        (_) async => const AppVersion(local: local, remote: remote),
+      );
+      await main_file.run(
+        [''],
+        loggerFactory: (_) => logger,
+        versionCheckerFactory: (_) => versionChecker,
+      );
+
+      final messages = verify(logger.stdout(captureAny)).captured;
+      expect(
+        messages[1],
+        '\x1B[92mNew version\x1B[0m (\x1B[1m$remote\x1B[0m) available!',
+      );
+      expect(
+        messages[2],
+        "To update, run \x1B[92m'pub global activate fast_flutter_driver_tool'\x1B[0m",
+      );
+    });
+
+    test('up to date', () async {
+      const local = '2.0.0+1';
+      const remote = '2.0.0+1';
+      when(versionChecker.checkForUpdates()).thenAnswer(
+        (_) async => const AppVersion(local: local, remote: remote),
+      );
+      await main_file.run(
+        [''],
+        loggerFactory: (_) => logger,
+        versionCheckerFactory: (_) => versionChecker,
+      );
+
+      final messages = verify(logger.stdout(captureAny)).captured;
+      expect(messages[0], 'Starting tests');
+    });
+  });
+
   test('deletes screenshots if the folder exists and passing the flag', () {
     Directory directory;
 
+    when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
     IOOverrides.runZoned(
       () async {
         await main_file.run(

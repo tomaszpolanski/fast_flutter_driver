@@ -163,17 +163,10 @@ void main() {
             pathProvider: pathProvider,
             httpGet: get,
           );
-          await tested.checkForUpdates();
+          final result = await tested.checkForUpdates();
 
-          final messages = verify(logger.stdout(captureAny)).captured;
-          expect(
-            messages[0],
-            '\x1B[92mNew version\x1B[0m (\x1B[1m$remoteVersion\x1B[0m) available!',
-          );
-          expect(
-            messages[1],
-            "To update, run \x1B[92m'pub global activate fast_flutter_driver_tool'\x1B[0m",
-          );
+          expect(result.local, currentVersion);
+          expect(result.remote, remoteVersion);
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
@@ -202,9 +195,40 @@ void main() {
             pathProvider: pathProvider,
             httpGet: get,
           );
-          await tested.checkForUpdates();
 
-          verifyNever(logger.stdout(any));
+          final result = await tested.checkForUpdates();
+
+          expect(result.local, currentVersion);
+          expect(result.remote, remoteVersion);
+        },
+        createFile: (name) {
+          if (name == '/root/../pubspec.yaml') {
+            final File file = _MockFile();
+            when(file.existsSync()).thenReturn(true);
+            when(file.readAsString())
+                .thenAnswer((_) async => 'version: $currentVersion');
+            return file;
+          }
+          return null;
+        },
+      );
+    });
+
+    test('when failed', () async {
+      const remoteVersion = '2.0.0';
+      const currentVersion = '2.0.0';
+      await IOOverrides.runZoned(
+        () async {
+          Future<Response> get(String url) async => Response('', 404);
+          tested = VersionChecker(
+            logger: logger,
+            pathProvider: pathProvider,
+            httpGet: get,
+          );
+
+          final result = await tested.checkForUpdates();
+
+          expect(result, isNull);
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
