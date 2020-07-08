@@ -159,38 +159,34 @@ void main() {
       );
     });
 
-    group('when lock', () {
-      const lockFileContent = '''
-  fast_flutter_driver_tool:
-    dependency: transitive
-    description:
-      name: fast_flutter_driver_tool
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0"
-''';
-      test('reads lock file', () async {
-        await IOOverrides.runZoned(
-          () async {
-            final version = await currentVersion(pathProvider);
+    test('when up to date', () async {
+      const remoteVersion = '2.0.0';
+      const currentVersion = '2.0.0';
+      await IOOverrides.runZoned(
+        () async {
+          Future<Response> get(String url) async => Response(
+                '<h2 class="title">fast_flutter_driver_tool $remoteVersion</h2>',
+                200,
+              );
+          await checkForUpdates(
+            logger: logger,
+            httpGet: get,
+            pathProvider: pathProvider,
+          );
 
-            expect(version, '2.2.0');
-          },
-          createFile: (name) {
-            if (name == '/root/../pubspec.lock') {
-              final File file = _MockFile();
-              when(file.existsSync()).thenReturn(true);
-              when(file.readAsLines())
-                  .thenAnswer((_) async => lockFileContent.split('\n'));
-              return file;
-            } else {
-              final File file = _MockFile();
-              when(file.existsSync()).thenReturn(false);
-              return file;
-            }
-          },
-        );
-      });
+          verifyNever(logger.stdout(any));
+        },
+        createFile: (name) {
+          if (name == '/root/../pubspec.yaml') {
+            final File file = _MockFile();
+            when(file.existsSync()).thenReturn(true);
+            when(file.readAsString())
+                .thenAnswer((_) async => 'version: $currentVersion');
+            return file;
+          }
+          return null;
+        },
+      );
     });
   });
 }
