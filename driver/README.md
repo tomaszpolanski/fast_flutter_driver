@@ -137,7 +137,7 @@ void main(List<String> args) {
 }
 
 ```
-- Install [fast_flutter_driver](./tool) script:
+- Install [fast_flutter_driver](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/tool) script:
 ```shell script
 pub global activate fast_flutter_driver_tool
 ```
