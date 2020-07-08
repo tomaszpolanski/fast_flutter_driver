@@ -1,3 +1,7 @@
+ignore:
+  - "*_impl.dart"     
+  - "tool/lib/src/preparing_tests/command_line/command_line_impl.dart"    
+
 coverage:
   range: 80..100
   status:
@@ -10,8 +14,7 @@ coverage:
       example:
         flags: example
 
-ignore:
-  - "**/*.dart"     
+
 
 flags:
   # filter the folder(s) you wish to measure by that flag
