@@ -17,7 +17,7 @@ void main() {
         await main_file.run(
           ['-s'],
           loggerFactory: (_) => _MockLogger(),
-          pathProvider: () => PathProvider(),
+          pathProvider: PathProvider(),
           httpGet: (_) => null,
         );
 
