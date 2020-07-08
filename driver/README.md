@@ -4,8 +4,8 @@
 
 | Plugin | Pub |
 |--------|-----|
-| [Command Line Tool](./tool/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver_tool.svg)](https://pub.dev/packages/fast_flutter_driver_tool) |
-| [UI Helper](./driver/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)](https://pub.dev/packages/fast_flutter_driver) |
+| [Command Line Tool](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/tool) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver_tool.svg)](https://pub.dev/packages/fast_flutter_driver_tool) |
+| [UI Helper](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/driver) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)](https://pub.dev/packages/fast_flutter_driver) |
 
 
 ![](https://github.com/tomaszpolanski/fast_flutter_driver/raw/master/example/assets/demo.gif)
