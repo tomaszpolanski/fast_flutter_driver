@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:mockito/mockito.dart';
@@ -7,52 +8,130 @@ import 'package:test/test.dart';
 
 void main() {
   File resolutionFile;
+  Logger logger;
+
   setUp(() {
-    const content = '''
-const unsigned int kFlutterWindowWidth = 800;
-const unsigned int kFlutterWindowHeight = 600;
-''';
+    logger = _MockLogger();
     resolutionFile = _MockFile();
     when(resolutionFile.existsSync()).thenReturn(true);
-    when(resolutionFile.readAsString()).thenAnswer((_) async => content);
   });
 
   tearDown(() {
     linuxOverride = null;
   });
 
-  test('replace resolution', () async {
-    await IOOverrides.runZoned(
-      () async {
-        linuxOverride = true;
-        await overrideResolution('1x2', () async {});
+  group('current', () {
+    setUp(() {
+      const content = '''
+const unsigned int kFlutterWindowWidth = 800;
+const unsigned int kFlutterWindowHeight = 600;
+''';
+      when(resolutionFile.readAsString()).thenAnswer((_) async => content);
+    });
 
-        const content = '''
+    test('replace resolution', () async {
+      await IOOverrides.runZoned(
+        () async {
+          linuxOverride = true;
+          await overrideResolution('1x2', () async {}, logger: logger);
+
+          const content = '''
 const unsigned int kFlutterWindowWidth = 1;
 const unsigned int kFlutterWindowHeight = 2;
 ''';
-        expect(
-          verify(resolutionFile.writeAsString(captureAny)).captured.single,
-          content,
-        );
-      },
-      getCurrentDirectory: () {
-        final mockDir = _MockDirectory();
-        when(mockDir.path).thenReturn('');
-        return mockDir;
-      },
-      createFile: (name) {
-        if (name.endsWith('window_configuration.cc_copy')) {
-          final file = _MockFile();
-          when(file.existsSync()).thenReturn(true);
-          return file;
-        }
-        return resolutionFile;
-      },
-    );
+          expect(
+            verify(resolutionFile.writeAsString(captureAny)).captured.single,
+            content,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = _MockDirectory();
+          when(mockDir.path).thenReturn('');
+          return mockDir;
+        },
+        createFile: (name) {
+          if (name.endsWith('window_configuration.cc_copy')) {
+            final file = _MockFile();
+            when(file.existsSync()).thenReturn(true);
+            return file;
+          }
+          return resolutionFile;
+        },
+      );
+    });
+
+    test('log error copy does not exist', () async {
+      await IOOverrides.runZoned(
+        () async {
+          linuxOverride = true;
+          await overrideResolution('1x2', () async {}, logger: logger);
+
+          expect(
+            verify(logger.stderr(captureAny)).captured.single,
+            'Was not able to restore native as the copy does not exist',
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = _MockDirectory();
+          when(mockDir.path).thenReturn('');
+          return mockDir;
+        },
+        createFile: (name) {
+          if (name.endsWith('window_configuration.cc_copy')) {
+            final file = _MockFile();
+            when(file.existsSync()).thenReturn(false);
+            return file;
+          }
+          return resolutionFile;
+        },
+      );
+    });
+  });
+
+  group('legacy', () {
+    setUp(() {
+      const content = '''
+window_properties.width = 500;
+window_properties.height = 900;
+''';
+      when(resolutionFile.readAsString()).thenAnswer((_) async => content);
+    });
+
+    test('replace resolution', () async {
+      await IOOverrides.runZoned(
+        () async {
+          linuxOverride = true;
+          await overrideResolution('1x2', () async {}, logger: logger);
+
+          const content = '''
+window_properties.width = 1;
+window_properties.height = 2;
+''';
+          expect(
+            verify(resolutionFile.writeAsString(captureAny)).captured.single,
+            content,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = _MockDirectory();
+          when(mockDir.path).thenReturn('');
+          return mockDir;
+        },
+        createFile: (name) {
+          if (name.endsWith('window_configuration.cc_copy')) {
+            final file = _MockFile();
+            when(file.existsSync()).thenReturn(true);
+            return file;
+          }
+          return resolutionFile;
+        },
+      );
+    });
   });
 }
 
 class _MockDirectory extends Mock implements Directory {}
 
 class _MockFile extends Mock implements File {}
+
+class _MockLogger extends Mock implements Logger {}

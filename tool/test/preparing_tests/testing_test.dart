@@ -1,23 +1,70 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/streams.dart'
     as streams;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/devices.dart'
     as devices;
+import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
     as tested;
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('test', () {
-    Logger logger;
-    setUp(() {
-      logger = _MockLogger();
+  Logger logger;
+  setUp(() {
+    logger = _MockLogger();
+  });
+
+  group('setup', () {
+    tearDown(() {
+      linuxOverride = null;
     });
 
+    test('overrides resolution on linux', () async {
+      linuxOverride = true;
+      final parser = scriptParameters;
+      final args = parser.parse(['-r', '1x1']);
+
+      await IOOverrides.runZoned(
+        () async {
+          await tested.setUp(
+            args,
+            () async {},
+            logger: logger,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = _MockDirectory();
+          when(mockDir.path).thenReturn('');
+          return mockDir;
+        },
+        createFile: (name) {
+          if (name.endsWith('window_configuration.cc_copy')) {
+            final file = _MockFile();
+            when(file.existsSync()).thenReturn(false);
+            return file;
+          }
+          File resolutionFile;
+          resolutionFile = _MockFile();
+          when(resolutionFile.existsSync()).thenReturn(true);
+          when(resolutionFile.readAsString()).thenAnswer((_) async => '');
+          return resolutionFile;
+        },
+      );
+
+      expect(
+        verify(logger.trace(captureAny)).captured.single,
+        'Overriding resolution',
+      );
+    });
+  });
+
+  group('test', () {
     test('builds application', () {
       final commands = <String>[];
       tested.test(
@@ -112,6 +159,10 @@ void main() {
     });
   });
 }
+
+class _MockDirectory extends Mock implements Directory {}
+
+class _MockFile extends Mock implements File {}
 
 class _MockLogger extends Mock implements Logger {}
 
