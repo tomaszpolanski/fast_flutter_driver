@@ -9,6 +9,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/stream
     as streams;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/commands.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/logger_extensions.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
@@ -158,30 +159,5 @@ String _findGenericFile(Directory currentDir) {
     return join(genericDir.path, 'generic.dart');
   } else {
     return _findGenericFile(currentDir.parent);
-  }
-}
-
-extension on Logger {
-  void printTestError(String line, List<String> blackListed) {
-    _print(line, blackListed, this.stderr);
-  }
-
-  void printTestOutput(String line, List<String> blackListed) {
-    _print(line, blackListed, this.stdout);
-  }
-
-  void _print(
-    String line,
-    List<String> blackListed,
-    void Function(String) print,
-  ) {
-    if (isVerbose) {
-      trace(line);
-    } else {
-      if (line.isEmpty || blackListed.any(line.startsWith)) {
-        return;
-      }
-      print(line);
-    }
   }
 }
