@@ -21,3 +21,6 @@ flags:
   example:
     paths:
       - example/lib/
+
+ignore:
+   - "**/*_impl.dart"         
