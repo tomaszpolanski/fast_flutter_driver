@@ -1,13 +1,14 @@
 # Fast Flutter Driver (UI component)
 [![](https://github.com/tomaszpolanski/fast_flutter_driver/workflows/Analyze/badge.svg)](https://github.com/tomaszpolanski/fast_flutter_driver/actions?query=workflow%3A%22Analyze%22)
+[![codecov](https://codecov.io/gh/tomaszpolanski/fast_flutter_driver/branch/master/graph/badge.svg)](https://codecov.io/gh/tomaszpolanski/fast_flutter_driver)
 
 | Plugin | Pub |
 |--------|-----|
-| [Command Line Tool](./tool/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver_tool.svg)](https://pub.dev/packages/fast_flutter_driver_tool) |
-| [UI Helper](./driver/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)](https://pub.dev/packages/fast_flutter_driver) |
+| [Command Line Tool](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/tool) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver_tool.svg)](https://pub.dev/packages/fast_flutter_driver_tool) |
+| [UI Helper](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/driver) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)](https://pub.dev/packages/fast_flutter_driver) |
 
 
-![](./example/assets/demo.gif)
+![](https://github.com/tomaszpolanski/fast_flutter_driver/raw/master/example/assets/demo.gif)
 
 Toolkit for running rapidly flutter driver tests on desktop/mobile.
 
@@ -136,7 +137,7 @@ void main(List<String> args) {
 }
 
 ```
-- Install [fast_flutter_driver](./tool) script:
+- Install [fast_flutter_driver](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/tool) script:
 ```shell script
 pub global activate fast_flutter_driver_tool
 ```

@@ -1,5 +1,6 @@
 # Fast Flutter Driver
 [![Build](https://github.com/tomaszpolanski/fast_flutter_driver/workflows/Build/badge.svg)](https://github.com/tomaszpolanski/fast_flutter_driver/actions?query=workflow%3A%22Build%22)
+[![codecov](https://codecov.io/gh/tomaszpolanski/fast_flutter_driver/branch/master/graph/badge.svg)](https://codecov.io/gh/tomaszpolanski/fast_flutter_driver)
 
 
 
