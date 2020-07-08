@@ -1,5 +1,6 @@
 # Fast Flutter Driver (UI component)
 [![](https://github.com/tomaszpolanski/fast_flutter_driver/workflows/Analyze/badge.svg)](https://github.com/tomaszpolanski/fast_flutter_driver/actions?query=workflow%3A%22Analyze%22)
+[![codecov](https://codecov.io/gh/tomaszpolanski/fast_flutter_driver/branch/master/graph/badge.svg)](https://codecov.io/gh/tomaszpolanski/fast_flutter_driver)
 
 | Plugin | Pub |
 |--------|-----|
@@ -7,7 +8,7 @@
 | [UI Helper](./driver/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)](https://pub.dev/packages/fast_flutter_driver) |
 
 
-![](./example/assets/demo.gif)
+![](https://github.com/tomaszpolanski/fast_flutter_driver/raw/master/example/assets/demo.gif)
 
 Toolkit for running rapidly flutter driver tests on desktop/mobile.
 
