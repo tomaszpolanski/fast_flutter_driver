@@ -66,7 +66,8 @@ Future<void> checkForUpdates({
 }) async {
   try {
     final versions = await Future.wait(
-        [currentVersion(pathProvider), remoteVersion(httpGet)]);
+      [currentVersion(pathProvider), remoteVersion(httpGet)],
+    );
     final current = versions[0];
     final latest = versions[1];
     if (current != latest) {

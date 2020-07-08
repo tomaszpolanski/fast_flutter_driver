@@ -54,6 +54,33 @@ void main() {
     });
   });
 
+  group('current project directory', () {
+    test('when invalid', () async {
+      await IOOverrides.runZoned(
+        () async {
+          final logger = _MockLogger();
+
+          await main_file.run(
+            [''],
+            loggerFactory: (_) => logger,
+            pathProvider: PathProvider(),
+            httpGet: (_) => null,
+          );
+          expect(
+            verify(logger.stderr(captureAny)).captured.single,
+            'Please run \x1B[1mfastdriver\x1B[0m from the root of your project (directory that contains \x1B[1mpubspec.yaml\x1B[0m)',
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = _MockDirectory();
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
+              .thenReturn([]);
+          return mockDir;
+        },
+      );
+    });
+  });
+
   test('deletes screenshots if the folder exists and passing the flag', () {
     Directory directory;
 

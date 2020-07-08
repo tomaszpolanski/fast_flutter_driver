@@ -44,12 +44,14 @@ Future<void> run(
   } else if (result[versionArg] == true) {
     logger.stdout(await currentVersion(pathProvider));
     return;
+  } else if (!isValidRootDirectory) {
+    logger.stderr(
+        'Please run ${bold('fastdriver')} from the root of your project '
+        '(directory that contains ${bold('pubspec.yaml')})');
+    return;
   }
   // ignore: unawaited_futures
   checkForUpdates(logger: logger, pathProvider: pathProvider, httpGet: httpGet);
-  if (!validRootDirectory(logger)) {
-    return;
-  }
 
   logger.stdout('Starting tests');
 
@@ -69,20 +71,18 @@ Future<void> run(
   if (testFile != null && exists(testFile)) {
     await setUp(
       result,
-      () async {
-        await test(
-          outputFactory: output,
-          inputFactory: input,
-          run: command_line.run,
-          logger: logger,
-          testFile: testFile,
-          withScreenshots: result[screenshotsArg],
-          language: result[languageArg],
-          resolution: result[resolutionArg],
-          platform: TestPlatformEx.fromString(result[platformArg]),
-          device: result[deviceArg],
-        );
-      },
+      () => test(
+        outputFactory: output,
+        inputFactory: input,
+        run: command_line.run,
+        logger: logger,
+        testFile: testFile,
+        withScreenshots: result[screenshotsArg],
+        language: result[languageArg],
+        resolution: result[resolutionArg],
+        platform: TestPlatformEx.fromString(result[platformArg]),
+        device: result[deviceArg],
+      ),
       logger: logger,
     );
   } else {

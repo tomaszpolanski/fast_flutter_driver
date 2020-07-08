@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:cli_util/cli_logging.dart';
-import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:path/path.dart' as p;
 
@@ -30,14 +28,8 @@ String get _nativeResolutionFile {
   return null;
 }
 
-bool validRootDirectory(Logger logger) {
-  final isRootDir = Directory.current.findOrNull('pubspec.yaml') != null;
-  if (!isRootDir) {
-    logger.stderr(
-        'Please run ${bold('fastdriver')} from the root of your project (directory that contains ${bold('pubspec.yaml')})');
-  }
-  return isRootDir;
-}
+bool get isValidRootDirectory =>
+    Directory.current.findOrNull('pubspec.yaml') != null;
 
 extension DirectoryEx on Directory {
   String findOrNull(String name, {bool recursive = false}) {

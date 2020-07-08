@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:mockito/mockito.dart';
@@ -9,16 +8,9 @@ import 'package:test/test.dart';
 void main() {
   group('validRootDirectory', () {
     test('no pubspec found', () {
-      final logger = _MockLogger();
-
       IOOverrides.runZoned(
         () async {
-          final tested = validRootDirectory(logger);
-          expect(
-            verify(logger.stderr(captureAny)).captured.single,
-            'Please run \x1B[1mfastdriver\x1B[0m from the root of your project (directory that contains \x1B[1mpubspec.yaml\x1B[0m)',
-          );
-          expect(tested, isFalse);
+          expect(isValidRootDirectory, isFalse);
         },
         getCurrentDirectory: () {
           final mockDir = _MockDirectory();
@@ -30,14 +22,9 @@ void main() {
     });
 
     test('pubspec found', () {
-      final logger = _MockLogger();
-
       IOOverrides.runZoned(
         () async {
-          final tested = validRootDirectory(logger);
-
-          verifyNever(logger.stderr(any));
-          expect(tested, isTrue);
+          expect(isValidRootDirectory, isTrue);
         },
         getCurrentDirectory: () {
           final mockDir = _MockDirectory();
@@ -158,5 +145,3 @@ void main() {
 class _MockDirectory extends Mock implements Directory {}
 
 class _MockFile extends Mock implements File {}
-
-class _MockLogger extends Mock implements Logger {}
