@@ -22,5 +22,5 @@ dependencies:
 dev_dependencies:
   test: ^1.6.3
   mockito: ^4.1.1
-  coverage: ^0.13.9
+  coverage: ^0.14.0
   file: ^5.1.0
