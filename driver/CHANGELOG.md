@@ -1,3 +1,6 @@
+## 1.0.0+3
+- Updating documentation
+
 ## 1.0.0+2
 - Increasing test coverage and refactoring
 
