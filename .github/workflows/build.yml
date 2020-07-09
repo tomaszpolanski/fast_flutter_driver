@@ -14,8 +14,6 @@ jobs:
         version: ["latest", "dev"]
 
     steps:
-      - run: sudo apt-get install ninja-build
-      - run: sudo apt-get install lcov
       - uses: actions/checkout@v2
       - uses: ChicagoFlutter/lcov-cop@v1.0.0
 
