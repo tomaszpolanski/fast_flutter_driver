@@ -24,7 +24,6 @@ nohup pub run coverage:collect_coverage \
   --resume-isolates 
 
 echo "Generating LCOV report..."
-pub run coverage:format_coverage --help
 pub run coverage:format_coverage \
   --check-ignore \
   --lcov \
