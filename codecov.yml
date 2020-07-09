@@ -21,11 +21,3 @@ flags:
   example:
     paths:
       - example/lib/
-
-ignore:
-  - "tool/lib/src/update/path_provider_impl.dart"
-  - "tool/lib/src/preparing_tests/command_line/command_line_impl.dart"
-  - "driver/lib/src/window_utils/window_utils.dart"
-  - "src/update/path_provider_impl.dart"
-  - "src/preparing_tests/command_line/command_line_impl.dart"
-  - src/window_utils/window_utils.dart"
