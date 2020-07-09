@@ -21,10 +21,11 @@ nohup pub run coverage:collect_coverage \
   --port=$OBS_PORT \
   --out=coverage/coverage.json \
   --wait-paused \
-  --resume-isolates
+  --resume-isolates 
 
 echo "Generating LCOV report..."
 pub run coverage:format_coverage \
+  --check-ignore \
   --lcov \
   --in=coverage/coverage.json \
   --out=coverage/lcov.info \
