@@ -48,6 +48,22 @@ void main() {
     test('is not', () {
       expect(System.isWindows, isFalse);
     }, skip: System.isWindows);
+
+    group('override', () {
+      tearDown(() {
+        windowsOverride = null;
+      });
+
+      test('when on windows', () {
+        windowsOverride = false;
+        expect(System.isWindows, isFalse);
+      }, skip: !io.Platform.isWindows);
+
+      test('when not on windows', () {
+        windowsOverride = true;
+        expect(System.isWindows, isTrue);
+      }, skip: io.Platform.isWindows);
+    });
   });
 
   group('isMacOS', () {
@@ -58,6 +74,22 @@ void main() {
     test('is not', () {
       expect(System.isMacOS, isFalse);
     }, skip: System.isMacOS);
+
+    group('override', () {
+      tearDown(() {
+        macOsOverride = null;
+      });
+
+      test('when on windows', () {
+        macOsOverride = false;
+        expect(System.isMacOS, isFalse);
+      }, skip: !io.Platform.isMacOS);
+
+      test('when not on windows', () {
+        macOsOverride = true;
+        expect(System.isMacOS, isTrue);
+      }, skip: io.Platform.isMacOS);
+    });
   });
 
   group('isIOS', () {

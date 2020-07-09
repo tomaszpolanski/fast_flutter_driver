@@ -1,3 +1,6 @@
+## 1.1.0
+- Exposing System helper class
+
 ## 1.0.0+3
 - Removing duplication of update message
 
