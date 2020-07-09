@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:fast_flutter_driver/driver.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
