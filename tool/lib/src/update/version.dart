@@ -71,13 +71,6 @@ class VersionChecker {
       final versions = await Future.wait([currentVersion(), remoteVersion()]);
       final current = versions[0];
       final latest = versions[1];
-      if (current != latest) {
-        logger
-          ..stdout('${green('New version')} (${bold(latest)}) available!')
-          ..stdout(
-            "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
-          );
-      }
       return AppVersion(local: current, remote: latest);
     } catch (_) {
       // Don't prevent running script because checking version failed
