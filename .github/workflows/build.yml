@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ${{ matrix.package }}
-        run: pub get
+        run: pub get &&  sudo apt-get install lcov
 
       - name: Analyze
         working-directory: ${{ matrix.package }}
