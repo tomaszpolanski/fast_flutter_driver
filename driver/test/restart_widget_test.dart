@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fast_flutter_driver/driver.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -66,5 +67,25 @@ void main() {
 
     expect(find.byKey(mainKey), findsOneWidget);
     expect(find.text(configuration), findsOneWidget);
+  });
+
+  testWidgets('debugFillProperties', (tester) async {
+    const configuration = 'test message';
+    const color = Colors.pink;
+    final widget = RestartWidget<String>(
+      initial: configuration,
+      backgroundColor: color,
+      builder: (_, config) => const Directionality(
+        textDirection: TextDirection.ltr,
+        child: Placeholder(),
+      ),
+    );
+    final tested = DiagnosticPropertiesBuilder();
+
+    widget.debugFillProperties(tested);
+    final DiagnosticsProperty<String> initial = tested.properties[0];
+    expect(initial.value, configuration);
+    final ColorProperty backgroundColor = tested.properties[1];
+    expect(backgroundColor.value, color);
   });
 }
