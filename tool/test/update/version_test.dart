@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider_impl.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:http/http.dart';
@@ -9,11 +8,9 @@ import 'package:test/test.dart';
 
 void main() {
   VersionChecker tested;
-  Logger logger;
   PathProvider pathProvider;
 
   setUp(() {
-    logger = _MockLogger();
     pathProvider = _MockPathProvider();
   });
 
@@ -21,7 +18,6 @@ void main() {
     test('throws exception if version not found', () async {
       Future<Response> get(String url) async => Response('', 200);
       tested = VersionChecker(
-        logger: logger,
         pathProvider: pathProvider,
         httpGet: get,
       );
@@ -42,7 +38,6 @@ void main() {
       }
 
       tested = VersionChecker(
-        logger: logger,
         pathProvider: pathProvider,
         httpGet: get,
       );
@@ -62,7 +57,6 @@ void main() {
             200,
           );
       tested = VersionChecker(
-        logger: logger,
         pathProvider: pathProvider,
         httpGet: get,
       );
@@ -80,7 +74,6 @@ void main() {
     group('when yaml', () {
       test('reads yaml file', () async {
         tested = VersionChecker(
-          logger: logger,
           pathProvider: pathProvider,
           httpGet: (_) => null,
         );
@@ -116,7 +109,6 @@ void main() {
 ''';
       test('reads lock file', () async {
         tested = VersionChecker(
-          logger: logger,
           pathProvider: pathProvider,
           httpGet: (_) => null,
         );
@@ -159,7 +151,6 @@ void main() {
                 200,
               );
           tested = VersionChecker(
-            logger: logger,
             pathProvider: pathProvider,
             httpGet: get,
           );
@@ -191,7 +182,6 @@ void main() {
                 200,
               );
           tested = VersionChecker(
-            logger: logger,
             pathProvider: pathProvider,
             httpGet: get,
           );
@@ -220,7 +210,6 @@ void main() {
         () async {
           Future<Response> get(String url) async => Response('', 404);
           tested = VersionChecker(
-            logger: logger,
             pathProvider: pathProvider,
             httpGet: get,
           );
@@ -247,5 +236,3 @@ void main() {
 class _MockFile extends Mock implements File {}
 
 class _MockPathProvider extends Mock implements PathProvider {}
-
-class _MockLogger extends Mock implements Logger {}
