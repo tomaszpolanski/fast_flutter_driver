@@ -11,7 +11,8 @@ pub global activate fast_flutter_driver_tool
 
 ## Running on Mobile
 To run the tests on a specific device, just pass the device id that you get from `flutter devices`:
-```
+```bash
+flutter pub get
 fastdriver --device emulator-5554
 ```
 
@@ -40,13 +41,13 @@ export PATH="$PATH:$HOME/flutter/bin"
 export PATH="$PATH:$HOME/flutter/bin/cache/dart-sdk/bin"
 ```
 - Update CocoaPods:
-```
+```bash
 brew upgrade cocoapods
 pod setup
 gem install cocoapods
 ```
 - In case you are getting error `ArgumentError - invalid byte sequence in US-ASCII` when installing Pods, set proper encoding:
-```
+```bash
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -61,6 +62,7 @@ Make sure that those components are installed:
 ### Running on Desktop
 If you don't specify the device you want to run the tests against, then desktop device is used by default:
 ```bash
+flutter pub get
 fastdriver
 ```
 
