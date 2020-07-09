@@ -1,4 +1,5 @@
 // coverage:ignore-file
+
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/streams.dart';
 import 'package:meta/meta.dart';
 import 'package:process_run/shell.dart';
