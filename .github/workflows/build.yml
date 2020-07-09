@@ -16,10 +16,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: ChicagoFlutter/lcov-cop@v1.0.0
 
       - name: Install dependencies
         working-directory: ${{ matrix.package }}
-        run: pub get &&  sudo apt-get install lcov
+        run: pub get
 
       - name: Analyze
         working-directory: ${{ matrix.package }}
