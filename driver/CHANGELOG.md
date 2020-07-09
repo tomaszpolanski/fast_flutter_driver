@@ -1,3 +1,6 @@
+## 1.0.1
+- Improving testability
+
 ## 1.0.0+3
 - Updating documentation
 
