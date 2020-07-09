@@ -21,8 +21,8 @@ class RestartWidget<T> extends StatefulWidget {
 
   static Future<void> restartApp<T>(T configuration) {
     final state = _RestartWidgetState.global.currentContext
-        .findAncestorStateOfType<_RestartWidgetState<T>>();
-    return state.restartApp(configuration);
+        ?.findAncestorStateOfType<_RestartWidgetState<T>>();
+    return state?.restartApp(configuration);
   }
 
   @override
