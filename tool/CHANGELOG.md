@@ -1,3 +1,6 @@
+## 1.0.0+2
+- Increasing test coverage and refactoring
+
 ## 1.0.0+1
 - (@akaiser) Fixing a typo
 - Updating README
