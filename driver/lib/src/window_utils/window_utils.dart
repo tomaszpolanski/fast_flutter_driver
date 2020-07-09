@@ -1,34 +1,32 @@
 // coverage:ignore-file
 
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:io';
 
+import 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:win32/win32.dart';
 
-class WindowUtils {
-  static const MethodChannel _channel = MethodChannel('window_utils');
+// ignore: one_member_abstracts
+abstract class SystemWindow {
+  Future<bool> setSize(Size size);
+}
 
-  static Future<bool> setSize(Size size) {
-    if (Platform.isMacOS) {
-      return _channel.invokeMethod<bool>('setSize', {
-        'width': size.width,
-        'height': size.height,
-      });
-    } else if (Platform.isWindows) {
-      final window =
-          FindWindowEx(0, 0, TEXT('FLUTTER_RUNNER_WIN32_WINDOW'), nullptr);
+typedef WindowFactory = SystemWindow Function();
 
-      if (window == 0) {
-        throw Exception('Cannot find flutter window');
-      } else {
-        ShowWindow(window, SW_MAXIMIZE);
-        MoveWindow(window, 0, 0, size.width.round(), size.height.round(), 0);
-        return Future.value(true);
-      }
-    }
-    return Future.value(false);
-  }
+// ignore: avoid_classes_with_only_static_members
+class WindowUtils implements SystemWindow {
+  WindowUtils({
+    @required this.macOs,
+    @required this.win32,
+    @required this.other,
+  }) : _systemWindow =
+            System.isMacOS ? macOs() : System.isWindows ? win32() : other();
+
+  final WindowFactory macOs;
+  final WindowFactory win32;
+  final WindowFactory other;
+
+  final SystemWindow _systemWindow;
+
+  @override
+  Future<bool> setSize(Size size) => _systemWindow.setSize(size);
 }
