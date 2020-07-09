@@ -6,8 +6,11 @@ abstract class System {
   static const bool isWeb = identical(0, 0.0);
 
   static bool get isLinux => linuxOverride ?? !isWeb && io.Platform.isLinux;
-  static final bool isWindows = !isWeb && io.Platform.isWindows;
-  static final bool isMacOS = !isWeb && io.Platform.isMacOS;
+
+  static bool get isWindows =>
+      windowsOverride ?? !isWeb && io.Platform.isWindows;
+
+  static bool get isMacOS => macOsOverride ?? !isWeb && io.Platform.isMacOS;
 
   static final bool isIOS = !isWeb && io.Platform.isIOS;
   static final bool isAndroid = !isWeb && io.Platform.isAndroid;
@@ -17,3 +20,5 @@ abstract class System {
 }
 
 bool linuxOverride;
+bool windowsOverride;
+bool macOsOverride;
