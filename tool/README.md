@@ -152,4 +152,4 @@ All done!
 ## What's next
 This was the simplest setup of tests, next you would like to pass different application configuration so every time you run tests, they could be run with a different configuration (eg different page). To do that you need to add more properties to `TestConfiguration`.
 
-A full example of how to do that can be found in the [example](./example/README.md) folder.
+A full example of how to do that can be found in the [example](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#fast-flutter-driver-example) folder.
