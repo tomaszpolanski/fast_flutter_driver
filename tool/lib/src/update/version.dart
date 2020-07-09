@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
-import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
+import 'package:fast_flutter_driver_tool/src/update/path_provider_impl.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';

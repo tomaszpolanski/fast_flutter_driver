@@ -30,3 +30,10 @@ pub run coverage:format_coverage \
   --out=coverage/lcov.info \
   --packages=.packages \
   --report-on=lib
+
+echo "Removing untestable classes..."
+lcov --remove coverage/lcov.info  \
+ "tool/lib/src/update/path_provider_impl.dart" \
+ "tool/lib/src/preparing_tests/command_line/command_line_impl.dart" \
+ "driver/lib/src/window_utils/window_utils.dart" \
+ -o coverage/lcov.info

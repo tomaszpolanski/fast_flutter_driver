@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
-import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/command_line.dart'
+import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/command_line_impl.dart'
     as command_line;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/streams.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
@@ -10,7 +10,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator/test_generator.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
-import 'package:fast_flutter_driver_tool/src/update/path_provider.dart';
+import 'package:fast_flutter_driver_tool/src/update/path_provider_impl.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:http/http.dart' as http;
