@@ -1,4 +1,7 @@
 import 'package:fast_flutter_driver/src/restart_widget.dart';
+import 'package:fast_flutter_driver/src/window_utils/macos_window.dart';
+import 'package:fast_flutter_driver/src/window_utils/unsupported_window.dart';
+import 'package:fast_flutter_driver/src/window_utils/win32_window.dart';
 import 'package:fast_flutter_driver/src/window_utils/window_utils.dart';
 import 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart';
 import 'package:flutter/foundation.dart'
@@ -6,7 +9,11 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/material.dart';
 
 Future<String> configureTest(BaseConfiguration config) async {
-  await WindowUtils.setSize(
+  await WindowUtils(
+    macOs: () => MacOsWindow(),
+    win32: () => Win32Window(),
+    other: () => UnsupportedWindow(),
+  ).setSize(
     Size(config.resolution.width, config.resolution.height),
   );
 
