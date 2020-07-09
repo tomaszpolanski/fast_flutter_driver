@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider_impl.dart';
-import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
@@ -12,12 +10,10 @@ class VersionChecker {
   VersionChecker({
     @required this.pathProvider,
     @required this.httpGet,
-    @required this.logger,
   });
 
   final PathProvider pathProvider;
   final Future<Response> Function(String url) httpGet;
-  final Logger logger;
 
   Future<String> currentVersion() async {
     final yamlVersion = await _yamlVersion(pathProvider.scriptDir);
@@ -71,13 +67,6 @@ class VersionChecker {
       final versions = await Future.wait([currentVersion(), remoteVersion()]);
       final current = versions[0];
       final latest = versions[1];
-      if (current != latest) {
-        logger
-          ..stdout('${green('New version')} (${bold(latest)}) available!')
-          ..stdout(
-            "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
-          );
-      }
       return AppVersion(local: current, remote: latest);
     } catch (_) {
       // Don't prevent running script because checking version failed

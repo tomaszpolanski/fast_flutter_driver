@@ -1,3 +1,6 @@
+## 1.0.0+3
+- Removing duplication of update message
+
 ## 1.0.0+2
 - Increasing test coverage and refactoring
 

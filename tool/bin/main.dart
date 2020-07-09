@@ -24,7 +24,6 @@ Future<void> main(List<String> paths) {
     versionCheckerFactory: (logger) => VersionChecker(
       pathProvider: PathProvider(),
       httpGet: http.get,
-      logger: logger,
     ),
   );
 }
