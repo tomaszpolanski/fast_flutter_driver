@@ -44,7 +44,6 @@ Future<void> test({
   @required String device,
   @required TestPlatform platform,
 }) async {
-  assert(testFile != null);
   logger.stdout('Testing $testFile');
   final mainFile = _mainDartFile(testFile);
   final input = inputFactory();

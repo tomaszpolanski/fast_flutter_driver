@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator/test_generator.dart';
 import 'package:file/memory.dart';
 import 'package:mockito/mockito.dart';
@@ -86,6 +87,31 @@ void main() {
       expect(aggregatedFile.readAsStringSync(), content);
     });
   });
+
+  group('aggregatedTest', () {
+    test('generates test file', () {
+      IOOverrides.runZoned(
+        () async {
+          final logger = _MockLogger();
+          expect(await aggregatedTest('/', logger), setupMainFile);
+        },
+        createDirectory: (name) {
+          final file = _MockFile();
+          when(file.path).thenReturn('$name$setupMainFile');
+          final mockDir = _MockDirectory();
+          when(mockDir.path).thenReturn(name);
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
+              .thenReturn([file]);
+          return mockDir;
+        },
+        createFile: (name) => MemoryFileSystem().file(setupMainFile),
+      );
+    });
+  });
 }
 
 class _MockDirectory extends Mock implements Directory {}
+
+class _MockFile extends Mock implements File {}
+
+class _MockLogger extends Mock implements Logger {}
