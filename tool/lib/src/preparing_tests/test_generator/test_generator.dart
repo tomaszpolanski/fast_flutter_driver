@@ -9,6 +9,7 @@ const aggregatedTestFile = 'generic_test.dart';
 const setupMainFile = 'generic.dart';
 
 Future<String> aggregatedTest(String directoryPath, Logger logger) async {
+  print('QQQ1 $directoryPath');
   final dir = Directory(directoryPath);
   final setupFile = dir.findOrNull(
         setupMainFile,
@@ -22,16 +23,23 @@ Future<String> aggregatedTest(String directoryPath, Logger logger) async {
     return null;
   }
 
+  print('QQQ2 $setupFile');
   final genericTestFile =
       File(platformPath(p.join(p.dirname(setupFile), aggregatedTestFile)));
+  print('QQQ3 $setupFile');
   if (!genericTestFile.existsSync()) {
     genericTestFile.createSync();
   }
   logger?.trace('Generating test file');
+
+  // TODO difference in depth between generic and
+  // TODO add interface for generateTestFile function for better testing
+  //QQQ1 test_driver\deals\edits
+  //QQQ2 c:\Users\tpolanski\Documents\GitHub\mobile-flutter-merchant\test_driver\generic\generic.dart
   await generateTestFile(
     genericTestFile,
     Directory(directoryPath),
-    '../',
+    r'../deals/edits/',
     hasArguments: true,
   );
   logger?.trace('Done generating test file');

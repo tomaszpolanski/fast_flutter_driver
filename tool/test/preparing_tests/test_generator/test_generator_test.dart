@@ -107,6 +107,29 @@ void main() {
         createFile: (name) => MemoryFileSystem().file(setupMainFile),
       );
     });
+
+    test('generate properly paths for not root folders', () {
+      IOOverrides.runZoned(
+        () async {
+          final logger = _MockLogger();
+          expect(
+            await aggregatedTest(r'test_driver\deals\edits', logger),
+            setupMainFile,
+          );
+        },
+        createDirectory: (name) {
+          final file = _MockFile();
+          when(file.path).thenReturn(
+              r'c:\Users\tpolanski\Documents\GitHub\mobile-flutter-merchant\test_driver\generic\generic.dart');
+          final mockDir = _MockDirectory();
+          when(mockDir.path).thenReturn(name);
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
+              .thenReturn([file]);
+          return mockDir;
+        },
+        createFile: (name) => MemoryFileSystem().file(setupMainFile),
+      );
+    });
   });
 }
 
