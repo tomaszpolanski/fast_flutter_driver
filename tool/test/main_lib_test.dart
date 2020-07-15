@@ -8,6 +8,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
     hide setUp;
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
+import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -26,6 +27,9 @@ void main() {
     testFileProvider = _MockTestFileProvider();
   });
   group('commands', () {
+    tearDown(() {
+      linuxOverride = null;
+    });
     test('help', () async {
       await main_file.run(
         ['-h'],
@@ -57,6 +61,7 @@ void main() {
     });
 
     test('flavor', () async {
+      linuxOverride = false;
       when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
       when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
       const flavor = 'chocolate';
