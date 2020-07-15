@@ -1,3 +1,6 @@
+## 1.1.1
+- [FIX] Running subfolder tests failed
+
 ## 1.1.0
 - Exposing System helper class
 
