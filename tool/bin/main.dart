@@ -85,8 +85,7 @@ Future<void> run(
       dir.deleteSync(recursive: true);
     }
   }
-  final qqqq = result.wasParsed(flavorArg);
-  final testttt = result[flavorArg];
+
   final testFile = await testFileProviderFactory(logger).testFile(
     (result.rest.length == 1 ? result.rest.first : null) ?? 'test_driver',
   );
@@ -102,7 +101,7 @@ Future<void> run(
           resolution: result[resolutionArg],
           platform: TestPlatformEx.fromString(result[platformArg]),
           device: result[deviceArg],
-          flavor: testttt,
+          flavor: result[flavorArg],
         ),
       ),
       logger: logger,

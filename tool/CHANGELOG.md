@@ -1,3 +1,6 @@
+## 1.2.0
+- [FEATURE] Passing `flavor` parameter when running tests
+
 ## 1.1.1
 - [FIX] Running subfolder tests failed
 
