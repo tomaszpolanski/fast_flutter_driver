@@ -10,5 +10,6 @@ Future<void> main() async {
     platformPath(p.join(testDir.path, 'all_tests.dart')),
   )..createSync();
 
-  await generateTestFile(genericTestFile, testDir, '', hasArguments: false);
+  await TestGenerator()
+      .generateTestFile(genericTestFile, testDir, '', hasArguments: false);
 }

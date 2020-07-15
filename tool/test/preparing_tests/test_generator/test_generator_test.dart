@@ -7,14 +7,19 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
+  TestGenerator generator;
   group('testFiles', () {
+    setUp(() {
+      generator = TestGenerator();
+    });
+
     test('list test file', () {
       const testName = 'my_test.dart';
       final mockDir = _MockDirectory();
       when(mockDir.listSync(recursive: anyNamed('recursive')))
           .thenReturn([File(testName)]);
 
-      final tested = testFiles(mockDir, 'any');
+      final tested = generator.testFiles(mockDir, 'any');
 
       expect(tested, contains(testName));
     });
@@ -25,7 +30,7 @@ void main() {
       when(mockDir.listSync(recursive: anyNamed('recursive')))
           .thenReturn([File(testName)]);
 
-      final tested = testFiles(mockDir, 'any');
+      final tested = generator.testFiles(mockDir, 'any');
 
       expect(tested, isEmpty);
     });
@@ -36,7 +41,7 @@ void main() {
       when(mockDir.listSync(recursive: anyNamed('recursive')))
           .thenReturn([File(testName)]);
 
-      final tested = testFiles(mockDir, testName);
+      final tested = generator.testFiles(mockDir, testName);
 
       expect(tested, isEmpty);
     });
@@ -46,6 +51,7 @@ void main() {
     File aggregatedFile;
     Directory mockDir;
     setUp(() {
+      generator = TestGenerator();
       aggregatedFile = MemoryFileSystem().file('test.dart');
       mockDir = _MockDirectory();
       when(mockDir.path).thenReturn('/');
@@ -65,7 +71,8 @@ void main(List<String> args) {
 }
 ''';
 
-      await generateTestFile(aggregatedFile, mockDir, '', hasArguments: true);
+      await generator.generateTestFile(aggregatedFile, mockDir, '',
+          hasArguments: true);
 
       expect(aggregatedFile.readAsStringSync(), content);
     });
@@ -82,26 +89,35 @@ void main() {
 }
 ''';
 
-      await generateTestFile(aggregatedFile, mockDir, '', hasArguments: false);
+      await generator.generateTestFile(aggregatedFile, mockDir, '',
+          hasArguments: false);
 
       expect(aggregatedFile.readAsStringSync(), content);
     });
   });
 
   group('aggregatedTest', () {
+    setUp(() {
+      generator = _MockTestGenerator();
+    });
     test('generates test file', () {
       IOOverrides.runZoned(
         () async {
           final logger = _MockLogger();
-          expect(await aggregatedTest('/', logger), setupMainFile);
+          expect(await aggregatedTest('/', generator, logger), setupMainFile);
         },
         createDirectory: (name) {
+          const absolutePath =
+              r'c:\Users\tpolanski\Documents\GitHub\flutter-project';
           final file = _MockFile();
           when(file.path).thenReturn('$name$setupMainFile');
+          final absoluteDir = _MockDirectory();
+          when(absoluteDir.path).thenReturn('$absolutePath\\$name');
           final mockDir = _MockDirectory();
           when(mockDir.path).thenReturn(name);
           when(mockDir.listSync(recursive: anyNamed('recursive')))
               .thenReturn([file]);
+          when(mockDir.absolute).thenReturn(absoluteDir);
           return mockDir;
         },
         createFile: (name) => MemoryFileSystem().file(setupMainFile),
@@ -109,25 +125,43 @@ void main() {
     });
 
     test('generate properly paths for not root folders', () {
+      const absolutePath =
+          r'c:\Users\tpolanski\Documents\GitHub\flutter-project';
       IOOverrides.runZoned(
         () async {
           final logger = _MockLogger();
+
+          await aggregatedTest(r'test_driver\deals\edits', generator, logger);
           expect(
-            await aggregatedTest(r'test_driver\deals\edits', logger),
-            setupMainFile,
+            verify(generator.generateTestFile(any, any, captureAny,
+                    hasArguments: anyNamed('hasArguments')))
+                .captured
+                .single,
+            '../deals/edits/',
           );
         },
         createDirectory: (name) {
           final file = _MockFile();
-          when(file.path).thenReturn(
-              r'c:\Users\tpolanski\Documents\GitHub\mobile-flutter-merchant\test_driver\generic\generic.dart');
+          when(file.path)
+              .thenReturn('$absolutePath\\test_driver\\generic\\generic.dart');
+          final absoluteDir = _MockDirectory();
+          when(absoluteDir.path).thenReturn('$absolutePath\\$name');
           final mockDir = _MockDirectory();
           when(mockDir.path).thenReturn(name);
           when(mockDir.listSync(recursive: anyNamed('recursive')))
               .thenReturn([file]);
+          when(mockDir.absolute).thenReturn(absoluteDir);
           return mockDir;
         },
-        createFile: (name) => MemoryFileSystem().file(setupMainFile),
+        createFile: (name) {
+          if (name.endsWith(aggregatedTestFile)) {
+            final file = _MockFile();
+            when(file.path).thenReturn(name);
+            when(file.existsSync()).thenReturn(true);
+            return file;
+          }
+          return MemoryFileSystem().file('$absolutePath\\$setupMainFile');
+        },
       );
     });
   });
@@ -138,3 +172,5 @@ class _MockDirectory extends Mock implements Directory {}
 class _MockFile extends Mock implements File {}
 
 class _MockLogger extends Mock implements Logger {}
+
+class _MockTestGenerator extends Mock implements TestGenerator {}
