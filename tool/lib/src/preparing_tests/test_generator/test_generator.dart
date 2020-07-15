@@ -34,12 +34,13 @@ Future<String> aggregatedTest(
   logger?.trace('Generating test file');
 
   final testDir = Directory(directoryPath);
+
   final importPath =
       _importPath(testDir, genericTestFile).replaceAll(r'\', '/');
   await generator.generateTestFile(
     genericTestFile,
     testDir,
-    '../$importPath/',
+    '../${importPath.isNotEmpty ? '$importPath/' : ''}',
     hasArguments: true,
   );
   logger?.trace('Done generating test file');
@@ -49,7 +50,7 @@ Future<String> aggregatedTest(
 
 String _importPath(Directory testDir, File aggregatedFile) {
   final dir = testDir.absolute.path;
-  final file = aggregatedFile.path;
+  final file = aggregatedFile.absolute.path;
   final differentIndex = _compare(dir, file);
 
   return dir.substring(differentIndex);

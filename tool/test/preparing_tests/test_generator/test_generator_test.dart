@@ -155,9 +155,56 @@ void main() {
         },
         createFile: (name) {
           if (name.endsWith(aggregatedTestFile)) {
+            final absolute = _MockFile();
+            when(absolute.path).thenReturn(name);
             final file = _MockFile();
             when(file.path).thenReturn(name);
             when(file.existsSync()).thenReturn(true);
+            when(file.absolute).thenReturn(absolute);
+            return file;
+          }
+          return MemoryFileSystem().file('$absolutePath\\$setupMainFile');
+        },
+      );
+    });
+
+    test('generate properly paths for root folder', () {
+      const absolutePath =
+          r'c:\Users\tpolanski\Documents\GitHub\flutter-project';
+      IOOverrides.runZoned(
+        () async {
+          final logger = _MockLogger();
+
+          await aggregatedTest('test_driver', generator, logger);
+          expect(
+            verify(generator.generateTestFile(any, any, captureAny,
+                    hasArguments: anyNamed('hasArguments')))
+                .captured
+                .single,
+            '../',
+          );
+        },
+        createDirectory: (name) {
+          final file = _MockFile();
+          when(file.path)
+              .thenReturn('$absolutePath\\test_driver\\generic\\generic.dart');
+          final absoluteDir = _MockDirectory();
+          when(absoluteDir.path).thenReturn('$absolutePath\\$name');
+          final mockDir = _MockDirectory();
+          when(mockDir.path).thenReturn(name);
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
+              .thenReturn([file]);
+          when(mockDir.absolute).thenReturn(absoluteDir);
+          return mockDir;
+        },
+        createFile: (name) {
+          if (name.endsWith(aggregatedTestFile)) {
+            final absolute = _MockFile();
+            when(absolute.path).thenReturn(name);
+            final file = _MockFile();
+            when(file.path).thenReturn(name);
+            when(file.existsSync()).thenReturn(true);
+            when(file.absolute).thenReturn(absolute);
             return file;
           }
           return MemoryFileSystem().file('$absolutePath\\$setupMainFile');
