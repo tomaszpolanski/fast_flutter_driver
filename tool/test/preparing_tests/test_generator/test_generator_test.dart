@@ -125,8 +125,9 @@ void main() {
     });
 
     test('generate properly paths for not root folders', () {
-      const absolutePath =
-          r'c:\Users\tpolanski\Documents\GitHub\flutter-project';
+      final absolutePath = Platform.isWindows
+          ? r'c:\Users\tpolanski\Documents\GitHub\flutter-project'
+          : '/Users/tpolanski/Documents/GitHub/flutter-project';
       IOOverrides.runZoned(
         () async {
           final logger = _MockLogger();
@@ -169,8 +170,9 @@ void main() {
     });
 
     test('generate properly paths for root folder', () {
-      const absolutePath =
-          r'c:\Users\tpolanski\Documents\GitHub\flutter-project';
+      final absolutePath = Platform.isWindows
+          ? r'c:\Users\tpolanski\Documents\GitHub\flutter-project'
+          : '/Users/tpolanski/Documents/GitHub/flutter-project';
       IOOverrides.runZoned(
         () async {
           final logger = _MockLogger();
