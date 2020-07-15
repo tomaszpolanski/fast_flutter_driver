@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 class Commands {
   FlutterCommand get flutter => const FlutterCommand._();
 }
@@ -5,8 +7,15 @@ class Commands {
 class FlutterCommand {
   const FlutterCommand._();
 
-  String run(String target, String device) =>
-      'flutter run -d $device --target=$target';
+  String run(
+    String target,
+    String device, {
+    @required String flavor,
+  }) {
+    // ignore: missing_whitespace_between_adjacent_strings
+    return 'flutter run -d $device --target=$target'
+        '${flavor != null ? ' --flavor $flavor' : ''}';
+  }
 
   String attach(String debugUri, String device) =>
       'flutter attach -d $device --debug-uri $debugUri';

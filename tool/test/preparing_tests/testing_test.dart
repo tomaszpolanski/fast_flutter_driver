@@ -8,7 +8,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/devices.dart'
     as devices;
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
-    as tested;
+    as test_executor;
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:mockito/mockito.dart';
@@ -32,7 +32,7 @@ void main() {
 
       await IOOverrides.runZoned(
         () async {
-          await tested.setUp(
+          await test_executor.setUp(
             args,
             () async {},
             logger: logger,
@@ -67,7 +67,7 @@ void main() {
       linuxOverride = false;
       bool haveRunTests = false;
 
-      await tested.setUp(
+      await test_executor.setUp(
         scriptParameters.parse(['-r', '1x1']),
         () async {
           haveRunTests = true;
@@ -81,9 +81,12 @@ void main() {
   });
 
   group('test', () {
+    test_executor.TestExecutor tested;
+
     test('builds application', () {
+      const flavor = 'vanilla';
       final commands = <String>[];
-      tested.test(
+      tested = test_executor.TestExecutor(
         outputFactory: streams.output,
         inputFactory: streams.input,
         run: (
@@ -95,24 +98,35 @@ void main() {
           commands.add(command);
         },
         logger: logger,
-        testFile: 'generic_test.dart',
-        withScreenshots: false,
-        language: 'pl',
-        resolution: '800x600',
-        platform: TestPlatform.android,
-        device: devices.device,
+      );
+
+      // ignore: cascade_invocations
+      tested.test(
+        'generic_test.dart',
+        parameters: test_executor.ExecutorParameters(
+          withScreenshots: false,
+          language: 'pl',
+          resolution: '800x600',
+          platform: TestPlatform.android,
+          device: devices.device,
+          flavor: flavor,
+        ),
       );
 
       expect(
         commands,
-        contains('flutter run -d ${devices.device} --target=generic.dart'),
+        contains(
+          'flutter run -d ${devices.device} '
+          '--target=generic.dart '
+          '--flavor $flavor',
+        ),
       );
     });
 
-    test('builds application for specyfic device', () {
+    test('builds application for specific device', () {
       final commands = <String>[];
       const device = 'some_special_device';
-      tested.test(
+      tested = test_executor.TestExecutor(
         outputFactory: streams.output,
         inputFactory: streams.input,
         run: (
@@ -124,12 +138,18 @@ void main() {
           commands.add(command);
         },
         logger: logger,
-        testFile: 'generic_test.dart',
-        withScreenshots: false,
-        language: 'pl',
-        resolution: '800x600',
-        platform: TestPlatform.android,
-        device: device,
+      );
+
+      // ignore: cascade_invocations
+      tested.test(
+        'generic_test.dart',
+        parameters: const test_executor.ExecutorParameters(
+          withScreenshots: false,
+          language: 'pl',
+          resolution: '800x600',
+          platform: TestPlatform.android,
+          device: device,
+        ),
       );
 
       expect(
@@ -140,7 +160,7 @@ void main() {
 
     test('runs tests application', () async {
       final commands = <String>[];
-      await tested.test(
+      tested = test_executor.TestExecutor(
         outputFactory: streams.output,
         inputFactory: () => _MockInputCommandLineStream(),
         run: (
@@ -159,12 +179,16 @@ void main() {
           }
         },
         logger: logger,
-        testFile: 'generic_test.dart',
-        withScreenshots: false,
-        language: 'pl',
-        resolution: '800x600',
-        platform: TestPlatform.android,
-        device: devices.device,
+      );
+      await tested.test(
+        'generic_test.dart',
+        parameters: test_executor.ExecutorParameters(
+          withScreenshots: false,
+          language: 'pl',
+          resolution: '800x600',
+          platform: TestPlatform.android,
+          device: devices.device,
+        ),
       );
 
       expect(
