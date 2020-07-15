@@ -25,6 +25,15 @@ Future<void> main(List<String> paths) {
       pathProvider: PathProvider(),
       httpGet: http.get,
     ),
+    testExecutorFactory: (logger) => TestExecutor(
+      outputFactory: output,
+      inputFactory: input,
+      run: command_line.run,
+      logger: logger,
+    ),
+    testFileProviderFactory: (logger) => TestFileProvider(
+      logger: logger,
+    ),
   );
 }
 
@@ -32,6 +41,8 @@ Future<void> run(
   List<String> paths, {
   @required Logger Function(bool) loggerFactory,
   @required VersionChecker Function(Logger) versionCheckerFactory,
+  @required TestExecutor Function(Logger) testExecutorFactory,
+  @required TestFileProvider Function(Logger) testFileProviderFactory,
 }) async {
   final parser = scriptParameters;
   final result = parser.parse(paths);
@@ -74,25 +85,25 @@ Future<void> run(
       dir.deleteSync(recursive: true);
     }
   }
-
-  final testFile = await _testFile(
+  final qqqq = result.wasParsed(flavorArg);
+  final testttt = result[flavorArg];
+  final testFile = await testFileProviderFactory(logger).testFile(
     (result.rest.length == 1 ? result.rest.first : null) ?? 'test_driver',
-    logger,
   );
-  if (testFile != null && exists(testFile)) {
+
+  if (testFile != null) {
     await setUp(
       result,
-      () => test(
-        outputFactory: output,
-        inputFactory: input,
-        run: command_line.run,
-        logger: logger,
-        testFile: testFile,
-        withScreenshots: result[screenshotsArg],
-        language: result[languageArg],
-        resolution: result[resolutionArg],
-        platform: TestPlatformEx.fromString(result[platformArg]),
-        device: result[deviceArg],
+      () => testExecutorFactory(logger).test(
+        testFile,
+        parameters: ExecutorParameters(
+          withScreenshots: result[screenshotsArg],
+          language: result[languageArg],
+          resolution: result[resolutionArg],
+          platform: TestPlatformEx.fromString(result[platformArg]),
+          device: result[deviceArg],
+          flavor: testttt,
+        ),
       ),
       logger: logger,
     );
@@ -101,16 +112,6 @@ Future<void> run(
     return;
   }
 
-  logger.stdout('All ${logger.ansi.emphasized('done')}.');
+  logger.stdout('All ${bold('done')}.');
   exitCode = 0;
-}
-
-Future<String> _testFile(String path, Logger logger) async {
-  if (File(path).existsSync()) {
-    return path;
-  } else if (Directory(path).existsSync()) {
-    return aggregatedTest(path, TestGenerator(), logger);
-  } else {
-    return path;
-  }
 }

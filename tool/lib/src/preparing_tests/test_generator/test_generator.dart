@@ -8,6 +8,21 @@ import 'package:path/path.dart' as p;
 const aggregatedTestFile = 'generic_test.dart';
 const setupMainFile = 'generic.dart';
 
+class TestFileProvider {
+  const TestFileProvider({@required this.logger});
+
+  final Logger logger;
+
+  Future<String> testFile(String path) async {
+    if (Directory(path).existsSync()) {
+      return aggregatedTest(path, TestGenerator(), logger);
+    } else if (File(path).existsSync()) {
+      return path;
+    }
+    return null;
+  }
+}
+
 Future<String> aggregatedTest(
   String directoryPath,
   TestGenerator generator,

@@ -7,8 +7,15 @@ void main() {
       const testFile = 'file.dart';
       test('uses device', () {
         const device = 'some_device';
-        final tested = Commands().flutter.run(testFile, device);
+        final tested = Commands().flutter.run(testFile, device, flavor: null);
         expect(tested, contains('-d $device'));
+      });
+
+      test('passes flavor if available', () {
+        const flavor = 'chocolate';
+        final tested =
+            Commands().flutter.run(testFile, 'some_device', flavor: flavor);
+        expect(tested, contains('--flavor $flavor'));
       });
     });
 

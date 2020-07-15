@@ -2,6 +2,11 @@ import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator/test_generator.dart';
+import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
+    as test_executor;
+import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
+    hide setUp;
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -11,10 +16,14 @@ import '../bin/main.dart' as main_file;
 void main() {
   VersionChecker versionChecker;
   Logger logger;
+  test_executor.TestExecutor testExecutor;
+  TestFileProvider testFileProvider;
 
   setUp(() {
     versionChecker = _MockVersionChecker();
     logger = _MockLogger();
+    testExecutor = _MockTestExecutor();
+    testFileProvider = _MockTestFileProvider();
   });
   group('commands', () {
     test('help', () async {
@@ -22,6 +31,8 @@ void main() {
         ['-h'],
         loggerFactory: (_) => logger,
         versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
       );
 
       expect(
@@ -38,9 +49,30 @@ void main() {
         ['--version'],
         loggerFactory: (_) => logger,
         versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
       );
 
       expect(verify(logger.stdout(captureAny)).captured.single, version);
+    });
+
+    test('flavor', () async {
+      when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
+      when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
+      const flavor = 'chocolate';
+
+      await main_file.run(
+        ['--flavor', flavor],
+        loggerFactory: (_) => logger,
+        versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
+      );
+
+      final ExecutorParameters parameters = verify(
+        testExecutor.test(any, parameters: captureAnyNamed('parameters')),
+      ).captured.single;
+      expect(parameters.flavor, flavor);
     });
   });
 
@@ -52,6 +84,8 @@ void main() {
             [''],
             loggerFactory: (_) => logger,
             versionCheckerFactory: (_) => versionChecker,
+            testExecutorFactory: (_) => testExecutor,
+            testFileProviderFactory: (_) => testFileProvider,
           );
           expect(
             verify(logger.stderr(captureAny)).captured.single,
@@ -79,6 +113,8 @@ void main() {
         [''],
         loggerFactory: (_) => logger,
         versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
       );
 
       final messages = verify(logger.stdout(captureAny)).captured;
@@ -102,6 +138,8 @@ void main() {
         [''],
         loggerFactory: (_) => logger,
         versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
       );
 
       final messages = verify(logger.stdout(captureAny)).captured;
@@ -119,6 +157,8 @@ void main() {
           ['-s'],
           loggerFactory: (_) => logger,
           versionCheckerFactory: (_) => versionChecker,
+          testExecutorFactory: (_) => testExecutor,
+          testFileProviderFactory: (_) => testFileProvider,
         );
 
         verify(directory.deleteSync(recursive: true)).called(1);
@@ -150,3 +190,7 @@ class _MockDirectory extends Mock implements Directory {}
 class _MockLogger extends Mock implements Logger {}
 
 class _MockVersionChecker extends Mock implements VersionChecker {}
+
+class _MockTestExecutor extends Mock implements test_executor.TestExecutor {}
+
+class _MockTestFileProvider extends Mock implements TestFileProvider {}

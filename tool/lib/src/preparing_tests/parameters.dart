@@ -14,6 +14,7 @@ const helpArg = 'help';
 const url = 'url';
 const platformArg = 'platform';
 const deviceArg = 'device';
+const flavorArg = 'flavor';
 const verboseArg = 'verbose';
 const versionArg = 'version';
 
@@ -42,6 +43,13 @@ ArgParser scriptParameters = ArgParser()
     help: 'The resolution of an application '
         'in format <width>x<height>, eg 800x600',
     defaultsTo: '400x700',
+  )
+  ..addOption(
+    flavorArg,
+    help: '''
+Build a custom app flavor as defined by platform-specific build setup.
+Supports the use of product flavors in Android Gradle scripts, and the use of custom Xcode schemes.
+''',
   )
   ..addFlag(
     screenshotsArg,
