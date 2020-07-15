@@ -218,6 +218,54 @@ void main() {
       );
     });
   });
+
+  group('TestFileProvider', () {
+    TestFileProvider tested;
+
+    setUp(() {
+      tested = TestFileProvider(logger: _MockLogger());
+    });
+
+    test('when dir does not exist but file does', () async {
+      await IOOverrides.runZoned(
+        () async {
+          const fileName = 'any.dart';
+
+          expect(await tested.testFile(fileName), fileName);
+        },
+        createDirectory: (name) {
+          final mockDir = _MockDirectory();
+          when(mockDir.existsSync()).thenReturn(false);
+          return mockDir;
+        },
+        createFile: (name) {
+          final file = _MockFile();
+          when(file.path).thenReturn(name);
+          when(file.existsSync()).thenReturn(true);
+          return file;
+        },
+      );
+    });
+
+    test('when neither file nor dir exist', () async {
+      await IOOverrides.runZoned(
+        () async {
+          expect(await tested.testFile('none'), isNull);
+        },
+        createDirectory: (name) {
+          final mockDir = _MockDirectory();
+          when(mockDir.existsSync()).thenReturn(false);
+          return mockDir;
+        },
+        createFile: (name) {
+          final file = _MockFile();
+          when(file.path).thenReturn(name);
+          when(file.existsSync()).thenReturn(false);
+          return file;
+        },
+      );
+    });
+  });
 }
 
 class _MockDirectory extends Mock implements Directory {}
