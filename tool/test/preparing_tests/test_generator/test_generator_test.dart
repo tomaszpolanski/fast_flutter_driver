@@ -132,7 +132,8 @@ void main() {
         () async {
           final logger = _MockLogger();
 
-          await aggregatedTest(r'test_driver\deals\edits', generator, logger);
+          await aggregatedTest(
+              r'test_driver\deals\edits'.toPlatformPath, generator, logger);
           expect(
             verify(generator.generateTestFile(any, any, captureAny,
                     hasArguments: anyNamed('hasArguments')))
@@ -143,10 +144,11 @@ void main() {
         },
         createDirectory: (name) {
           final file = _MockFile();
-          when(file.path)
-              .thenReturn('$absolutePath\\test_driver\\generic\\generic.dart');
+          when(file.path).thenReturn(
+              '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath);
           final absoluteDir = _MockDirectory();
-          when(absoluteDir.path).thenReturn('$absolutePath\\$name');
+          when(absoluteDir.path)
+              .thenReturn('$absolutePath/$name'.toPlatformPath);
           final mockDir = _MockDirectory();
           when(mockDir.path).thenReturn(name);
           when(mockDir.listSync(recursive: anyNamed('recursive')))
@@ -188,10 +190,11 @@ void main() {
         },
         createDirectory: (name) {
           final file = _MockFile();
-          when(file.path)
-              .thenReturn('$absolutePath\\test_driver\\generic\\generic.dart');
+          when(file.path).thenReturn(
+              '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath);
           final absoluteDir = _MockDirectory();
-          when(absoluteDir.path).thenReturn('$absolutePath\\$name');
+          when(absoluteDir.path)
+              .thenReturn('$absolutePath/$name'.toPlatformPath);
           final mockDir = _MockDirectory();
           when(mockDir.path).thenReturn(name);
           when(mockDir.listSync(recursive: anyNamed('recursive')))
@@ -209,7 +212,8 @@ void main() {
             when(file.absolute).thenReturn(absolute);
             return file;
           }
-          return MemoryFileSystem().file('$absolutePath\\$setupMainFile');
+          return MemoryFileSystem()
+              .file('$absolutePath/$setupMainFile'.toPlatformPath);
         },
       );
     });
@@ -223,3 +227,8 @@ class _MockFile extends Mock implements File {}
 class _MockLogger extends Mock implements Logger {}
 
 class _MockTestGenerator extends Mock implements TestGenerator {}
+
+extension on String {
+  String get toPlatformPath =>
+      Platform.isWindows ? replaceAll('/', r'\') : replaceAll(r'\', '/');
+}
