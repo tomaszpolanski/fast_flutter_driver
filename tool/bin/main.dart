@@ -109,7 +109,7 @@ Future<String> _testFile(String path, Logger logger) async {
   if (File(path).existsSync()) {
     return path;
   } else if (Directory(path).existsSync()) {
-    return aggregatedTest(path, logger);
+    return aggregatedTest(path, TestGenerator(), logger);
   } else {
     return path;
   }
