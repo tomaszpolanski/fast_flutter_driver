@@ -74,7 +74,7 @@ String _importPath(Directory testDir, File aggregatedFile) {
 int _compare(String first, String second) {
   final shorter = first.length >= second.length ? second : first;
   final longer = shorter == second ? first : second;
-  for (int i = 0; i < shorter.length; i++) {
+  for (var i = 0; i < shorter.length; i++) {
     if (shorter[i] != longer[i]) {
       return i;
     }
