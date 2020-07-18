@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
-  TestGenerator generator;
+  late TestGenerator generator;
   group('testFiles', () {
     setUp(() {
       generator = TestGenerator();
@@ -48,8 +48,8 @@ void main() {
   });
 
   group('generateTestFile', () {
-    File aggregatedFile;
-    Directory mockDir;
+    late File aggregatedFile;
+    late Directory mockDir;
     setUp(() {
       generator = TestGenerator();
       aggregatedFile = MemoryFileSystem().file('test.dart');

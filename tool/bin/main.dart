@@ -16,7 +16,6 @@ import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:fast_flutter_driver_tool/src/utils/lazy_logger.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 Future<void> main(List<String> paths) {
   exitCode = 2;
@@ -41,10 +40,10 @@ Future<void> main(List<String> paths) {
 
 Future<void> run(
   List<String> paths, {
-  @required Logger Function(bool) loggerFactory,
-  @required VersionChecker Function(Logger) versionCheckerFactory,
-  @required TestExecutor Function(Logger) testExecutorFactory,
-  @required TestFileProvider Function(Logger) testFileProviderFactory,
+  required Logger Function(bool) loggerFactory,
+  required VersionChecker Function(Logger) versionCheckerFactory,
+  required TestExecutor Function(Logger) testExecutorFactory,
+  required TestFileProvider Function(Logger) testFileProviderFactory,
 }) async {
   final logger = LazyLogger(loggerFactory);
   final parser = scriptParameters;
@@ -68,7 +67,7 @@ Future<void> run(
     return;
   }
   // ignore: unawaited_futures
-  versionChecker.checkForUpdates().then((AppVersion version) {
+  versionChecker.checkForUpdates().then((AppVersion? version) {
     if (version != null && version.local != version.remote) {
       {
         logger
