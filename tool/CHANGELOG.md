@@ -1,4 +1,4 @@
-## 1.2.0+1
+## 1.2.0+2
 - [CLEANUP] Cleaning up and adding more documentation
 
 ## 1.2.0

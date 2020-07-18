@@ -180,12 +180,10 @@ String _mainDartFile(String testFile) {
 }
 
 String _findGenericFile(Directory currentDir) {
-  final Directory genericDir =
-      currentDir.listSync().whereType<Directory>().firstWhere(
-            (directory) =>
-                File(join(directory.path, 'generic.dart')).existsSync(),
-            orElse: () => null,
-          );
+  final genericDir = currentDir.listSync().whereType<Directory>().firstWhere(
+        (directory) => File(join(directory.path, 'generic.dart')).existsSync(),
+        orElse: () => null,
+      );
   if (genericDir != null) {
     return join(genericDir.path, 'generic.dart');
   } else {

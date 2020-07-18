@@ -35,7 +35,7 @@ class VersionChecker {
 
   Future<String> _lockVersion(String scriptDir) async {
     final pathToLock = join(scriptDir, '../pubspec.lock');
-    bool foundPackage = false;
+    var foundPackage = false;
     for (final line in await File(pathToLock).readAsLines()) {
       if (line.contains('fast_flutter_driver_tool')) {
         foundPackage = true;
