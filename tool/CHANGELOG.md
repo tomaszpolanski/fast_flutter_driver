@@ -1,3 +1,6 @@
+## 1.2.0+1
+- [CLEANUP] Cleaning up and adding more documentation
+
 ## 1.2.0
 - [FEATURE] Passing `flavor` parameter when running tests
 
