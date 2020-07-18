@@ -5,7 +5,6 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/devices.dart'
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
-import 'package:meta/meta.dart';
 
 const languageArg = 'language';
 const screenshotsArg = 'screenshots';
@@ -96,7 +95,7 @@ This is used to extend test functionality and this value will be passed as `Test
     negatable: false,
   );
 
-void printErrorHelp(String command, {@required Logger logger}) {
+void printErrorHelp(String command, {required Logger logger}) {
   logger.stdout(
     '''
 ${red('Failed')} to run command '${yellow(command)}'

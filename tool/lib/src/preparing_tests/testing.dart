@@ -14,16 +14,16 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
+import 'package:fast_flutter_driver_tool/src/utils/list.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
-import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 
 Future<void> setUp(
   ArgResults args,
   Future<void> Function() test, {
-  @required Logger logger,
+  required Logger logger,
 }) async {
-  final String screenResolution = args[resolutionArg];
+  final String? screenResolution = args[resolutionArg];
   if (System.isLinux && screenResolution != null) {
     logger.trace('Overriding resolution');
     await overrideResolution(screenResolution, test, logger: logger);
@@ -34,11 +34,11 @@ Future<void> setUp(
 
 class ExecutorParameters {
   const ExecutorParameters({
-    @required this.withScreenshots,
-    @required this.resolution,
-    @required this.language,
-    @required this.device,
-    @required this.platform,
+    required this.withScreenshots,
+    required this.resolution,
+    required this.language,
+    required this.device,
+    this.platform,
     this.flutterArguments,
     this.dartArguments,
     this.testArguments,
@@ -49,8 +49,8 @@ class ExecutorParameters {
   final String resolution;
   final String language;
   final String device;
-  final TestPlatform platform;
-  final String flavor;
+  final TestPlatform? platform;
+  final String? flavor;
   final String flutterArguments;
   final String dartArguments;
   final String testArguments;
@@ -58,10 +58,10 @@ class ExecutorParameters {
 
 class TestExecutor {
   const TestExecutor({
-    @required this.outputFactory,
-    @required this.inputFactory,
-    @required this.run,
-    @required this.logger,
+    required this.outputFactory,
+    required this.inputFactory,
+    required this.run,
+    required this.logger,
   });
 
   final streams.OutputFactory outputFactory;
@@ -71,7 +71,7 @@ class TestExecutor {
 
   Future<void> test(
     String testFile, {
-    @required ExecutorParameters parameters,
+    required ExecutorParameters parameters,
   }) async {
     {
       logger.stdout('Testing $testFile');
@@ -90,7 +90,7 @@ class TestExecutor {
         logger,
         parameters.device,
       );
-
+      final platform = parameters.platform;
       final runTestCommand = Commands().flutter.dart(
         testFile,
         dartArguments: parameters.dartArguments,
@@ -125,7 +125,7 @@ class TestExecutor {
   ) {
     final completer = Completer<String>();
     final buildProgress = logger.progress('Building application for $device');
-    Progress syncingProgress;
+    late Progress syncingProgress;
 
     final output = outputFactory((String line) async {
       logger.trace(line);
@@ -139,7 +139,7 @@ class TestExecutor {
           RegExp('service listening on (ws://.*)').firstMatch(line);
       final match = nativeMatch ?? webMatch;
       if (match != null) {
-        syncingProgress?.finish(showTiming: true);
+        syncingProgress.finish(showTiming: true);
         final url = match.group(1);
         logger.trace('Observatory url: $url');
         completer.complete(url);
@@ -198,10 +198,11 @@ String _mainDartFile(String testFile) {
 }
 
 String _findGenericFile(Directory currentDir) {
-  final genericDir = currentDir.listSync().whereType<Directory>().firstWhere(
-        (directory) => File(join(directory.path, 'generic.dart')).existsSync(),
-        orElse: () => null,
-      );
+  final genericDir =
+      currentDir.listSync().whereType<Directory>().firstWhereOrNull(
+            (directory) =>
+                File(join(directory.path, 'generic.dart')).existsSync(),
+          );
   if (genericDir != null) {
     return join(genericDir.path, 'generic.dart');
   } else {

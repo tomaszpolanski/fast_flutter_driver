@@ -7,8 +7,8 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
-  VersionChecker tested;
-  PathProvider pathProvider;
+  late VersionChecker tested;
+  late PathProvider pathProvider;
 
   setUp(() {
     pathProvider = _MockPathProvider();
@@ -42,7 +42,7 @@ void main() {
     });
 
     test('fetches data from the pub.dev', () async {
-      String requestUrl;
+      late String requestUrl;
       Future<Response> get(String url) async {
         requestUrl = url;
         return Response('', 200);
@@ -86,7 +86,7 @@ void main() {
       test('reads yaml file', () async {
         tested = VersionChecker(
           pathProvider: pathProvider,
-          httpGet: (_) => null,
+          httpGet: (_) async => Response('', 418),
         );
         await IOOverrides.runZoned(
           () async {
@@ -102,7 +102,7 @@ void main() {
                   .thenAnswer((_) async => 'version: 1.0.0+1');
               return file;
             }
-            return null;
+            throw Exception('No file');
           },
         );
       });
@@ -121,7 +121,7 @@ void main() {
       test('reads lock file', () async {
         tested = VersionChecker(
           pathProvider: pathProvider,
-          httpGet: (_) => null,
+          httpGet: (_) async => Response('', 418),
         );
         await IOOverrides.runZoned(
           () async {
@@ -167,8 +167,8 @@ void main() {
           );
           final result = await tested.checkForUpdates();
 
-          expect(result.local, currentVersion);
-          expect(result.remote, remoteVersion);
+          expect(result?.local, currentVersion);
+          expect(result?.remote, remoteVersion);
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
@@ -178,7 +178,7 @@ void main() {
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
           }
-          return null;
+          throw Exception('No file');
         },
       );
     });
@@ -199,8 +199,8 @@ void main() {
 
           final result = await tested.checkForUpdates();
 
-          expect(result.local, currentVersion);
-          expect(result.remote, remoteVersion);
+          expect(result?.local, currentVersion);
+          expect(result?.remote, remoteVersion);
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
@@ -210,7 +210,7 @@ void main() {
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
           }
-          return null;
+          throw Exception('No file');
         },
       );
     });
@@ -237,7 +237,7 @@ void main() {
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
           }
-          return null;
+          throw Exception('No file');
         },
       );
     });

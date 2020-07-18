@@ -7,8 +7,8 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
-  File resolutionFile;
-  Logger logger;
+  late File resolutionFile;
+  late Logger logger;
 
   setUp(() {
     logger = _MockLogger();

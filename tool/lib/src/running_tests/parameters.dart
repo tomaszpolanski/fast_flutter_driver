@@ -51,7 +51,7 @@ extension TestPlatformEnum on TestPlatform {
 /// Extension method to make converting String to [TestPlatform] easier.
 abstract class TestPlatformEx {
   /// Converts user readable string to [TestPlatform]
-  static TestPlatform fromString(String value) {
+  static TestPlatform? fromString(String? value) {
     switch (value?.toLowerCase()) {
       case 'android':
         return TestPlatform.android;

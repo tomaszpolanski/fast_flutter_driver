@@ -32,7 +32,7 @@ class TestProperties {
   /// This value is passed via fastdriver command using --platform option.
   /// This value should be handled on the application side - fastdriver just
   /// passes it.
-  TestPlatform get platform =>
+  TestPlatform? get platform =>
       TestPlatformEx.fromString(arguments[platformArg]);
 
   /// Additional parameters passed via --test-args from fastdriver.

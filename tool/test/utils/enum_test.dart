@@ -9,8 +9,4 @@ void main() {
 
     expect(tested, 'test');
   });
-
-  test('fromEnum asserts nulls', () {
-    expect(() => fromEnum(null), throwsA(isA<AssertionError>()));
-  });
 }

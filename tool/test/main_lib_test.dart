@@ -15,10 +15,10 @@ import 'package:test/test.dart';
 import '../bin/main.dart' as main_file;
 
 void main() {
-  VersionChecker versionChecker;
-  Logger logger;
-  test_executor.TestExecutor testExecutor;
-  TestFileProvider testFileProvider;
+  late VersionChecker versionChecker;
+  late Logger logger;
+  late test_executor.TestExecutor testExecutor;
+  late TestFileProvider testFileProvider;
 
   setUp(() {
     versionChecker = _MockVersionChecker();
@@ -232,7 +232,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
   });
 
   test('deletes screenshots if the folder exists and passing the flag', () {
-    Directory directory;
+    late Directory directory;
 
     when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
     IOOverrides.runZoned(

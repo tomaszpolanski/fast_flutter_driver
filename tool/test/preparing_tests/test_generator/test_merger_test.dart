@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('creates test file', () {
-    File mergedFile;
+    late File mergedFile;
 
     IOOverrides.runZoned(
       () async {

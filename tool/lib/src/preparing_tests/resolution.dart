@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
-import 'package:meta/meta.dart';
 
 Future<void> overrideResolution(
   String resolution,
   Future<void> Function() test, {
-  @required Logger logger,
+  required Logger logger,
 }) async {
   final native = nativeResolutionFile;
   final nativeCopy = '$native\_copy'; // ignore: unnecessary_string_escapes
@@ -39,9 +38,9 @@ Future<void> overrideResolution(
 }
 
 Future<void> _updateResolution({
-  @required int width,
-  @required int height,
-  @required File resolutionFile,
+  required int width,
+  required int height,
+  required File resolutionFile,
 }) async {
   final read = await resolutionFile.readAsString();
   final updatedNativeFile = _replaceResolution(
@@ -54,8 +53,8 @@ Future<void> _updateResolution({
 
 String _replaceResolution(
   String nativeContent, {
-  @required int width,
-  @required int height,
+  required int width,
+  required int height,
 }) {
   return nativeContent
       .replaceV3(width: width, height: height)

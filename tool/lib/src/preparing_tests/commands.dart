@@ -10,7 +10,7 @@ class FlutterCommand {
   String run(
     String target,
     String device, {
-    @required String flavor,
+    @required String? flavor,
     String additionalArguments,
   }) {
     // ignore: missing_whitespace_between_adjacent_strings
@@ -24,8 +24,8 @@ class FlutterCommand {
 
   String dart(
     String file, {
-    Map<String, String> testArguments,
-    String dartArguments,
+    Map<String, String>? testArguments,
+    String? dartArguments,
   }) {
     final args = testArguments?.entries
         ?.map((entry) =>

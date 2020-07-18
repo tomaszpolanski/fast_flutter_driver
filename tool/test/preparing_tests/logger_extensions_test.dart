@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Logger logger;
+  late Logger logger;
 
   setUp(() {
     logger = _MockLogger();

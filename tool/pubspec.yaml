@@ -1,10 +1,10 @@
 name: fast_flutter_driver_tool
 description: Toolkit for running rapidly flutter driver tests on desktop.
-version: 1.5.0
+version: 2.0.0-nnbd
 homepage: https://github.com/tomaszpolanski/fast_flutter_driver
 
 environment:
-  sdk: '>=2.6.0 <3.0.0'
+  sdk: '>=2.10.0-18.0 <3.0.0'
 
 executables:
   fastdriver: main
