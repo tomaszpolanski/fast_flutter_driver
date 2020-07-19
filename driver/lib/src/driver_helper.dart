@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
 
-Future<String> configureTest(BaseConfiguration config) async {
+Future<void> configureTest(BaseConfiguration config) async {
   await WindowUtils(
     macOs: () => MacOsWindow(),
     win32: () => Win32Window(),
@@ -24,7 +24,6 @@ Future<String> configureTest(BaseConfiguration config) async {
   }
 
   await RestartWidget.restartApp(config);
-  return null;
 }
 
 extension TestFlutterEx on TestPlatform {

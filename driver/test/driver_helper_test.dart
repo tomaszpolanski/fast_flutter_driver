@@ -6,13 +6,13 @@ import 'package:test/test.dart';
 
 void main() {
   group('TestFlutterEx', () {
-    <TestPlatform, TargetPlatform>{
+    <TestPlatform?, TargetPlatform>{
       TestPlatform.android: TargetPlatform.android,
       TestPlatform.iOS: TargetPlatform.iOS,
       null: TargetPlatform.fuchsia,
     }.forEach((key, value) {
       test('when $key', () {
-        expect(key.targetPlatform, value);
+        expect(key?.targetPlatform, value);
       });
     });
   });

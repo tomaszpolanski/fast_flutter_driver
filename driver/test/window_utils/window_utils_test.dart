@@ -4,9 +4,11 @@ import 'package:flutter/rendering.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../mockito_nnbd.dart' as nnbd_mockito;
+
 void main() {
   group('setSize', () {
-    SystemWindow systemWindow;
+    late SystemWindow systemWindow;
     const size = Size(1, 1);
     setUp(() {
       systemWindow = _MockSystemWindow();
@@ -22,13 +24,15 @@ void main() {
       linuxOverride = false;
       final tested = WindowUtils(
         macOs: () => systemWindow,
-        win32: () => null,
-        other: () => null,
+        win32: () => _MockSystemWindow(),
+        other: () => _MockSystemWindow(),
       );
 
       await tested.setSize(size);
 
-      expect(verify(systemWindow.setSize(captureAny)).captured.single, size);
+      expect(
+          verify(systemWindow.setSize(nnbd_mockito.captureAny)).captured.single,
+          size);
     });
 
     test('windows', () async {
@@ -36,14 +40,16 @@ void main() {
       windowsOverride = true;
       linuxOverride = false;
       final tested = WindowUtils(
-        macOs: () => null,
+        macOs: () => _MockSystemWindow(),
         win32: () => systemWindow,
-        other: () => null,
+        other: () => _MockSystemWindow(),
       );
 
       await tested.setSize(size);
 
-      expect(verify(systemWindow.setSize(captureAny)).captured.single, size);
+      expect(
+          verify(systemWindow.setSize(nnbd_mockito.captureAny)).captured.single,
+          size);
     });
 
     test('other', () async {
@@ -51,14 +57,16 @@ void main() {
       windowsOverride = false;
       linuxOverride = true;
       final tested = WindowUtils(
-        macOs: () => null,
-        win32: () => null,
+        macOs: () => _MockSystemWindow(),
+        win32: () => _MockSystemWindow(),
         other: () => systemWindow,
       );
 
       await tested.setSize(size);
 
-      expect(verify(systemWindow.setSize(captureAny)).captured.single, size);
+      expect(
+          verify(systemWindow.setSize(nnbd_mockito.captureAny)).captured.single,
+          size);
     });
   });
 }

@@ -15,9 +15,9 @@ typedef WindowFactory = SystemWindow Function();
 // ignore: avoid_classes_with_only_static_members
 class WindowUtils implements SystemWindow {
   WindowUtils({
-    @required this.macOs,
-    @required this.win32,
-    @required this.other,
+    required this.macOs,
+    required this.win32,
+    required this.other,
   }) : _systemWindow =
             System.isMacOS ? macOs() : System.isWindows ? win32() : other();
 

@@ -83,9 +83,9 @@ void main() {
     final tested = DiagnosticPropertiesBuilder();
 
     widget.debugFillProperties(tested);
-    final DiagnosticsProperty<String> initial = tested.properties[0];
+    final initial = tested.properties[0];
     expect(initial.value, configuration);
-    final ColorProperty backgroundColor = tested.properties[1];
+    final backgroundColor = tested.properties[1];
     expect(backgroundColor.value, color);
   });
 }
