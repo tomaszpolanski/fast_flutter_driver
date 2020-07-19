@@ -22,15 +22,15 @@ jobs:
 
       - name: Analyze
         working-directory: ${{ matrix.package }}
-        run: dart analyze
+        run: dartanalyzer --enable-experiment=non-nullable --fatal-infos --fatal-warnings .
 
       - name: Aggregate tests
         working-directory: ${{ matrix.package }}
-        run: dart lib/src/preparing_tests/test_generator/test_merger.dart
+        run: dart  --enable-experiment=non-nullable --no-null-safety lib/src/preparing_tests/test_generator/test_merger.dart
         
       - name: Run tests
         working-directory: ${{ matrix.package }}
-        run: pub run test
+        run: dart --enable-experiment=non-nullable --no-null-safety test/all_tests.dart
         
       - name: Gather coverage
         working-directory: ${{ matrix.package }}
