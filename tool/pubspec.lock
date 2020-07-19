@@ -23,26 +23,32 @@ packages:
     source: hosted
     version: "1.6.0"
   async:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: async
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.4.2"
+      path: "."
+      ref: null_safety
+      resolved-ref: e4a8999dd4e396b373f43a49c5aad0baed229180
+      url: "git://github.com/dart-lang/async.git"
+    source: git
+    version: "2.5.0-nullsafety"
   boolean_selector:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: boolean_selector
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
+      path: "."
+      ref: null_safety
+      resolved-ref: e919dda69caee48b7e51b78e117f53e8c4f333a1
+      url: "git://github.com/dart-lang/boolean_selector.git"
+    source: git
+    version: "2.1.0-nullsafety"
   charcode:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: charcode
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.3"
+      path: "."
+      ref: null_safety
+      resolved-ref: b659bab5449b3ae811103e1f299f9845421c51ee
+      url: "git://github.com/dart-lang/charcode.git"
+    source: git
+    version: "1.2.0-nullsafety"
   cli_util:
     dependency: "direct main"
     description:
@@ -119,7 +125,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.1"
+    version: "0.12.2"
   http_multi_server:
     dependency: transitive
     description:
@@ -128,11 +134,13 @@ packages:
     source: hosted
     version: "2.2.0"
   http_parser:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: http_parser
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: null_safety
+      resolved-ref: "6e63a97b5aaa2b4d1215fe01683e51fb73258e54"
+      url: "git://github.com/dart-lang/http_parser.git"
+    source: git
     version: "3.1.4"
   intl:
     dependency: transitive
@@ -149,12 +157,14 @@ packages:
     source: hosted
     version: "0.3.4"
   js:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: js
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.2"
+      path: "pkg/js"
+      ref: HEAD
+      resolved-ref: bbe6bb9823495574917c75634b1f8a2a8099086c
+      url: "git://github.com/dart-lang/sdk.git"
+    source: git
+    version: "0.6.3-nullsafety"
   logging:
     dependency: transitive
     description:
@@ -163,19 +173,23 @@ packages:
     source: hosted
     version: "0.11.4"
   matcher:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: matcher
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.12.9"
+      path: "."
+      ref: null_safety
+      resolved-ref: e7b2579d682f0c99dcdae5df765ce560708cd0f7
+      url: "git://github.com/dart-lang/matcher.git"
+    source: git
+    version: "0.12.10-nullsafety"
   meta:
     dependency: "direct main"
     description:
-      name: meta
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.2"
+      path: "pkg/meta"
+      ref: null_safety-pkgs
+      resolved-ref: "4a28d9532d4b34a1297e400a807826a8e956d2db"
+      url: "git://github.com/dart-lang/sdk.git"
+    source: git
+    version: "1.2.0-nnbd"
   mime:
     dependency: transitive
     description:
@@ -221,24 +235,30 @@ packages:
   path:
     dependency: "direct main"
     description:
-      name: path
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.7.0"
+      path: "."
+      ref: null_safety
+      resolved-ref: "8f47413043ffe90cd8c73fc507418fd1f413a11c"
+      url: "git://github.com/dart-lang/path.git"
+    source: git
+    version: "1.8.0-nullsafety"
   pedantic:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: pedantic
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.2"
+      path: "."
+      ref: null_safety
+      resolved-ref: "3871264e7557219edec650ad3947dd5a61d409a7"
+      url: "git://github.com/dart-lang/pedantic.git"
+    source: git
+    version: "1.10.0-nnbd"
   pool:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: pool
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.0"
+      path: "."
+      ref: null_safety
+      resolved-ref: d29005566b6a4e0a66924aca3d681e9665ce1b61
+      url: "git://github.com/dart-lang/pool.git"
+    source: git
+    version: "1.5.0-nullsafety"
   process_run:
     dependency: "direct main"
     description:
@@ -282,75 +302,95 @@ packages:
     source: hosted
     version: "0.2.3"
   source_map_stack_trace:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: source_map_stack_trace
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
+      path: "."
+      ref: null_safety
+      resolved-ref: a89ca07ea4314c028b7801243e93b438267ff56d
+      url: "git://github.com/dart-lang/source_map_stack_trace.git"
+    source: git
+    version: "2.1.0-nullsafety"
   source_maps:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: source_maps
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.9"
+      path: "."
+      ref: null_safety
+      resolved-ref: "8e7e4de99b83d99459026acd15659bdc7814adb2"
+      url: "git://github.com/dart-lang/source_maps.git"
+    source: git
+    version: "0.11.0-nullsafety"
   source_span:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: source_span
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.7.0"
+      path: "."
+      ref: null_safety
+      resolved-ref: ad5e83080b22ad52f1f7c2f2b488284429437873
+      url: "git://github.com/dart-lang/source_span.git"
+    source: git
+    version: "1.8.0-nullsafety"
   stack_trace:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: stack_trace
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.5"
+      path: "."
+      ref: null_safety
+      resolved-ref: b1eed6548809ca112a8d0118928c23d861ec4dbe
+      url: "git://github.com/dart-lang/stack_trace.git"
+    source: git
+    version: "1.10.0-nullsafety"
   stream_channel:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: stream_channel
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
+      path: "."
+      ref: null_safety
+      resolved-ref: "3f23b6b90987ce3b82e396ba24db85e3fe2d6a97"
+      url: "git://github.com/dart-lang/stream_channel.git"
+    source: git
+    version: "2.1.0-nullsafety"
   string_scanner:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: string_scanner
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
+      path: "."
+      ref: null_safety
+      resolved-ref: "510ba62a998687ffaac5fe175d5f52821b15d2cc"
+      url: "git://github.com/dart-lang/string_scanner.git"
+    source: git
+    version: "1.1.0-nullsafety"
   term_glyph:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: term_glyph
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
+      path: "."
+      ref: null_safety
+      resolved-ref: "1be6ddacf773ab39b242790e83a15abe3fc98e50"
+      url: "git://github.com/dart-lang/term_glyph.git"
+    source: git
+    version: "1.2.0-nullsafety"
   test:
     dependency: "direct dev"
     description:
-      name: test
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.15.3"
+      path: "pkgs/test"
+      ref: null_safety
+      resolved-ref: fb58706fc867f06106915081eecd93877213fb60
+      url: "git://github.com/dart-lang/test.git"
+    source: git
+    version: "1.16.0-nullsafety"
   test_api:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: test_api
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.18"
+      path: "pkgs/test_api"
+      ref: null_safety
+      resolved-ref: fb58706fc867f06106915081eecd93877213fb60
+      url: "git://github.com/dart-lang/test.git"
+    source: git
+    version: "0.2.19-nullsafety"
   test_core:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: test_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.11"
+      path: "pkgs/test_core"
+      ref: null_safety
+      resolved-ref: fb58706fc867f06106915081eecd93877213fb60
+      url: "git://github.com/dart-lang/test.git"
+    source: git
+    version: "0.3.12-nullsafety"
   typed_data:
     dependency: transitive
     description:
