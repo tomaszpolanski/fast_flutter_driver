@@ -68,13 +68,22 @@ void main() {
       when(testFileProvider.testFile(nnbd_mockito.any))
           .thenAnswer((_) async => 'any');
       const flavor = 'chocolate';
-
-      await main_file.run(
-        ['--flavor', flavor],
-        loggerFactory: (_) => logger,
-        versionCheckerFactory: (_) => versionChecker,
-        testExecutorFactory: (_) => testExecutor,
-        testFileProviderFactory: (_) => testFileProvider,
+      await IOOverrides.runZoned(
+        () async {
+          await main_file.run(
+            ['--flavor', flavor],
+            loggerFactory: (_) => logger,
+            versionCheckerFactory: (_) => versionChecker,
+            testExecutorFactory: (_) => testExecutor,
+            testFileProviderFactory: (_) => testFileProvider,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = _MockDirectory();
+          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
+              .thenReturn([File('pubspec.yaml')]);
+          return mockDir;
+        },
       );
 
       final ExecutorParameters parameters = verify(
@@ -198,12 +207,23 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
       when(versionChecker.checkForUpdates()).thenAnswer(
         (_) async => const AppVersion(local: local, remote: remote),
       );
-      await main_file.run(
-        [''],
-        loggerFactory: (_) => logger,
-        versionCheckerFactory: (_) => versionChecker,
-        testExecutorFactory: (_) => testExecutor,
-        testFileProviderFactory: (_) => testFileProvider,
+
+      await IOOverrides.runZoned(
+        () async {
+          await main_file.run(
+            [''],
+            loggerFactory: (_) => logger,
+            versionCheckerFactory: (_) => versionChecker,
+            testExecutorFactory: (_) => testExecutor,
+            testFileProviderFactory: (_) => testFileProvider,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = _MockDirectory();
+          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
+              .thenReturn([File('pubspec.yaml')]);
+          return mockDir;
+        },
       );
 
       final messages = verify(logger.stdout(captureAny)).captured;
@@ -223,12 +243,23 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
       when(versionChecker.checkForUpdates()).thenAnswer(
         (_) async => const AppVersion(local: local, remote: remote),
       );
-      await main_file.run(
-        [''],
-        loggerFactory: (_) => logger,
-        versionCheckerFactory: (_) => versionChecker,
-        testExecutorFactory: (_) => testExecutor,
-        testFileProviderFactory: (_) => testFileProvider,
+
+      await IOOverrides.runZoned(
+        () async {
+          await main_file.run(
+            [''],
+            loggerFactory: (_) => logger,
+            versionCheckerFactory: (_) => versionChecker,
+            testExecutorFactory: (_) => testExecutor,
+            testFileProviderFactory: (_) => testFileProvider,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = _MockDirectory();
+          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
+              .thenReturn([File('pubspec.yaml')]);
+          return mockDir;
+        },
       );
 
       final messages = verify(logger.stdout(captureAny)).captured;

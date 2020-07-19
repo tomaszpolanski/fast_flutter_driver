@@ -81,7 +81,6 @@ Future<void> run(
   });
 
   logger.stdout('Starting tests');
-
   Directory('build').createSync(recursive: true);
   if (result[screenshotsArg]) {
     final dir = Directory(screenshotsArg);
