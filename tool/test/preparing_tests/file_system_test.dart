@@ -5,6 +5,8 @@ import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../mockito_nnbd.dart' as nnbd_mockito;
+
 void main() {
   group('validRootDirectory', () {
     test('no pubspec found', () {
@@ -14,7 +16,7 @@ void main() {
         },
         getCurrentDirectory: () {
           final mockDir = _MockDirectory();
-          when(mockDir.listSync(recursive: anyNamed('recursive')))
+          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([]);
           return mockDir;
         },
@@ -28,7 +30,7 @@ void main() {
         },
         getCurrentDirectory: () {
           final mockDir = _MockDirectory();
-          when(mockDir.listSync(recursive: anyNamed('recursive')))
+          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([File('pubspec.yaml')]);
           return mockDir;
         },

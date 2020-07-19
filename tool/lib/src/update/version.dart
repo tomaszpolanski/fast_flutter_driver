@@ -67,9 +67,11 @@ class VersionChecker {
       final versions = await Future.wait([currentVersion(), remoteVersion()]);
       final current = versions[0];
       final latest = versions[1];
-      // if (current != null && latest != null) {
-      return AppVersion(local: current, remote: latest);
-      //}
+      if (current != null && latest != null) {
+        return AppVersion(local: current, remote: latest);
+      } else {
+        return null;
+      }
     } catch (_) {
       // Don't prevent running script because checking version failed
       return null;

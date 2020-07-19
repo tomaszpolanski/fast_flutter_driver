@@ -152,7 +152,7 @@ void main() {
       when(pathProvider.scriptDir).thenReturn('/root/');
     });
 
-    test('when available', () async {
+    test('when yaml available', () async {
       const remoteVersion = '2.0.0';
       const currentVersion = '1.0.0';
       await IOOverrides.runZoned(
@@ -176,6 +176,33 @@ void main() {
             when(file.existsSync()).thenReturn(true);
             when(file.readAsString())
                 .thenAnswer((_) async => 'version: $currentVersion');
+            return file;
+          }
+          throw Exception('No file');
+        },
+      );
+    });
+    test('when yaml available but no version', () async {
+      const remoteVersion = '2.0.0';
+      await IOOverrides.runZoned(
+        () async {
+          Future<Response> get(String url) async => Response(
+                '<h2 class="title">fast_flutter_driver_tool $remoteVersion</h2>',
+                200,
+              );
+          tested = VersionChecker(
+            pathProvider: pathProvider,
+            httpGet: get,
+          );
+          final result = await tested.checkForUpdates();
+
+          expect(result, isNull);
+        },
+        createFile: (name) {
+          if (name == '/root/../pubspec.yaml') {
+            final File file = _MockFile();
+            when(file.existsSync()).thenReturn(true);
+            when(file.readAsString()).thenAnswer((_) async => '');
             return file;
           }
           throw Exception('No file');

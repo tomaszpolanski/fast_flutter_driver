@@ -6,6 +6,8 @@ import 'package:fast_flutter_driver_tool/src/utils/system.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../mockito_nnbd.dart' as nnbd_mockito;
+
 void main() {
   late File resolutionFile;
   late Logger logger;
@@ -34,7 +36,9 @@ void main() {
 
           const content = 'gtk_window_set_default_size(window, 1, 2);';
           expect(
-            verify(resolutionFile.writeAsString(captureAny)).captured.single,
+            verify(resolutionFile.writeAsString(nnbd_mockito.captureAny))
+                .captured
+                .single,
             content,
           );
         },
@@ -143,7 +147,9 @@ window_properties.width = 1;
 window_properties.height = 2;
 ''';
           expect(
-            verify(resolutionFile.writeAsString(captureAny)).captured.single,
+            verify(resolutionFile.writeAsString(nnbd_mockito.captureAny))
+                .captured
+                .single,
             content,
           );
         },

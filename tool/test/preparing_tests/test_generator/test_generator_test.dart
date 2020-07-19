@@ -6,6 +6,8 @@ import 'package:file/memory.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../../mockito_nnbd.dart' as nnbd_mockito;
+
 void main() {
   late TestGenerator generator;
   group('testFiles', () {
@@ -16,7 +18,7 @@ void main() {
     test('list test file', () {
       const testName = 'my_test.dart';
       final mockDir = _MockDirectory();
-      when(mockDir.listSync(recursive: anyNamed('recursive')))
+      when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
           .thenReturn([File(testName)]);
 
       final tested = generator.testFiles(mockDir, 'any');
@@ -27,7 +29,7 @@ void main() {
     test('skips non test files', () {
       const testName = 'my.dart';
       final mockDir = _MockDirectory();
-      when(mockDir.listSync(recursive: anyNamed('recursive')))
+      when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
           .thenReturn([File(testName)]);
 
       final tested = generator.testFiles(mockDir, 'any');
@@ -38,7 +40,7 @@ void main() {
     test('skips excluded file', () {
       const testName = 'my_test.dart';
       final mockDir = _MockDirectory();
-      when(mockDir.listSync(recursive: anyNamed('recursive')))
+      when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
           .thenReturn([File(testName)]);
 
       final tested = generator.testFiles(mockDir, testName);
@@ -55,7 +57,8 @@ void main() {
       aggregatedFile = MemoryFileSystem().file('test.dart');
       mockDir = _MockDirectory();
       when(mockDir.path).thenReturn('/');
-      when(mockDir.listSync(recursive: anyNamed('recursive'))).thenReturn([
+      when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
+          .thenReturn([
         File('my_test.dart'),
       ]);
     });
@@ -140,7 +143,7 @@ void main(List<String> args) {
           when(absoluteDir.path).thenReturn('$absolutePath\\$name');
           final mockDir = _MockDirectory();
           when(mockDir.path).thenReturn(name);
-          when(mockDir.listSync(recursive: anyNamed('recursive')))
+          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([file]);
           when(mockDir.absolute).thenReturn(absoluteDir);
           return mockDir;
@@ -160,8 +163,9 @@ void main(List<String> args) {
           await aggregatedTest(
               r'test_driver\deals\edits'.toPlatformPath, generator, logger);
           expect(
-            verify(generator.generateTestFile(any, any, captureAny,
-                    hasArguments: anyNamed('hasArguments')))
+            verify(generator.generateTestFile(
+                    nnbd_mockito.any, nnbd_mockito.any, nnbd_mockito.captureAny,
+                    hasArguments: nnbd_mockito.anyNamed('hasArguments')))
                 .captured
                 .single,
             '../deals/edits/',
@@ -176,7 +180,7 @@ void main(List<String> args) {
               .thenReturn('$absolutePath/$name'.toPlatformPath);
           final mockDir = _MockDirectory();
           when(mockDir.path).thenReturn(name);
-          when(mockDir.listSync(recursive: anyNamed('recursive')))
+          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([file]);
           when(mockDir.absolute).thenReturn(absoluteDir);
           return mockDir;
@@ -254,8 +258,9 @@ void main(List<String> args) {
 
           await aggregatedTest('test_driver', generator, logger);
           expect(
-            verify(generator.generateTestFile(any, any, captureAny,
-                    hasArguments: anyNamed('hasArguments')))
+            verify(generator.generateTestFile(
+                    nnbd_mockito.any, nnbd_mockito.any, nnbd_mockito.captureAny,
+                    hasArguments: nnbd_mockito.anyNamed('hasArguments')))
                 .captured
                 .single,
             '../',
@@ -270,7 +275,7 @@ void main(List<String> args) {
               .thenReturn('$absolutePath/$name'.toPlatformPath);
           final mockDir = _MockDirectory();
           when(mockDir.path).thenReturn(name);
-          when(mockDir.listSync(recursive: anyNamed('recursive')))
+          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([file]);
           when(mockDir.absolute).thenReturn(absoluteDir);
           return mockDir;
@@ -293,7 +298,7 @@ void main(List<String> args) {
   });
 
   group('TestFileProvider', () {
-    TestFileProvider tested;
+    late TestFileProvider tested;
 
     setUp(() {
       tested = TestFileProvider(logger: _MockLogger());
@@ -304,7 +309,9 @@ void main(List<String> args) {
         () async {
           const fileName = 'any.dart';
 
-          expect(await tested.testFile(fileName), fileName);
+          final result = await tested.testFile(fileName);
+
+          expect(result, fileName);
         },
         createDirectory: (name) {
           final mockDir = _MockDirectory();

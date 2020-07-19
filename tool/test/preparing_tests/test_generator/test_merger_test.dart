@@ -6,6 +6,8 @@ import 'package:file/memory.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../../mockito_nnbd.dart' as nnbd_mockito;
+
 void main() {
   test('creates test file', () {
     late File mergedFile;
@@ -34,7 +36,7 @@ void main() {
         when(mockDir.path).thenReturn(name);
         final file = _MockFile();
         when(file.path).thenReturn('my_test.dart');
-        when(mockDir.listSync(recursive: anyNamed('recursive')))
+        when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
             .thenReturn([file]);
 
         return mockDir;
@@ -53,7 +55,7 @@ void main() {
         final file = _MockFile();
         when(file.path).thenReturn('my_test.dart');
         final mockDir = _MockDirectory();
-        when(mockDir.listSync(recursive: anyNamed('recursive')))
+        when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
             .thenReturn([file]);
         when(mockDir.path).thenReturn('/');
         return mockDir;

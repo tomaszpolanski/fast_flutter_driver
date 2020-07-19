@@ -145,7 +145,7 @@ class TestExecutor {
         completer.complete(url);
       }
     });
-    // ignore: unawaited_futures
+
     logger.trace('Running $command');
     run(command, stdout: output, stdin: input).then((_) {
       output.dispose();
