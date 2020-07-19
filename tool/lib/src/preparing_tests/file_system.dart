@@ -22,8 +22,7 @@ String? get _nativeResolutionFile {
         .map(_getFile)
         .firstWhere((file) => file != null, orElse: () => 'linux/main.cc');
   }
-  assert(false);
-  return null;
+  throw AssertionError('Only linux resolution should be overridden with file');
 }
 
 String _getFile(String file) {
