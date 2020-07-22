@@ -1,3 +1,6 @@
+## 1.3.1
+- [FIX] Not throwing an exception when inputting unknown command
+
 ## 1.3.0
 - [FEATURE] Supporting Flutter 1.20
 - [FIX] Notification about new package update not working due to pub.dev changing it's html layout

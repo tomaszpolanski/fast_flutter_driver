@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/command_line_impl.dart'
     as command_line;
@@ -13,6 +14,7 @@ import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider_impl.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
+import 'package:fast_flutter_driver_tool/src/utils/lazy_logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
@@ -44,9 +46,13 @@ Future<void> run(
   @required TestExecutor Function(Logger) testExecutorFactory,
   @required TestFileProvider Function(Logger) testFileProviderFactory,
 }) async {
+  final logger = LazyLogger(loggerFactory);
   final parser = scriptParameters;
-  final result = parser.parse(paths);
-  final logger = loggerFactory(result[verboseArg]);
+  final result = _createArguments(() => parser.parse(paths), logger);
+  if (result == null) {
+    return;
+  }
+  logger.isVerbose = result[verboseArg];
   final versionChecker = versionCheckerFactory(logger);
 
   if (result[helpArg] == true) {
@@ -113,4 +119,15 @@ Future<void> run(
 
   logger.stdout('All ${bold('done')}.');
   exitCode = 0;
+}
+
+ArgResults _createArguments(ArgResults Function() parse, Logger logger) {
+  try {
+    return parse();
+  } on FormatException catch (e) {
+    logger.stderr('''
+${e.message}
+Try '${green('fastdriver --help')}' for more information.''');
+    return null;
+  }
 }

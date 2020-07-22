@@ -30,6 +30,7 @@ void main() {
     tearDown(() {
       linuxOverride = null;
     });
+
     test('help', () async {
       await main_file.run(
         ['-h'],
@@ -78,6 +79,24 @@ void main() {
         testExecutor.test(any, parameters: captureAnyNamed('parameters')),
       ).captured.single;
       expect(parameters.flavor, flavor);
+    });
+
+    test('invalid command displays help', () async {
+      const unknownCommand = 'this-is-unknown-command';
+      await main_file.run(
+        ['--$unknownCommand'],
+        loggerFactory: (_) => logger,
+        versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
+      );
+
+      expect(
+        verify(logger.stderr(captureAny)).captured.single,
+        '''
+Could not find an option named "$unknownCommand".
+Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
+      );
     });
   });
 
