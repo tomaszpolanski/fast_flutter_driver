@@ -15,7 +15,7 @@ String get nativeResolutionFile {
 String get _nativeResolutionFile {
   if (System.isLinux) {
     return [
-      'my_application.cc',
+      'linux/my_application.cc',
       'linux/window_configuration.cc',
     ]
         .map(_getFile)
