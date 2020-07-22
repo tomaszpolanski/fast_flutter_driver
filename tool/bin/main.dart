@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/command_line_impl.dart'
     as command_line;
@@ -44,13 +45,15 @@ Future<void> run(
   @required TestExecutor Function(Logger) testExecutorFactory,
   @required TestFileProvider Function(Logger) testFileProviderFactory,
 }) async {
-  final parser = scriptParameters;
-  final result = parser.parse(paths);
+  final result = _createArguments(paths, () => loggerFactory(false));
+  if (result == null) {
+    return;
+  }
   final logger = loggerFactory(result[verboseArg]);
   final versionChecker = versionCheckerFactory(logger);
 
   if (result[helpArg] == true) {
-    logger.stdout('Usage: fastdriver <path>\n${parser.usage}');
+    logger.stdout('Usage: fastdriver <path>\n${scriptParameters.usage}');
     return;
   } else if (result[versionArg] == true) {
     logger.stdout(await versionChecker.currentVersion());
@@ -113,4 +116,17 @@ Future<void> run(
 
   logger.stdout('All ${bold('done')}.');
   exitCode = 0;
+}
+
+ArgResults _createArguments(
+    List<String> paths, Logger Function() loggerFactory) {
+  try {
+    final parser = scriptParameters;
+    return parser.parse(paths);
+  } on FormatException catch (e) {
+    loggerFactory().stderr('''
+${e.message}
+Try 'fastdriver --help'for more information.''');
+    return null;
+  }
 }
