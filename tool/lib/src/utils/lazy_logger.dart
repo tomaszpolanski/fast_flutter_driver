@@ -5,11 +5,11 @@ class LazyLogger implements Logger {
 
   final Logger Function(bool verbose) _loggerFactory;
 
-  bool verbose = false;
+  bool _verbose = false;
 
   Logger _instance;
 
-  Logger get _logger => _instance ??= _loggerFactory(verbose);
+  Logger get _logger => _instance ??= _loggerFactory(_verbose);
 
   @override
   Ansi get ansi => _logger.ansi;
@@ -20,6 +20,7 @@ class LazyLogger implements Logger {
 
   @override
   bool get isVerbose => _logger.isVerbose;
+  set isVerbose(bool value) => _verbose = value;
 
   @override
   Progress progress(String message) => _logger.progress(message);

@@ -14,6 +14,7 @@ import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/update/path_provider_impl.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
+import 'package:fast_flutter_driver_tool/src/utils/lazy_logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
@@ -45,15 +46,17 @@ Future<void> run(
   @required TestExecutor Function(Logger) testExecutorFactory,
   @required TestFileProvider Function(Logger) testFileProviderFactory,
 }) async {
-  final result = _createArguments(paths, () => loggerFactory(false));
+  final logger = LazyLogger(loggerFactory);
+  final parser = scriptParameters;
+  final result = _createArguments(() => parser.parse(paths), logger);
   if (result == null) {
     return;
   }
-  final logger = loggerFactory(result[verboseArg]);
+  logger.isVerbose = result[verboseArg];
   final versionChecker = versionCheckerFactory(logger);
 
   if (result[helpArg] == true) {
-    logger.stdout('Usage: fastdriver <path>\n${scriptParameters.usage}');
+    logger.stdout('Usage: fastdriver <path>\n${parser.usage}');
     return;
   } else if (result[versionArg] == true) {
     logger.stdout(await versionChecker.currentVersion());
@@ -118,15 +121,13 @@ Future<void> run(
   exitCode = 0;
 }
 
-ArgResults _createArguments(
-    List<String> paths, Logger Function() loggerFactory) {
+ArgResults _createArguments(ArgResults Function() parse, Logger logger) {
   try {
-    final parser = scriptParameters;
-    return parser.parse(paths);
+    return parse();
   } on FormatException catch (e) {
-    loggerFactory().stderr('''
+    logger.stderr('''
 ${e.message}
-Try 'fastdriver --help'for more information.''');
+Try '${green('fastdriver --help')}' for more information.''');
     return null;
   }
 }

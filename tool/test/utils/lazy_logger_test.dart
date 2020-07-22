@@ -47,13 +47,15 @@ void main() {
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
-        return _MockLogger();
+        final logger = _MockLogger();
+        when(logger.isVerbose).thenReturn(isVerbose);
+        return logger;
       })
-        ..verbose = true
+        ..isVerbose = true
         ..flush();
 
       expect(isVerbose, isTrue);
-      expect(tested.verbose, isTrue);
+      expect(tested.isVerbose, isTrue);
     });
   });
 

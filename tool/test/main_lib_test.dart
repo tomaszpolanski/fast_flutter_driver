@@ -95,7 +95,7 @@ void main() {
         verify(logger.stderr(captureAny)).captured.single,
         '''
 Could not find an option named "$unknownCommand".
-Try 'fastdriver --help'for more information.''',
+Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
       );
     });
   });
