@@ -55,7 +55,7 @@ class VersionChecker {
     );
 
     final match =
-        RegExp('fast_flutter_driver_tool (.*)</h2>').firstMatch(response.body);
+        RegExp('fast_flutter_driver_tool (.*)</h1>').firstMatch(response.body);
     if (match == null) {
       throw PackageNotFound();
     }
