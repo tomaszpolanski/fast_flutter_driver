@@ -18,45 +18,14 @@ fastdriver --device emulator-5554
 
 ## Enabling and running on Desktop
 You need first to setup Flutter for desktop if you had not done it before.
+Latest tested version of Flutter that works with this repo is `1.20.0-7.2.pre`.
 
 ### Enable desktop builds
 
-Latest tested version of Flutter that works with this repo is `1.19.0-4.1.pre`:
-  * **Important**: Use `version` otherwise desktop won't be picked up: `1.19.0-4.1.pre`
-
-#### Linux
-- Add the following to `.bash_profile` but replace `$HOME/flutter/` with path to your Flutter folder
-```
-# Add Flutter
-export PATH="$PATH:$HOME/flutter/bin"
-# Add Dart
-export PATH="$PATH:$HOME/flutter/bin/cache/dart-sdk/bin"
-```
-#### Mac
-- Add the following to `.bash_profile` but replace `$HOME/flutter/` with path to your Flutter folder
-```
-# Add Flutter
-export PATH="$PATH:$HOME/flutter/bin"
-# Add Dart
-export PATH="$PATH:$HOME/flutter/bin/cache/dart-sdk/bin"
-```
-- Update CocoaPods:
-```bash
-brew upgrade cocoapods
-pod setup
-gem install cocoapods
-```
-- In case you are getting error `ArgumentError - invalid byte sequence in US-ASCII` when installing Pods, set proper encoding:
-```bash
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-```
-#### Windows
-- Install Visual Studio Community 2019 with [Desktop development with C++](https://devblogs.microsoft.com/cppblog/windows-desktop-development-with-c-in-visual-studio/#installation). 
-Make sure that those components are installed:
-* `MSVC v142 - VS 2019 C++ x64/x86 build tools (v14.23)`   
-* `Windows 10 SDK (10.0.17763.0)` 
+* Checkout the latest changes in Flutter by running `flutter channel master` OR going into Flutter folder and running `git pull`
+* **Important**: Use `version` otherwise desktop won't be picked up: `flutter version 1.20.0-7.2.pre`
+* Check what desktop components are missing by running `flutter doctor`
+* Install missing components that you can see under Flutter doctor's  `Linux`/`Window`/`MacOS` section
 
 
 ### Running on Desktop
