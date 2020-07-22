@@ -1,3 +1,6 @@
+## 1.3.0
+- [FEATURE] Supporting Flutter 1.20
+
 ## 1.2.0+2
 - [CLEANUP] Cleaning up and adding more documentation
 

@@ -58,35 +58,43 @@ String _replaceResolution(
   @required int height,
 }) {
   return nativeContent
-      .replaceWidth(width)
-      .replaceHeight(height)
-      .replaceLegacyWidth(width)
-      .replaceLegacyHeight(height);
+      .replaceV3(width: width, height: height)
+      .replaceV2Width(width)
+      .replaceV2Height(height)
+      .replaceV1Width(width)
+      .replaceV1Height(height);
 }
 
 extension on String {
-  String replaceWidth(int width) {
+  String replaceV3({@required int width, @required int height}) {
+    return replaceAllMapped(
+      RegExp(r'gtk_window_set_default_size\(window, \d+, \d+\);'),
+      (m) => 'gtk_window_set_default_size(window, $width, $height);',
+    );
+  }
+
+  String replaceV2Width(int width) {
     return replaceAllMapped(
       RegExp(r'kFlutterWindowWidth = (\d+);'),
       (m) => 'kFlutterWindowWidth = $width;',
     );
   }
 
-  String replaceHeight(int height) {
+  String replaceV2Height(int height) {
     return replaceAllMapped(
       RegExp(r'kFlutterWindowHeight = (\d+);'),
       (m) => 'kFlutterWindowHeight = $height;',
     );
   }
 
-  String replaceLegacyWidth(int width) {
+  String replaceV1Width(int width) {
     return replaceAllMapped(
       RegExp(r'window_properties.width = (\d+);'),
       (m) => 'window_properties.width = $width;',
     );
   }
 
-  String replaceLegacyHeight(int height) {
+  String replaceV1Height(int height) {
     return replaceAllMapped(
       RegExp(r'window_properties.height = (\d+);'),
       (m) => 'window_properties.height = $height;',

@@ -46,7 +46,7 @@ void main() {
         linuxOverride = null;
       });
 
-      test('legacy config file', () {
+      test('legacy linux/main.cc config file', () {
         IOOverrides.runZoned(
           () async {
             final tested = nativeResolutionFile;
@@ -66,7 +66,7 @@ void main() {
         );
       });
 
-      test('current config file', () {
+      test('legacy window_configuration.cc config file', () {
         IOOverrides.runZoned(
           () async {
             final tested = nativeResolutionFile;
@@ -82,6 +82,28 @@ void main() {
             final file = _MockFile();
             when(file.existsSync()).thenReturn(
               name.endsWith('window_configuration.cc'),
+            );
+            return file;
+          },
+        );
+      });
+
+      test('current config file', () {
+        IOOverrides.runZoned(
+          () async {
+            final tested = nativeResolutionFile;
+
+            expect(tested, endsWith('my_application.cc'));
+          },
+          getCurrentDirectory: () {
+            final mockDir = _MockDirectory();
+            when(mockDir.path).thenReturn('');
+            return mockDir;
+          },
+          createFile: (name) {
+            final file = _MockFile();
+            when(file.existsSync()).thenReturn(
+              name.endsWith('my_application.cc'),
             );
             return file;
           },
