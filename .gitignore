@@ -41,3 +41,4 @@ example/macos/Podfile
 example/ios/Podfile
 example/linux/flutter/generated_plugins.cmake
 tool/test/all_tests.dart
+example/windows/flutter/generated_plugins.cmake
