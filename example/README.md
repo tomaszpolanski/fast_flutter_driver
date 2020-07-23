@@ -24,6 +24,7 @@ Latest tested version of Flutter that works with this repo is `1.20.0-7.2.pre`.
 
 * Checkout the latest changes in Flutter by running `flutter channel master` OR going into Flutter folder and running `git pull`
 * **Important**: Use `version` otherwise desktop won't be picked up: `flutter version 1.20.0-7.2.pre`
+* Run `flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop`
 * Check what desktop components are missing by running `flutter doctor`
 * Install missing components that you can see under Flutter doctor's  `Linux`/`Window`/`MacOS` section
 
