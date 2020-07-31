@@ -18,7 +18,8 @@ Future<String> configureTest(BaseConfiguration config) async {
   );
 
   final platform = config.platform.targetPlatform;
-  if (debugDefaultTargetPlatformOverride != platform) {
+  if (platform != TargetPlatform.fuchsia &&
+      debugDefaultTargetPlatformOverride != platform) {
     debugDefaultTargetPlatformOverride = platform;
   }
 

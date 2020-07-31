@@ -1,3 +1,6 @@
+## 1.1.0
+- [FIX] Do not override platform when the `-p` is not passed.
+
 ## 1.0.1
 - Improving testability
 
