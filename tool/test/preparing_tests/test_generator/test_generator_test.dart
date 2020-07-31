@@ -171,6 +171,54 @@ void main() {
       );
     });
 
+    test('invalid dir separator', () {
+      final absolutePath = Platform.isWindows
+          ? r'c:\Users\tpolanski\Documents\GitHub\flutter-project'
+          : '/Users/tpolanski/Documents/GitHub/flutter-project';
+      IOOverrides.runZoned(
+        () async {
+          final logger = _MockLogger();
+
+          await aggregatedTest(
+              'test_driver/redemption'.toPlatformPath, generator, logger);
+          expect(
+            verify(generator.generateTestFile(any, any, captureAny,
+                    hasArguments: anyNamed('hasArguments')))
+                .captured
+                .single,
+            '../redemption/',
+          );
+        },
+        createDirectory: (name) {
+          final file = _MockFile();
+          when(file.path).thenReturn(
+              '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath);
+          final absoluteDir = _MockDirectory();
+          when(absoluteDir.path).thenReturn('$absolutePath/$name'
+              .toPlatformPath
+              .replaceAll(r'\redemption', '/redemption'));
+          final mockDir = _MockDirectory();
+          when(mockDir.path).thenReturn(name);
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
+              .thenReturn([file]);
+          when(mockDir.absolute).thenReturn(absoluteDir);
+          return mockDir;
+        },
+        createFile: (name) {
+          if (name.endsWith(aggregatedTestFile)) {
+            final absolute = _MockFile();
+            when(absolute.path).thenReturn(name);
+            final file = _MockFile();
+            when(file.path).thenReturn(name);
+            when(file.existsSync()).thenReturn(true);
+            when(file.absolute).thenReturn(absolute);
+            return file;
+          }
+          return MemoryFileSystem().file('$absolutePath\\$setupMainFile');
+        },
+      );
+    });
+
     test('generate properly paths for root folder', () {
       final absolutePath = Platform.isWindows
           ? r'c:\Users\tpolanski\Documents\GitHub\flutter-project'

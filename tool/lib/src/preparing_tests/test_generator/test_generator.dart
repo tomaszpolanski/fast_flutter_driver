@@ -40,7 +40,6 @@ Future<String> aggregatedTest(
   if (setupFile == null) {
     return null;
   }
-
   final genericTestFile =
       File(platformPath(p.join(p.dirname(setupFile), aggregatedTestFile)));
   if (!genericTestFile.existsSync()) {
@@ -50,8 +49,7 @@ Future<String> aggregatedTest(
 
   final testDir = Directory(directoryPath);
 
-  final importPath =
-      _importPath(testDir, genericTestFile).replaceAll(r'\', '/');
+  final importPath = _importPath(testDir, genericTestFile);
   await generator.generateTestFile(
     genericTestFile,
     testDir,
@@ -64,11 +62,15 @@ Future<String> aggregatedTest(
 }
 
 String _importPath(Directory testDir, File aggregatedFile) {
-  final dir = testDir.absolute.path;
-  final file = aggregatedFile.absolute.path;
+  final dir = testDir.absolute.path.clean();
+  final file = aggregatedFile.absolute.path.clean();
   final differentIndex = _compare(dir, file);
 
   return dir.substring(differentIndex);
+}
+
+extension on String {
+  String clean() => replaceAll(r'\', '/');
 }
 
 int _compare(String first, String second) {

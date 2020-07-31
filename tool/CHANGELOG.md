@@ -1,5 +1,6 @@
-## 1.3.1
+## 1.3.2
 - [FIX] Not throwing an exception when inputting unknown command
+- [FIX] Not being able to run tests from some directories on Windows
 
 ## 1.3.0
 - [FEATURE] Supporting Flutter 1.20
