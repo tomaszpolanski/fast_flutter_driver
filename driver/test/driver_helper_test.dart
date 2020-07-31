@@ -17,20 +17,42 @@ void main() {
     });
   });
   group('configureTest', () {
+    BaseConfiguration config;
+
+    setUp(() {
+      macOsOverride = false;
+      windowsOverride = false;
+      linuxOverride = true;
+      config = _MockConfiguration();
+      when(config.resolution).thenReturn(Resolution.fromSize('1x1'));
+    });
+
     tearDown(() {
       macOsOverride = null;
       windowsOverride = null;
+      linuxOverride = null;
     });
 
-    test('init', () async {
-      macOsOverride = false;
-      windowsOverride = false;
-      final config = _MockConfiguration();
-      when(config.resolution).thenReturn(Resolution.fromSize('1x1'));
+    group('platform', () {
+      test('when platform is not passed then do not override it', () async {
+        const platform = TargetPlatform.android;
+        debugDefaultTargetPlatformOverride = platform;
+        when(config.platform).thenReturn(null);
 
-      final tested = await configureTest(config);
+        await configureTest(config);
 
-      expect(tested, isNull);
+        expect(debugDefaultTargetPlatformOverride, platform);
+      });
+
+      test('when platform is passed then do override it', () async {
+        const platform = TestPlatform.android;
+        debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+        when(config.platform).thenReturn(platform);
+
+        await configureTest(config);
+
+        expect(debugDefaultTargetPlatformOverride, platform.targetPlatform);
+      });
     });
   });
 }
