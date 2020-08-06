@@ -10,7 +10,7 @@ analyzer:
     strict-inference: true
     strict-raw-types: true
 
-    
+
 linter:
   rules:
     - always_declare_return_types
@@ -18,6 +18,7 @@ linter:
     # - always_put_required_named_parameters_first # not crucial and we do it all around
     - always_require_non_null_named_parameters
     # - always_specify_types # we use type inference
+    # - always_use_package_imports #TODO use when available
     - annotate_overrides
     # - avoid_annotating_with_dynamic # we want to be explicit with dynamic
     - avoid_as
@@ -66,8 +67,9 @@ linter:
     # - constant_identifier_names # we are using those all around
     - control_flow_in_finally
     - curly_braces_in_flow_control_structures
-    - diagnostic_describe_all_properties
+    # - diagnostic_describe_all_properties # nice to have for libs but overkill for applications
     - directives_ordering
+    - do_not_use_environment
     - empty_catches
     - empty_constructor_bodies
     - empty_statements
@@ -87,7 +89,7 @@ linter:
     - literal_only_boolean_expressions
     - missing_whitespace_between_adjacent_strings
     - no_adjacent_strings_in_list
-    # - no_default_cases compiler error without it
+    - no_default_cases
     - no_duplicate_case_values
     - no_logic_in_create_state
     - no_runtimeType_toString

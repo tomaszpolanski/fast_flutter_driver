@@ -34,8 +34,7 @@ extension TestFlutterEx on TestPlatform {
         return TargetPlatform.android;
       case TestPlatform.iOS:
         return TargetPlatform.iOS;
-      default:
-        return TargetPlatform.fuchsia;
     }
+    return TargetPlatform.fuchsia;
   }
 }
