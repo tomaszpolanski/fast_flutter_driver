@@ -82,7 +82,6 @@ import 'package:flutter_driver/driver_extension.dart';
 import 'test_configuration.dart';
 
 void main() {
-  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   timeDilation = 0.1;
   enableFlutterDriverExtension(
     handler: (playload) => configureTest(
