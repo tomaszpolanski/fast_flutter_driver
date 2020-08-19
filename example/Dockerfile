@@ -85,5 +85,6 @@ CMD ["Xvfb", ":0", "-screen", "0", "1920x1920x24"]
 
 #./build_docker.sh 1.20.2 ./
 #docker run -d tomek/flutter:latest
-#docker exec -d 798f91f95392573bb183b7813cb2c73a92a70647327aea187eeaf530befa1f30 sh -c "Xvfb :0 -screen 0 1920x1920x24"
-#docker exec 798f91f95392573bb183b7813cb2c73a92a70647327aea187eeaf530befa1f30 sh -c "cd /home/user/fast_flutter_driver/example && fastdriver"
+#docker exec -d 798f91f9539 sh -c "Xvfb :0 -screen 0 1920x1920x24"
+#docker exec 798f91f9539 sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1300x1000 -s"
+#docker cp 798f91f9539:/home/user/fast_flutter_driver/example/screenshots screenshots
