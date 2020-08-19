@@ -157,7 +157,7 @@ A full example of how to do that can be found in [the example][example] folder.
 
 
 [example]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#fast-flutter-driver-example
-[example_docker]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/adding-docker-example/example#running-on-docker
+[example_docker]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#running-on-docker
 [command_line_tool]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/tool#fast-flutter-driver
 [command_line_tool_package]: https://pub.dev/packages/fast_flutter_driver_tool
 [ui_driver]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/driver#fast-flutter-driver-ui-component
