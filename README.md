@@ -10,7 +10,7 @@
 | [UI Helper][ui_driver]| [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)][ui_driver_package] |
 
 
-![](./example/assets/demo.gif)
+![][example_gif]
 
 Toolkit for running rapidly flutter driver tests on desktop/mobile.
 
@@ -158,6 +158,7 @@ A full example of how to do that can be found in [the example][example] folder.
 
 [example]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#fast-flutter-driver-example
 [example_docker]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/adding-docker-example/example#running-on-docker
+[example_gif]: https://github.com/tomaszpolanski/fast_flutter_driver/raw/master/example/assets/demo.gif
 [command_line_tool]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/tool#fast-flutter-driver
 [command_line_tool_package]: https://pub.dev/packages/fast_flutter_driver_tool
 [ui_driver]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/driver#fast-flutter-driver-ui-component
