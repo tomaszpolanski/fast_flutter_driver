@@ -6,22 +6,22 @@
 
 | Plugin | Pub |
 |--------|-----|
-| [Command Line Tool](./tool/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver_tool.svg)](https://pub.dev/packages/fast_flutter_driver_tool) |
-| [UI Helper](./driver/) | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)](https://pub.dev/packages/fast_flutter_driver) |
+| [Command Line Tool][command_line_tool] | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver_tool.svg)][command_line_tool_package] |
+| [UI Helper][ui_driver]| [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)][ui_driver_package] |
 
 
 ![](./example/assets/demo.gif)
 
 Toolkit for running rapidly flutter driver tests on desktop/mobile.
 
-[This package](https://pub.dev/packages/fast_flutter_driver_tool) simplifies the creation of Flutter Driver tests that can be run in bulk without restarting or rebuilding the application.
-An example of how the toolkit works can be found in [this article](https://medium.com/flutter-community/blazingly-fast-flutter-driver-tests-5e375c833aa).
+[This package][command_line_tool_package] simplifies the creation of Flutter Driver tests that can be run in bulk without restarting or rebuilding the application.
+An example of how the toolkit works can be found in [this article][blazingly_fast_driver].
 
 ## The reasoning for Desktop tests
 The desktop builds are almost identical to Android/iOS builds in regard to the UI.
 Running tests on a simulator/emulator are painful. This can be even worse on your CI.
 
-Your CI is usually a dockerized Linux machine - running Linux `flutter driver` tests against Linux Flutter application is both fast and reliable.
+Your CI is usually a [dockerized Linux][example_docker] machine - running Linux `flutter driver` tests against Linux Flutter application is both fast and reliable.
 This tool allows you to run your `flutter driver` tests much faster and more reliably than a build for a simulator/emulator.
 
 The application flows that require Android/iOS plugins should still be run on a Simulator/Emulator or a real device.
@@ -30,14 +30,14 @@ The application flows that require Android/iOS plugins should still be run on a 
 While running tests against Desktop will find the majority of bugs, it is recommended to run sometimes against actual devices. There are bugs in Dart (like implementing your generics in an invalid way) that can cause a native crash on a mobile device and work properly on the desktop.It's prudent to run `fastdriver` tests before every release on a mobile device.
 
 ## Example
-You can build and execute [the example](https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example) that works on any desktop system.
+You can build and execute [the example][example] that works on any desktop system and [Docker][example_docker] as well.
 
 ## Usage
 
 - Add `dev_dependency` to your `pubspec.yaml`
 ```yaml
 dev_dependencies:
-  fast_flutter_driver: ^1.0.0
+  fast_flutter_driver: ^1.1.0
 ```
 
 - Create configuration class `test_driver/generic/test_configuration.dart`
@@ -139,7 +139,7 @@ void main(List<String> args) {
 }
 
 ```
-- Install [fast_flutter_driver](./tool) script:
+- Install [fast_flutter_driver][command_line_tool] script:
 ```shell script
 pub global activate fast_flutter_driver_tool
 ```
@@ -153,4 +153,13 @@ All done!
 ## What's next
 This was the simplest setup of tests, next you would like to pass different application configuration so every time you run tests, they could be run with a different configuration (eg different page). To do that you need to add more properties to `TestConfiguration`.
 
-A full example of how to do that can be found in the [example](./example/README.md) folder.
+A full example of how to do that can be found in [the example][example] folder.
+
+
+[example]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#fast-flutter-driver-example
+[example_docker]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/adding-docker-example/example#running-on-docker
+[command_line_tool]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/tool#fast-flutter-driver
+[command_line_tool_package]: https://pub.dev/packages/fast_flutter_driver_tool
+[ui_driver]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/driver#fast-flutter-driver-ui-component
+[ui_driver_package]: https://pub.dev/packages/fast_flutter_driver
+[blazingly_fast_driver]: https://medium.com/flutter-community/blazingly-fast-flutter-driver-tests-5e375c833aa
