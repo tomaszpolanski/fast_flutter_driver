@@ -36,6 +36,28 @@ flutter pub get
 fastdriver
 ```
 
+
+### Running on Docker
+1) Install `docker`
+2) Build docker image (will take a couple of minutes)
+```
+./build_docker.sh 1.20.2 ./
+```
+3) Run docker container and get it's `id`
+```
+docker run -d tomek/flutter:latest
+```
+4) Start X11 UI
+```
+docker exec -d <containerId> sh -c "Xvfb :0 -screen 0 1920x1920x24"
+```
+5) Execute Flutter tests
+
+```
+docker exec <containerId> sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1600x1200"
+```
+
+
 ## How to write your tests
 All tests located files that end with `_test.dart` in `test_driver` folder will be run in separation.
 
