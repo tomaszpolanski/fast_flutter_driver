@@ -52,10 +52,14 @@ docker run -d tomek/flutter:latest
 docker exec -d <containerId> sh -c "Xvfb :0 -screen 0 1920x1920x24"
 ```
 5) Execute Flutter tests
+```
+docker exec <containerId> sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1600x1200 -s"
+```
+6) Copy screenshots to local `screenshots` folder so you can preview them
+```
+docker cp <containerId>:/home/user/fast_flutter_driver/example screenshots
+```
 
-```
-docker exec <containerId> sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1600x1200"
-```
 
 
 ## How to write your tests

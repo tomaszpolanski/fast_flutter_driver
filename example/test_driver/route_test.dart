@@ -6,6 +6,7 @@ import 'package:fast_flutter_driver/tool.dart';
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
+import 'generic/screenshots.dart';
 import 'generic/test_configuration.dart';
 
 void main(List<String> args) {
@@ -48,11 +49,29 @@ void main(List<String> args) {
   });
 
   group('Speed test', () {
-    List.generate(100, (index) => '/generated_page_$index').forEach((route) {
+    List.generate(30, (index) => '/generated_page_$index').forEach((route) {
       test(route, () async {
         await restart(route);
 
         await driver.waitFor(find.text(route));
+      });
+    });
+
+    group('with screenshots', () {
+      Screenshot screenshot;
+
+      setUpAll(() async {
+        screenshot = await Screenshot.create(driver, 'route_test',
+            enabled: properties.screenshotsEnabled);
+      });
+
+      List.generate(30, (index) => '/generated_page_$index').forEach((route) {
+        test(route, () async {
+          await restart(route);
+
+          await driver.waitFor(find.text(route));
+          await screenshot.takeScreenshot(route);
+        });
       });
     });
   });
