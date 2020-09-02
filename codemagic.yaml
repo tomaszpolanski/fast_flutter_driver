@@ -1,23 +1,23 @@
 # Check out https://docs.codemagic.io/yaml/yaml for more information
 
 workflows:
-    flutter-tests-develop:
-        name: Fast Flutter Driver Example
-        environment:
-            xcode: latest
-            cocoapods: default
-        triggering:
-          events:
-            - push
-          branch_patterns:
-            - pattern: 'master'
-              include: true
-              source: true
-          cancel_previous_builds: false
-        scripts:
-          - name: Pull Docker image
-            script: |
-              docker pull kscodemagic/fastfluttertests:1.0
-          - name: Run Docker commands
-            script: |
-              ./example/run_docker_example.sh
+  flutter-driver-example:
+    name: Fast Flutter Driver Example
+    environment:
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'master'
+          include: true
+          source: true
+      cancel_previous_builds: false
+    scripts:
+      - name: Pull Docker image
+        script: |
+          docker pull kscodemagic/fastfluttertests:1.0
+      - name: Run Docker commands
+        script: |
+          ./example/run_docker_example.sh

@@ -1,6 +1,6 @@
 # Fast Flutter Driver example
 
-[![Codemagic UI Docker Tests](https://api.codemagic.io/apps/5f4fcc8d9c731164dfcaf6e4/flutter-tests-develop/status_badge.svg)](https://codemagic.io/apps/5f4fcc8d9c731164dfcaf6e4/flutter-tests-develop/latest_build)
+[![Codemagic UI Docker Tests](https://api.codemagic.io/apps/5f4fcc8d9c731164dfcaf6e4/flutter-driver-example/status_badge.svg)](https://codemagic.io/apps/5f4fcc8d9c731164dfcaf6e4/flutter-driver-example/latest_build)
 
 
 An example of how to use Fast Flutter Driver.
