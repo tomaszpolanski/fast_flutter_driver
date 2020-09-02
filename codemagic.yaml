@@ -6,6 +6,14 @@ workflows:
         environment:
             xcode: latest
             cocoapods: default
+        triggering:
+          events:
+            - push
+          branch_patterns:
+            - pattern: 'master'
+              include: true
+              source: true
+          cancel_previous_builds: false
         scripts:
           - name: Pull Docker image
             script: |
