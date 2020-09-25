@@ -133,7 +133,7 @@ class TestGenerator {
     file
       ..writeln('')
       ..writeln('void main(${hasArguments ? 'List<String> args' : ''}) {');
-    for (final test in testFiles) {
+    for (final test in testFiles..sort((f, s) => f.compareTo(s))) {
       file.writeln(
           '  ${_importName(test)}.main(${hasArguments ? 'args' : ''});');
     }

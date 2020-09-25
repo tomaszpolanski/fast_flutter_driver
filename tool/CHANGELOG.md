@@ -1,3 +1,6 @@
+## 1.3.3
+- Tests in `generic_test.dart::main` are sorted by name in case users want to run the tests in a specific order
+
 ## 1.3.2+1
 - Updating example to Flutter `1.22.0-12.1.pre`
 
