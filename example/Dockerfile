@@ -22,6 +22,7 @@ RUN apt-get -qqy update && \
     lib32gcc1  \
     lib32stdc++6 \
     lib32z1 \
+    libblkid-dev \
     libc6-i386  \
     libgles2-mesa-dev \
     libglu1 \
@@ -83,7 +84,7 @@ ENV DISPLAY :0
 CMD ["Xvfb", ":0", "-screen", "0", "1920x1920x24"]
 
 
-#./build_docker.sh 1.20.2 ./
+#./build_docker.sh 1.22.0-12.1.pre ./
 #docker run -d tomek/flutter:latest
 #docker exec -d 798f91f9539 sh -c "Xvfb :0 -screen 0 1920x1920x24"
 #docker exec 798f91f9539 sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1300x1000 -s"
