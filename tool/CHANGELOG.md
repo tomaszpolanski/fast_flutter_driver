@@ -1,3 +1,6 @@
+## 1.3.2+1
+- Updating example to Flutter `1.22.0-12.1.pre`
+
 ## 1.3.2
 - [FIX] Not throwing an exception when inputting unknown command
 - [FIX] Not being able to run tests from some directories on Windows

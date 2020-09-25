@@ -1,3 +1,6 @@
+## 1.1.0+1
+- Updating example to Flutter `1.22.0-12.1.pre`
+
 ## 1.1.0
 - [FIX] Do not override platform when the `-p` is not passed.
 
