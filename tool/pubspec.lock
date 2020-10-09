@@ -25,30 +25,24 @@ packages:
   async:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: e4a8999dd4e396b373f43a49c5aad0baed229180
-      url: "git://github.com/dart-lang/async.git"
-    source: git
-    version: "2.5.0-nullsafety"
+      name: async
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.5.0-nullsafety.1"
   boolean_selector:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: e919dda69caee48b7e51b78e117f53e8c4f333a1
-      url: "git://github.com/dart-lang/boolean_selector.git"
-    source: git
-    version: "2.1.0-nullsafety"
+      name: boolean_selector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0-nullsafety.1"
   charcode:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: b659bab5449b3ae811103e1f299f9845421c51ee
-      url: "git://github.com/dart-lang/charcode.git"
-    source: git
-    version: "1.2.0-nullsafety"
+      name: charcode
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0-nullsafety.1"
   cli_util:
     dependency: "direct main"
     description:
@@ -161,10 +155,10 @@ packages:
     description:
       path: "pkg/js"
       ref: HEAD
-      resolved-ref: bbe6bb9823495574917c75634b1f8a2a8099086c
+      resolved-ref: "976a0da3fd223f27b0fe877d7936c53075359a34"
       url: "git://github.com/dart-lang/sdk.git"
     source: git
-    version: "0.6.3-nullsafety"
+    version: "0.6.3-nullsafety.1"
   logging:
     dependency: transitive
     description:
@@ -173,23 +167,19 @@ packages:
     source: hosted
     version: "0.11.4"
   matcher:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: e7b2579d682f0c99dcdae5df765ce560708cd0f7
-      url: "git://github.com/dart-lang/matcher.git"
-    source: git
-    version: "0.12.10-nullsafety"
+      name: matcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.10-nullsafety.1"
   meta:
     dependency: "direct main"
     description:
-      path: "pkg/meta"
-      ref: null_safety-pkgs
-      resolved-ref: "4a28d9532d4b34a1297e400a807826a8e956d2db"
-      url: "git://github.com/dart-lang/sdk.git"
-    source: git
-    version: "1.2.0-nnbd"
+      name: meta
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.0-nullsafety.4"
   mime:
     dependency: transitive
     description:
@@ -237,28 +227,24 @@ packages:
     description:
       path: "."
       ref: null_safety
-      resolved-ref: "8f47413043ffe90cd8c73fc507418fd1f413a11c"
+      resolved-ref: "80bce8f1901a41ee085268c553df0a812950d92a"
       url: "git://github.com/dart-lang/path.git"
     source: git
     version: "1.8.0-nullsafety"
   pedantic:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: "3871264e7557219edec650ad3947dd5a61d409a7"
-      url: "git://github.com/dart-lang/pedantic.git"
-    source: git
-    version: "1.10.0-nnbd"
+      name: pedantic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.10.0-nullsafety.1"
   pool:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: d29005566b6a4e0a66924aca3d681e9665ce1b61
-      url: "git://github.com/dart-lang/pool.git"
-    source: git
-    version: "1.5.0-nullsafety"
+      name: pool
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0-nullsafety.1"
   process_run:
     dependency: "direct main"
     description:
@@ -302,74 +288,60 @@ packages:
     source: hosted
     version: "0.2.3"
   source_map_stack_trace:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: a89ca07ea4314c028b7801243e93b438267ff56d
-      url: "git://github.com/dart-lang/source_map_stack_trace.git"
-    source: git
-    version: "2.1.0-nullsafety"
+      name: source_map_stack_trace
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0-nullsafety.2"
   source_maps:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: "8e7e4de99b83d99459026acd15659bdc7814adb2"
-      url: "git://github.com/dart-lang/source_maps.git"
-    source: git
-    version: "0.11.0-nullsafety"
+      name: source_maps
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.10-nullsafety.1"
   source_span:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: ad5e83080b22ad52f1f7c2f2b488284429437873
-      url: "git://github.com/dart-lang/source_span.git"
-    source: git
-    version: "1.8.0-nullsafety"
+      name: source_span
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.8.0-nullsafety.2"
   stack_trace:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: b1eed6548809ca112a8d0118928c23d861ec4dbe
-      url: "git://github.com/dart-lang/stack_trace.git"
-    source: git
-    version: "1.10.0-nullsafety"
+      name: stack_trace
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.10.0-nullsafety.2"
   stream_channel:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: "3f23b6b90987ce3b82e396ba24db85e3fe2d6a97"
-      url: "git://github.com/dart-lang/stream_channel.git"
-    source: git
-    version: "2.1.0-nullsafety"
+      name: stream_channel
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0-nullsafety.1"
   string_scanner:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: "510ba62a998687ffaac5fe175d5f52821b15d2cc"
-      url: "git://github.com/dart-lang/string_scanner.git"
-    source: git
-    version: "1.1.0-nullsafety"
+      name: string_scanner
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0-nullsafety.1"
   term_glyph:
     dependency: "direct overridden"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: "1be6ddacf773ab39b242790e83a15abe3fc98e50"
-      url: "git://github.com/dart-lang/term_glyph.git"
-    source: git
-    version: "1.2.0-nullsafety"
+      name: term_glyph
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0-nullsafety.1"
   test:
     dependency: "direct dev"
     description:
       path: "pkgs/test"
       ref: null_safety
-      resolved-ref: fb58706fc867f06106915081eecd93877213fb60
+      resolved-ref: "1979eada92ecbc1e02298384cbe6f2f18d4f91ee"
       url: "git://github.com/dart-lang/test.git"
     source: git
     version: "1.16.0-nullsafety"
@@ -378,7 +350,7 @@ packages:
     description:
       path: "pkgs/test_api"
       ref: null_safety
-      resolved-ref: fb58706fc867f06106915081eecd93877213fb60
+      resolved-ref: "1979eada92ecbc1e02298384cbe6f2f18d4f91ee"
       url: "git://github.com/dart-lang/test.git"
     source: git
     version: "0.2.19-nullsafety"
@@ -387,7 +359,7 @@ packages:
     description:
       path: "pkgs/test_core"
       ref: null_safety
-      resolved-ref: fb58706fc867f06106915081eecd93877213fb60
+      resolved-ref: "1979eada92ecbc1e02298384cbe6f2f18d4f91ee"
       url: "git://github.com/dart-lang/test.git"
     source: git
     version: "0.3.12-nullsafety"
