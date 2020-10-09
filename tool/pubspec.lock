@@ -46,9 +46,9 @@ packages:
   cli_util:
     dependency: "direct main"
     description:
-      name: cli_util
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "dependencies/cli_util-0.2.0"
+      relative: true
+    source: path
     version: "0.2.0"
   collection:
     dependency: transitive
@@ -225,12 +225,10 @@ packages:
   path:
     dependency: "direct main"
     description:
-      path: "."
-      ref: null_safety
-      resolved-ref: "80bce8f1901a41ee085268c553df0a812950d92a"
-      url: "git://github.com/dart-lang/path.git"
-    source: git
-    version: "1.8.0-nullsafety"
+      name: path
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.8.0-nullsafety.1"
   pedantic:
     dependency: "direct overridden"
     description:
@@ -406,4 +404,4 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.10.0-78 <2.11.0"
+  dart: ">=2.10.0 <2.11.0"
