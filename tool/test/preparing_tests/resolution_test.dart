@@ -106,7 +106,9 @@ const unsigned int kFlutterWindowWidth = 1;
 const unsigned int kFlutterWindowHeight = 2;
 ''';
           expect(
-            verify(resolutionFile.writeAsString(captureAny)).captured.single,
+            verify(resolutionFile.writeAsString(nnbd_mockito.captureAny))
+                .captured
+                .single,
             content,
           );
         },

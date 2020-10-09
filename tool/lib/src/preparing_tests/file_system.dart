@@ -25,7 +25,7 @@ String? get _nativeResolutionFile {
   throw AssertionError('Only linux resolution should be overridden with file');
 }
 
-String _getFile(String file) {
+String? _getFile(String file) {
   final configFile = File(
     platformPath(p.join(
       Directory.current.path,

@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
-  LazyLogger tested;
+  late LazyLogger tested;
 
   test('creates logger when calling for the first time', () {
     var factoryWasCalled = false;
@@ -31,7 +31,7 @@ void main() {
 
   group('verbosity', () {
     test('by default logger is created not verbose', () {
-      bool isVerbose;
+      late bool isVerbose;
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
@@ -43,7 +43,7 @@ void main() {
     });
 
     test('verbose property changes logger to be verbose', () {
-      bool isVerbose;
+      late bool isVerbose;
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
@@ -60,7 +60,7 @@ void main() {
   });
 
   group('invokes methods', () {
-    _MockLogger logger;
+    late _MockLogger logger;
     setUp(() {
       logger = _MockLogger();
       tested = LazyLogger((_) => logger);

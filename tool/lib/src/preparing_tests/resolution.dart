@@ -65,7 +65,7 @@ String _replaceResolution(
 }
 
 extension on String {
-  String replaceV3({@required int width, @required int height}) {
+  String replaceV3({required int width, required int height}) {
     return replaceAllMapped(
       RegExp(r'gtk_window_set_default_size\(window, \d+, \d+\);'),
       (m) => 'gtk_window_set_default_size(window, $width, $height);',

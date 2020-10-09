@@ -58,7 +58,7 @@ Future<void> run(
     logger.stdout('Usage: fastdriver <path>\n${parser.usage}');
     return;
   } else if (result[versionArg] == true) {
-    logger.stdout(await versionChecker.currentVersion());
+    logger.stdout(await versionChecker.currentVersion() ?? 'Not Found');
     return;
   } else if (!isValidRootDirectory) {
     logger.stderr(
@@ -89,9 +89,9 @@ Future<void> run(
       dir.deleteSync(recursive: true);
     }
   }
-
+  final String? testName = result.rest.length == 1 ? result.rest.first : null;
   final testFile = await testFileProviderFactory(logger).testFile(
-    (result.rest.length == 1 ? result.rest.first : null) ?? 'test_driver',
+    testName ?? 'test_driver',
   );
 
   if (testFile != null) {
@@ -122,7 +122,7 @@ Future<void> run(
   exitCode = 0;
 }
 
-ArgResults _createArguments(ArgResults Function() parse, Logger logger) {
+ArgResults? _createArguments(ArgResults Function() parse, Logger logger) {
   try {
     return parse();
   } on FormatException catch (e) {
