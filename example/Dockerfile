@@ -65,11 +65,11 @@ ENV FLUTTER_HOME /home/user/flutter
 ENV FLUTTER_ROOT $FLUTTER_HOME
 ENV FLUTTER_VERSION $flutter_version
 
-RUN git clone -b beta https://github.com/flutter/flutter.git ${FLUTTER_HOME}
+RUN git clone -b ${FLUTTER_VERSION} https://github.com/flutter/flutter.git ${FLUTTER_HOME}
 ENV PATH ${PATH}:${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin
-RUN flutter version ${FLUTTER_VERSION}
 RUN flutter config --enable-linux-desktop
 RUN flutter precache --linux
+RUN flutter doctor
 
 ENV FLUTTER_PROJECT_HOME /home/user/fast_flutter_driver
 RUN git clone https://github.com/tomaszpolanski/fast_flutter_driver.git ${FLUTTER_PROJECT_HOME}
