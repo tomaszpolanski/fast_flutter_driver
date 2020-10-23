@@ -62,7 +62,7 @@ jobs:
         working-directory: ${{ matrix.package }}
 
       - name: Analyze
-        run: flutter analyze
+        run: dart analyze
         working-directory: ${{ matrix.package }}
 
       - name: Run tests
