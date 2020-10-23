@@ -19,6 +19,7 @@ linter:
     # - always_put_required_named_parameters_first # not crucial and we do it all around
     - always_require_non_null_named_parameters
     # - always_specify_types # we use type inference
+    - always_use_package_imports
     - annotate_overrides
     # - avoid_annotating_with_dynamic # we want to be explicit with dynamic
     - avoid_as
@@ -51,6 +52,7 @@ linter:
     - avoid_shadowing_type_parameters
     - avoid_single_cascade_in_expression_statements
     - avoid_slow_async_io
+    - # - avoid_type_to_string #TODO add when available
     - avoid_types_as_parameter_names
     # - avoid_types_on_closure_parameters # conflicts with always_specify_types
     - avoid_unnecessary_containers
@@ -62,6 +64,7 @@ linter:
     - camel_case_types
     - cancel_subscriptions
     - cascade_invocations
+    # - cast_nullable_to_non_nullable #TODO add when available
     - close_sinks
     - comment_references
     # - constant_identifier_names # we are using those all around
@@ -69,6 +72,7 @@ linter:
     - curly_braces_in_flow_control_structures
     # - diagnostic_describe_all_properties # nice to have for libs but overkill for applications
     - directives_ordering
+    - do_not_use_environment
     - empty_catches
     - empty_constructor_bodies
     - empty_statements
@@ -93,6 +97,7 @@ linter:
     - no_logic_in_create_state
     - no_runtimeType_toString
     - non_constant_identifier_names
+    # - null_check_on_nullable_type_parameter #TODO add when available
     - null_closures
     # - omit_local_variable_types # opposite of always_specify_types
     - one_member_abstracts
@@ -152,6 +157,7 @@ linter:
     - test_types_in_equals
     - throw_in_finally
     # - type_annotate_public_apis # subset of always_specify_types
+    - type_annotate_public_apis
     - type_init_formals
     - unawaited_futures
     - unnecessary_await_in_return
@@ -162,7 +168,9 @@ linter:
     - unnecessary_lambdas
     - unnecessary_new
     - unnecessary_null_aware_assignments
+    # - unnecessary_null_checks #TODO add when available
     - unnecessary_null_in_if_null_operators
+    - unnecessary_nullable_for_final_variable_declarations
     - unnecessary_overrides
     - unnecessary_parenthesis
     - unnecessary_raw_strings
@@ -171,11 +179,12 @@ linter:
     - unnecessary_string_interpolations
     - unnecessary_this
     - unrelated_type_equality_checks
-    # - unsafe_html We do this
+    - unsafe_html
     - use_full_hex_values_for_flutter_colors
     - use_function_type_syntax_for_parameters
     - use_is_even_rather_than_modulo
     - use_key_in_widget_constructors
+    - use_late_for_private_fields_and_variables
     - use_raw_strings
     - use_rethrow_when_possible
     - use_setters_to_change_properties
