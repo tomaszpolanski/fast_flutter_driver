@@ -97,7 +97,7 @@ void main() {
 }
 
 ```
-- Create a test, eg `test_driver/main_test.dart` 
+- Create a test, eg `test_driver/example_test.dart` 
 ```dart
 import 'dart:convert';
 
