@@ -57,10 +57,6 @@ jobs:
         with:
           channel: ${{ matrix.channel }}
 
-      - name: Install dependencies
-        run: flutter packages get
-        working-directory: ${{ matrix.package }}
-
       - name: Analyze
         run: dart analyze
         working-directory: ${{ matrix.package }}
