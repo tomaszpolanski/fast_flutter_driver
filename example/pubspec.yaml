@@ -4,7 +4,7 @@ description: An example on how to use Fast Flutter Driver
 version: 1.0.0+1
 
 environment:
-sdk: '>=2.10.0 <3.0.0'
+  sdk: ">=2.6.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.8 <2.0.0"
 
 dependencies:
