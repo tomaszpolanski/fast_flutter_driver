@@ -5,7 +5,6 @@ homepage: https://github.com/tomaszpolanski/fast_flutter_driver
 
 environment:
   sdk: '>=2.6.0 <3.0.0'
-  flutter: ">=1.12.8 <2.0.0"
 
 dependencies:
   flutter:
