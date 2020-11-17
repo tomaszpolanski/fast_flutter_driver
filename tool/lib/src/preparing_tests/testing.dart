@@ -41,6 +41,7 @@ class ExecutorParameters {
     @required this.platform,
     this.flutterArguments,
     this.dartArguments,
+    this.testArguments,
     this.flavor,
   });
 
@@ -52,6 +53,7 @@ class ExecutorParameters {
   final String flavor;
   final String flutterArguments;
   final String dartArguments;
+  final String testArguments;
 }
 
 class TestExecutor {
@@ -99,6 +101,8 @@ class TestExecutor {
           '-${languageArg[0]}': parameters.language,
           if (parameters.platform != null)
             '-${platformArg[0]}': fromEnum(parameters.platform),
+          if (parameters.testArguments != null)
+            '--$testArg': parameters.testArguments,
         },
       );
 

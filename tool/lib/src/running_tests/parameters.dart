@@ -30,6 +30,10 @@ ArgParser testParameters = ArgParser()
     platformArg,
     abbr: platformArg[0],
     help: 'Overwritten platform of the device',
+  )
+  ..addOption(
+    testArg,
+    help: 'Additional parameters passed from the fastdriver',
   );
 
 /// UI platform for the application

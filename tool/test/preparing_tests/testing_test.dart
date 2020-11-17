@@ -280,6 +280,49 @@ void main() {
         ),
       );
     });
+
+    test('passes test arguments', () async {
+      const testArgs = 'additional-arguments';
+      final commands = <String>[];
+      tested = test_executor.TestExecutor(
+        outputFactory: streams.output,
+        inputFactory: () => _MockInputCommandLineStream(),
+        run: (
+          String command, {
+          streams.OutputCommandLineStream stdout,
+          streams.InputCommandLineStream stdin,
+          streams.OutputCommandLineStream stderr,
+        }) async {
+          commands.add(command);
+          if (command ==
+              'flutter run -d ${devices.device} --target=generic.dart') {
+            stdout.stream.add(
+              utf8.encode(
+                  'is available at: http://127.0.0.1:50512/CKxutzePXlo/'),
+            );
+          }
+        },
+        logger: logger,
+      );
+      await tested.test(
+        'generic_test.dart',
+        parameters: test_executor.ExecutorParameters(
+          withScreenshots: false,
+          language: 'pl',
+          resolution: '800x600',
+          platform: TestPlatform.android,
+          device: devices.device,
+          testArguments: testArgs,
+        ),
+      );
+
+      expect(
+        commands,
+        contains(
+          'dart generic_test.dart -u http://127.0.0.1:50512/CKxutzePXlo/ -r 800x600 -l pl -p android --test-args $testArgs',
+        ),
+      );
+    });
   });
 }
 

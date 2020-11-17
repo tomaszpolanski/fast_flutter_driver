@@ -34,6 +34,11 @@ class TestProperties {
   /// passes it.
   TestPlatform get platform =>
       TestPlatformEx.fromString(arguments[platformArg]);
+
+  /// Additional parameters passed via --test-args from fastdriver.
+  /// This is used to extend the capabilities of your tests without the need
+  /// of modifying fastdriver's code.
+  String get additionalArgs => arguments[testArg];
 }
 
 /// Base configuration that will be passed from tests to the application

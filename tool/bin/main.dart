@@ -110,6 +110,7 @@ Future<void> run(
           flavor: result[flavorArg],
           flutterArguments: result[flutterArg],
           dartArguments: result[dartArg],
+          testArguments: result[testArg],
         ),
       ),
       logger: logger,

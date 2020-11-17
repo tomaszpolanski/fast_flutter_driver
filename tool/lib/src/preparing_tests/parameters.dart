@@ -19,6 +19,7 @@ const verboseArg = 'verbose';
 const versionArg = 'version';
 const flutterArg = 'flutter-args';
 const dartArg = 'dart-args';
+const testArg = 'test-args';
 
 ArgParser scriptParameters = ArgParser()
   ..addOption(
@@ -56,13 +57,20 @@ Supports the use of product flavors in Android Gradle scripts, and the use of cu
   ..addOption(
     flutterArg,
     help: '''
-Arguments to be passed while running the app via `flutter run`
+Arguments to be passed while running the app via `flutter run`.
 ''',
   )
   ..addOption(
     dartArg,
     help: '''
-Arguments to be passed to dart while running test file
+Arguments to be passed to dart while running test file.
+''',
+  )
+  ..addOption(
+    testArg,
+    help: '''
+Additional arguments to be passed to the test. 
+This is used to extend test functionality and this value will be passed as `TestProperties::additionalArgs`.
 ''',
   )
   ..addFlag(
