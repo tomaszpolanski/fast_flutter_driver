@@ -282,7 +282,7 @@ void main() {
     });
 
     test('passes test arguments', () async {
-      const testArgs = 'additional-arguments';
+      const testArgs = 'additional arguments';
       final commands = <String>[];
       tested = test_executor.TestExecutor(
         outputFactory: streams.output,
@@ -319,7 +319,7 @@ void main() {
       expect(
         commands,
         contains(
-          'dart generic_test.dart -u http://127.0.0.1:50512/CKxutzePXlo/ -r 800x600 -l pl -p android --test-args $testArgs',
+          'dart generic_test.dart -u http://127.0.0.1:50512/CKxutzePXlo/ -r 800x600 -l pl -p android --test-args "$testArgs"',
         ),
       );
     });

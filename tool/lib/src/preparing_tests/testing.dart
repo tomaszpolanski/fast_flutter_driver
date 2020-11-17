@@ -102,7 +102,7 @@ class TestExecutor {
           if (parameters.platform != null)
             '-${platformArg[0]}': fromEnum(parameters.platform),
           if (parameters.testArguments != null)
-            '--$testArg': parameters.testArguments,
+            '--$testArg': '"${parameters.testArguments}"',
         },
       );
 
