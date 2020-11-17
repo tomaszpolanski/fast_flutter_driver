@@ -84,7 +84,7 @@ class TestExecutor {
         parameters.device,
       );
 
-      final runTestCommand = Commands().flutter.dart(testFile, {
+      final runTestCommand = Commands().flutter.dart(testFile, testArguments: {
         '-u': url,
         if (parameters.withScreenshots) '-${screenshotsArg[0]}': '',
         '-${resolutionArg[0]}': parameters.resolution,

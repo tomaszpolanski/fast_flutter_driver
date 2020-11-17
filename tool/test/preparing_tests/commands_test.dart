@@ -17,6 +17,17 @@ void main() {
             Commands().flutter.run(testFile, 'some_device', flavor: flavor);
         expect(tested, contains('--flavor $flavor'));
       });
+
+      test('passes additional arguments if available', () {
+        const arguments = '--device-user=10 --host-vmservice-port';
+        final tested = Commands().flutter.run(
+              testFile,
+              'some_device',
+              flavor: null,
+              additionalArguments: arguments,
+            );
+        expect(tested, contains(arguments));
+      });
     });
 
     group('attach', () {
@@ -33,16 +44,27 @@ void main() {
       test('when no parameters', () {
         final tested = Commands().flutter.dart(testFile);
 
-        expect(tested, 'dart $testFile ');
+        expect(tested, 'dart $testFile');
       });
 
       test('with parameters', () {
-        final tested = Commands().flutter.dart(testFile, {
+        final tested = Commands().flutter.dart(testFile, testArguments: {
           '-u': 'u',
           '-s': '',
         });
 
         expect(tested, 'dart $testFile -u u -s');
+      });
+
+      test('with dart parameters', () {
+        const dartArgs = '--enable-experiment=non-nullable';
+
+        final tested = Commands().flutter.dart(
+              testFile,
+              dartArguments: dartArgs,
+            );
+
+        expect(tested, 'dart $dartArgs $testFile');
       });
     });
   });

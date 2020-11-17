@@ -65,7 +65,7 @@ Supports the use of product flavors in Android Gradle scripts, and the use of cu
   ..addFlag(
     verboseArg,
     abbr: verboseArg[0],
-    help: 'Show verbose loggin',
+    help: 'Show verbose logs',
     negatable: false,
   )
   ..addFlag(
