@@ -17,6 +17,8 @@ const deviceArg = 'device';
 const flavorArg = 'flavor';
 const verboseArg = 'verbose';
 const versionArg = 'version';
+const flutterArg = 'flutter-args';
+const dartArg = 'dart-args';
 
 ArgParser scriptParameters = ArgParser()
   ..addOption(
@@ -49,6 +51,18 @@ ArgParser scriptParameters = ArgParser()
     help: '''
 Build a custom app flavor as defined by platform-specific build setup.
 Supports the use of product flavors in Android Gradle scripts, and the use of custom Xcode schemes.
+''',
+  )
+  ..addOption(
+    flutterArg,
+    help: '''
+Arguments to be passed while running the app via `flutter run`
+''',
+  )
+  ..addOption(
+    dartArg,
+    help: '''
+Arguments to be passed to dart while running test file
 ''',
   )
   ..addFlag(

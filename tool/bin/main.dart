@@ -108,6 +108,8 @@ Future<void> run(
           platform: TestPlatformEx.fromString(result[platformArg]),
           device: result[deviceArg],
           flavor: result[flavorArg],
+          flutterArguments: result[flutterArg],
+          dartArguments: result[dartArg],
         ),
       ),
       logger: logger,
