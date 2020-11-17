@@ -1,3 +1,9 @@
+## 1.2.0
+- [FEATURE] Added `TestProperties::additionalArgs` that allows passing arguments to the tests. 
+If you want to implement passing for example language that the app should be run, then you can run `fastdriver --test-args "--language pl"`.
+Your tests will not receive in `TestProperties::additionalArgs` `--language pl` that can be used to set up your tests and app.
+
+
 ## 1.1.0+1
 - Updating example to Flutter `1.22.0-12.1.pre`
 

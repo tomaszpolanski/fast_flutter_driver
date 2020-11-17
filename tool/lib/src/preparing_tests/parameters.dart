@@ -17,6 +17,9 @@ const deviceArg = 'device';
 const flavorArg = 'flavor';
 const verboseArg = 'verbose';
 const versionArg = 'version';
+const flutterArg = 'flutter-args';
+const dartArg = 'dart-args';
+const testArg = 'test-args';
 
 ArgParser scriptParameters = ArgParser()
   ..addOption(
@@ -51,6 +54,25 @@ Build a custom app flavor as defined by platform-specific build setup.
 Supports the use of product flavors in Android Gradle scripts, and the use of custom Xcode schemes.
 ''',
   )
+  ..addOption(
+    flutterArg,
+    help: '''
+Arguments to be passed while running the app via `flutter run`.
+''',
+  )
+  ..addOption(
+    dartArg,
+    help: '''
+Arguments to be passed to dart while running test file.
+''',
+  )
+  ..addOption(
+    testArg,
+    help: '''
+Additional arguments to be passed to the test. 
+This is used to extend test functionality and this value will be passed as `TestProperties::additionalArgs`.
+''',
+  )
   ..addFlag(
     screenshotsArg,
     abbr: screenshotsArg[0],
@@ -65,7 +87,7 @@ Supports the use of product flavors in Android Gradle scripts, and the use of cu
   ..addFlag(
     verboseArg,
     abbr: verboseArg[0],
-    help: 'Show verbose loggin',
+    help: 'Show verbose logs',
     negatable: false,
   )
   ..addFlag(

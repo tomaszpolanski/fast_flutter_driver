@@ -39,6 +39,9 @@ class ExecutorParameters {
     @required this.language,
     @required this.device,
     @required this.platform,
+    this.flutterArguments,
+    this.dartArguments,
+    this.testArguments,
     this.flavor,
   });
 
@@ -48,6 +51,9 @@ class ExecutorParameters {
   final String device;
   final TestPlatform platform;
   final String flavor;
+  final String flutterArguments;
+  final String dartArguments;
+  final String testArguments;
 }
 
 class TestExecutor {
@@ -76,6 +82,7 @@ class TestExecutor {
               mainFile,
               parameters.device,
               flavor: parameters.flavor,
+              additionalArguments: parameters.flutterArguments,
             ),
         input,
         outputFactory,
@@ -84,14 +91,20 @@ class TestExecutor {
         parameters.device,
       );
 
-      final runTestCommand = Commands().flutter.dart(testFile, {
-        '-u': url,
-        if (parameters.withScreenshots) '-${screenshotsArg[0]}': '',
-        '-${resolutionArg[0]}': parameters.resolution,
-        '-${languageArg[0]}': parameters.language,
-        if (parameters.platform != null)
-          '-${platformArg[0]}': fromEnum(parameters.platform),
-      });
+      final runTestCommand = Commands().flutter.dart(
+        testFile,
+        dartArguments: parameters.dartArguments,
+        testArguments: {
+          '-u': url,
+          if (parameters.withScreenshots) '-${screenshotsArg[0]}': '',
+          '-${resolutionArg[0]}': parameters.resolution,
+          '-${languageArg[0]}': parameters.language,
+          if (parameters.platform != null)
+            '-${platformArg[0]}': fromEnum(parameters.platform),
+          if (parameters.testArguments != null)
+            '--$testArg': '"${parameters.testArguments}"',
+        },
+      );
 
       try {
         await _runTests(runTestCommand, outputFactory, run, logger);

@@ -81,6 +81,66 @@ void main() {
       expect(parameters.flavor, flavor);
     });
 
+    test('flutter arguments', () async {
+      const arguments = '--device-user=10 --host-vmservice-port';
+      linuxOverride = false;
+      when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
+      when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
+
+      await main_file.run(
+        ['--flutter-args', arguments],
+        loggerFactory: (_) => logger,
+        versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
+      );
+
+      final ExecutorParameters parameters = verify(
+        testExecutor.test(any, parameters: captureAnyNamed('parameters')),
+      ).captured.single;
+      expect(parameters.flutterArguments, arguments);
+    });
+
+    test('dart arguments', () async {
+      const arguments = '--enable-experiment=non-nullable';
+      linuxOverride = false;
+      when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
+      when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
+
+      await main_file.run(
+        ['--dart-args', arguments],
+        loggerFactory: (_) => logger,
+        versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
+      );
+
+      final ExecutorParameters parameters = verify(
+        testExecutor.test(any, parameters: captureAnyNamed('parameters')),
+      ).captured.single;
+      expect(parameters.dartArguments, arguments);
+    });
+
+    test('additional test arguments', () async {
+      const arguments = 'special-arguments-that-will-be-passed-to-the-test';
+      linuxOverride = false;
+      when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
+      when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
+
+      await main_file.run(
+        ['--test-args', arguments],
+        loggerFactory: (_) => logger,
+        versionCheckerFactory: (_) => versionChecker,
+        testExecutorFactory: (_) => testExecutor,
+        testFileProviderFactory: (_) => testFileProvider,
+      );
+
+      final ExecutorParameters parameters = verify(
+        testExecutor.test(any, parameters: captureAnyNamed('parameters')),
+      ).captured.single;
+      expect(parameters.testArguments, arguments);
+    });
+
     test('invalid command displays help', () async {
       const unknownCommand = 'this-is-unknown-command';
       await main_file.run(
