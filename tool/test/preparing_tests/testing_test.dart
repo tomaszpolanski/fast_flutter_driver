@@ -198,44 +198,86 @@ void main() {
       );
     });
 
-    test('runs tests application', () async {
-      final commands = <String>[];
-      tested = test_executor.TestExecutor(
-        outputFactory: streams.output,
-        inputFactory: () => _MockInputCommandLineStream(),
-        run: (
-          String command, {
-          streams.OutputCommandLineStream stdout,
-          streams.InputCommandLineStream stdin,
-          streams.OutputCommandLineStream stderr,
-        }) async {
-          commands.add(command);
-          if (command ==
-              'flutter run -d ${devices.device} --target=generic.dart') {
-            stdout.stream.add(
-              utf8.encode(
-                  'is available at: http://127.0.0.1:50512/CKxutzePXlo/'),
-            );
-          }
-        },
-        logger: logger,
-      );
-      await tested.test(
-        'generic_test.dart',
-        parameters: test_executor.ExecutorParameters(
-          withScreenshots: false,
-          language: 'pl',
-          resolution: '800x600',
-          platform: TestPlatform.android,
-          device: devices.device,
-        ),
-      );
+    group('runs tests application', () {
+      test('on native', () async {
+        final commands = <String>[];
+        const url = 'http://127.0.0.1:50512/CKxutzePXlo/';
+        tested = test_executor.TestExecutor(
+          outputFactory: streams.output,
+          inputFactory: () => _MockInputCommandLineStream(),
+          run: (
+            String command, {
+            streams.OutputCommandLineStream stdout,
+            streams.InputCommandLineStream stdin,
+            streams.OutputCommandLineStream stderr,
+          }) async {
+            commands.add(command);
+            if (command ==
+                'flutter run -d ${devices.device} --target=generic.dart') {
+              stdout.stream.add(
+                utf8.encode('is available at: $url'),
+              );
+            }
+          },
+          logger: logger,
+        );
+        await tested.test(
+          'generic_test.dart',
+          parameters: test_executor.ExecutorParameters(
+            withScreenshots: false,
+            language: 'pl',
+            resolution: '800x600',
+            platform: TestPlatform.android,
+            device: devices.device,
+          ),
+        );
 
-      expect(
-        commands,
-        contains(
-            'dart generic_test.dart -u http://127.0.0.1:50512/CKxutzePXlo/ -r 800x600 -l pl -p android'),
-      );
+        expect(
+          commands,
+          contains(
+              'dart generic_test.dart -u $url -r 800x600 -l pl -p android'),
+        );
+      });
+
+      test('on web', () async {
+        final commands = <String>[];
+        const url = 'ws://127.0.0.1:52464/rjc_-3ZH0N0=';
+        tested = test_executor.TestExecutor(
+          outputFactory: streams.output,
+          inputFactory: () => _MockInputCommandLineStream(),
+          run: (
+            String command, {
+            streams.OutputCommandLineStream stdout,
+            streams.InputCommandLineStream stdin,
+            streams.OutputCommandLineStream stderr,
+          }) async {
+            commands.add(command);
+            if (command ==
+                'flutter run -d ${devices.device} --target=generic.dart') {
+              stdout.stream.add(
+                utf8.encode('Debug service listening on $url'),
+              );
+            }
+          },
+          logger: logger,
+        );
+        await tested.test(
+          'generic_test.dart',
+          parameters: test_executor.ExecutorParameters(
+            withScreenshots: false,
+            language: 'pl',
+            resolution: '800x600',
+            platform: TestPlatform.android,
+            device: devices.device,
+          ),
+        );
+
+        expect(
+          commands,
+          contains(
+              'dart generic_test.dart -u $url -r 800x600 -l pl -p android'),
+        );
+      });
     });
 
     test('passes dart arguments', () async {

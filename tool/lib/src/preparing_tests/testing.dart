@@ -128,11 +128,16 @@ class TestExecutor {
     Progress syncingProgress;
 
     final output = outputFactory((String line) async {
+      logger.trace(line);
       if (line.contains('Syncing files to')) {
         buildProgress.finish(showTiming: true);
         syncingProgress = logger.progress('Syncing files');
       }
-      final match = RegExp('is available at: (http://.*/)').firstMatch(line);
+      final nativeMatch =
+          RegExp('is available at: (http://.*/)').firstMatch(line);
+      final webMatch =
+          RegExp('service listening on (ws://.*)').firstMatch(line);
+      final match = nativeMatch ?? webMatch;
       if (match != null) {
         syncingProgress?.finish(showTiming: true);
         final url = match.group(1);

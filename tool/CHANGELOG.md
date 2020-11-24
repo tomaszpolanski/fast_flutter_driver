@@ -1,4 +1,5 @@
 ## 1.5.0
+- [ALPHA FEATURE] Supporting driver web tests
 - [FIX] Package was not able to detect new version due to pub.dev changing
 
 ## 1.4.0

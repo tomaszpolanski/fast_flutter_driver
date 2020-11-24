@@ -1,3 +1,6 @@
+## 1.3.0
+- [FEATURE] Supporting web driver
+
 ## 1.2.0
 - [FEATURE] Added `TestProperties::additionalArgs` that allows passing arguments to the tests. 
 If you want to implement passing for example language that the app should be run, then you can run `fastdriver --test-args "--language pl"`.
