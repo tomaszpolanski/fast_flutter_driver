@@ -15,6 +15,17 @@ void main() {
   });
 
   group('remoteVersion', () {
+    test('integration test', () async {
+      tested = VersionChecker(
+        pathProvider: pathProvider,
+        httpGet: get,
+      );
+
+      final version = await tested.remoteVersion();
+
+      expect(version, isNotNull);
+    });
+
     test('throws exception if version not found', () async {
       Future<Response> get(String url) async => Response('', 200);
       tested = VersionChecker(
@@ -53,7 +64,7 @@ void main() {
     test('looks up the package name in the html', () async {
       const expectedVersion = '1.0.0+1';
       Future<Response> get(String url) async => Response(
-            '<h1 class="title">fast_flutter_driver_tool $expectedVersion</h1>',
+            '<div class="pkg-page-title-copy-item">fast_flutter_driver_tool: ^$expectedVersion</div>',
             200,
           );
       tested = VersionChecker(
@@ -147,7 +158,7 @@ void main() {
       await IOOverrides.runZoned(
         () async {
           Future<Response> get(String url) async => Response(
-                '<h1 class="title">fast_flutter_driver_tool $remoteVersion</h1>',
+                '<div class="pkg-page-title-copy-item">fast_flutter_driver_tool: ^$remoteVersion</div>',
                 200,
               );
           tested = VersionChecker(
@@ -178,7 +189,7 @@ void main() {
       await IOOverrides.runZoned(
         () async {
           Future<Response> get(String url) async => Response(
-                '<h1 class="title">fast_flutter_driver_tool $remoteVersion</h1>',
+                '<div class="pkg-page-title-copy-item">fast_flutter_driver_tool: ^$remoteVersion</div>',
                 200,
               );
           tested = VersionChecker(

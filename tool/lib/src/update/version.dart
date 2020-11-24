@@ -54,8 +54,8 @@ class VersionChecker {
       'https://pub.dev/packages/fast_flutter_driver_tool',
     );
 
-    final match =
-        RegExp('fast_flutter_driver_tool (.*)</h1>').firstMatch(response.body);
+    final match = RegExp(r'fast_flutter_driver_tool: \^(.*)</div>')
+        .firstMatch(response.body);
     if (match == null) {
       throw PackageNotFound();
     }

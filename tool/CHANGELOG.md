@@ -1,3 +1,6 @@
+## 1.5.0
+- [FIX] Package was not able to detect new version due to pub.dev changing
+
 ## 1.4.0
 - [FEATURE] Allowing to pass additional arguments to `flutter run` command via `--flutter-args` command eg `fastdriver --flutter-args --enable-experiment:non-nullable`
 - [FEATURE] Allowing to pass additional arguments to `dart` command via `--dart-args` command eg `fastdriver --dart-args --enable-experiment=non-nullable`
