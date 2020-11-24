@@ -1,5 +1,5 @@
 ## 1.3.0
-- [FEATURE] Supporting web driver
+- [ALPHA FEATURE] Initial (ALPHA) support for web driver
 
 ## 1.2.0
 - [FEATURE] Added `TestProperties::additionalArgs` that allows passing arguments to the tests. 
