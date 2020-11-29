@@ -39,9 +39,9 @@ class ExecutorParameters {
     required this.language,
     required this.device,
     this.platform,
-    this.flutterArguments,
-    this.dartArguments,
-    this.testArguments,
+    required this.flutterArguments,
+    required this.dartArguments,
+    required this.testArguments,
     this.flavor,
   });
 
@@ -51,9 +51,9 @@ class ExecutorParameters {
   final String device;
   final TestPlatform? platform;
   final String? flavor;
-  final String flutterArguments;
-  final String dartArguments;
-  final String testArguments;
+  final String? flutterArguments;
+  final String? dartArguments;
+  final String? testArguments;
 }
 
 class TestExecutor {
@@ -99,8 +99,7 @@ class TestExecutor {
           if (parameters.withScreenshots) '-${screenshotsArg[0]}': '',
           '-${resolutionArg[0]}': parameters.resolution,
           '-${languageArg[0]}': parameters.language,
-          if (parameters.platform != null)
-            '-${platformArg[0]}': fromEnum(parameters.platform),
+          if (platform != null) '-${platformArg[0]}': fromEnum(platform),
           if (parameters.testArguments != null)
             '--$testArg': '"${parameters.testArguments}"',
         },

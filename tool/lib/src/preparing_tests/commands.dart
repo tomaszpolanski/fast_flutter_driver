@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class Commands {
   FlutterCommand get flutter => const FlutterCommand._();
 }
@@ -10,8 +8,8 @@ class FlutterCommand {
   String run(
     String target,
     String device, {
-    @required String? flavor,
-    String additionalArguments,
+    required String? flavor,
+    required String? additionalArguments,
   }) {
     // ignore: missing_whitespace_between_adjacent_strings
     return 'flutter run -d $device --target=$target'
