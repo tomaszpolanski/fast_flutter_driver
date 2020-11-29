@@ -4,8 +4,7 @@ version: 1.3.0
 homepage: https://github.com/tomaszpolanski/fast_flutter_driver
 
 environment:
-  sdk: '>=2.9.0-18.0 <3.0.0'
-  flutter: ">=1.12.8 <2.0.0"
+  sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -33,7 +32,4 @@ flutter:
 
 dependency_overrides:
   fast_flutter_driver_tool:
-    git:
-      url: git://github.com/tomaszpolanski/fast_flutter_driver.git
-      ref: nnbd
-      path: tool
+    path: ../tool

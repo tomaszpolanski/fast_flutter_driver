@@ -125,7 +125,7 @@ class _CountDown extends StatelessWidget {
         initialData: '',
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           return Text(
-            snapshot.data,
+            snapshot.data ?? '',
             style: const TextStyle(fontSize: 80),
           );
         },
