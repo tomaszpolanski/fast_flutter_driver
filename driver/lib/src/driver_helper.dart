@@ -17,7 +17,7 @@ Future<void> configureTest(BaseConfiguration config) async {
     Size(config.resolution.width, config.resolution.height),
   );
 
-  final platform = config.platform.targetPlatform;
+  final platform = config.platform?.targetPlatform;
   if (platform != TargetPlatform.fuchsia &&
       debugDefaultTargetPlatformOverride != platform) {
     debugDefaultTargetPlatformOverride = platform;
@@ -34,6 +34,5 @@ extension TestFlutterEx on TestPlatform {
       case TestPlatform.iOS:
         return TargetPlatform.iOS;
     }
-    return TargetPlatform.fuchsia;
   }
 }

@@ -52,7 +52,7 @@ abstract class BaseConfiguration {
   /// This value is passed via fastdriver command using --platform option.
   /// This value should be handled on the application side - fastdriver just
   /// passes it.
-  TestPlatform get platform;
+  TestPlatform? get platform;
 
   /// Serializes [BaseConfiguration] to json.
   Map<String, dynamic> toJson();

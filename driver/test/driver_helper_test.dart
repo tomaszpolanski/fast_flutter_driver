@@ -17,7 +17,7 @@ void main() {
     });
   });
   group('configureTest', () {
-    BaseConfiguration config;
+    late _MockConfiguration config;
 
     setUp(() {
       macOsOverride = false;
@@ -37,7 +37,7 @@ void main() {
       test('when platform is not passed then do not override it', () async {
         const platform = TargetPlatform.android;
         debugDefaultTargetPlatformOverride = platform;
-        when(config.platform).thenReturn(null);
+        config.platform = null;
 
         await configureTest(config);
 
@@ -47,7 +47,7 @@ void main() {
       test('when platform is passed then do override it', () async {
         const platform = TestPlatform.android;
         debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
-        when(config.platform).thenReturn(platform);
+        config.platform = platform;
 
         await configureTest(config);
 
@@ -57,4 +57,13 @@ void main() {
   });
 }
 
-class _MockConfiguration extends Mock implements BaseConfiguration {}
+class _MockConfiguration extends BaseConfiguration {
+  @override
+  TestPlatform? platform;
+
+  @override
+  late Resolution resolution;
+
+  @override
+  Map<String, dynamic> toJson() => {};
+}

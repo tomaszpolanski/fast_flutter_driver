@@ -30,16 +30,8 @@ dependency_overrides:
   analyzer: ^0.41.0
   cli_util: ^0.3.0-nullsafety.0
   charcode: 1.2.0-nullsafety.1
-  js:
-    git:
-      url: git://github.com/dart-lang/sdk.git
-      path: pkg/js
   pedantic: ^1.10.0-nullsafety.1
   pool: ^1.5.0-nullsafety.1
-  pub_semver:
-    git:
-      url: git://github.com/dart-lang/pub_semver.git
-      ref: null_safety
   source_maps: ^0.10.10-nullsafety.1
   source_span: ^1.8.0-nullsafety.2
   stack_trace: ^1.10.0-nullsafety.2
@@ -47,7 +39,4 @@ dependency_overrides:
   test_api: ^0.2.19-nullsafety.6
   test_core: ^0.3.12-nullsafety.11
   test: ^1.16.0-nullsafety.12
-  http_parser:
-    git:
-      url: git://github.com/dart-lang/http_parser.git
-      ref: null_safety
+  http_parser: 4.0.0-nullsafety
