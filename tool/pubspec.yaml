@@ -16,17 +16,19 @@ dependencies:
   meta: ^1.3.0-nullsafety.4
   path: ^1.8.0-nullsafety
   process_run: ^0.10.0+1
-  yaml: ^2.2.0
+  yaml: ^3.0.0-nullsafety.0
   http: ^0.12.2
 
 dev_dependencies:
-  test: ^1.16.0-nullsafety
+  test: ^1.16.0-nullsafety.12
   mockito: ^4.1.1
   coverage: ^0.14.0
   file: ^6.0.0-nullsafety.2
 
 dependency_overrides:
   async: ^2.5.0-nullsafety.1
+  analyzer: ^0.41.0
+  cli_util: ^0.3.0-nullsafety.0
   charcode: 1.2.0-nullsafety.1
   js:
     git:
@@ -42,21 +44,9 @@ dependency_overrides:
   source_span: ^1.8.0-nullsafety.2
   stack_trace: ^1.10.0-nullsafety.2
   term_glyph: 1.2.0-nullsafety.1
-  test_api:
-    git:
-      url: git://github.com/dart-lang/test.git
-      ref: null_safety
-      path: pkgs/test_api
-  test_core:
-    git:
-      url: git://github.com/dart-lang/test.git
-      ref: null_safety
-      path: pkgs/test_core
-  test:
-    git:
-      url: git://github.com/dart-lang/test.git
-      ref: null_safety
-      path: pkgs/test
+  test_api: ^0.2.19-nullsafety.6
+  test_core: ^0.3.12-nullsafety.11
+  test: ^1.16.0-nullsafety.12
   http_parser:
     git:
       url: git://github.com/dart-lang/http_parser.git

@@ -7,14 +7,14 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "14.0.0"
   analyzer:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.39.13"
+    version: "0.41.1"
   args:
     dependency: "direct main"
     description:
@@ -85,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
-  csslib:
-    dependency: transitive
-    description:
-      name: csslib
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.16.1"
   file:
     dependency: "direct dev"
     description:
@@ -106,13 +99,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  html:
-    dependency: transitive
-    description:
-      name: html
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.14.0+3"
   http:
     dependency: "direct main"
     description:
@@ -332,30 +318,24 @@ packages:
   test:
     dependency: "direct dev"
     description:
-      path: "pkgs/test"
-      ref: null_safety
-      resolved-ref: "1979eada92ecbc1e02298384cbe6f2f18d4f91ee"
-      url: "git://github.com/dart-lang/test.git"
-    source: git
-    version: "1.16.0-nullsafety"
+      name: test
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.16.0-nullsafety.12"
   test_api:
     dependency: "direct overridden"
     description:
-      path: "pkgs/test_api"
-      ref: null_safety
-      resolved-ref: "1979eada92ecbc1e02298384cbe6f2f18d4f91ee"
-      url: "git://github.com/dart-lang/test.git"
-    source: git
-    version: "0.2.19-nullsafety"
+      name: test_api
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.19-nullsafety.6"
   test_core:
     dependency: "direct overridden"
     description:
-      path: "pkgs/test_core"
-      ref: null_safety
-      resolved-ref: "1979eada92ecbc1e02298384cbe6f2f18d4f91ee"
-      url: "git://github.com/dart-lang/test.git"
-    source: git
-    version: "0.3.12-nullsafety"
+      name: test_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.12-nullsafety.11"
   typed_data:
     dependency: transitive
     description:
@@ -397,6 +377,6 @@ packages:
       name: yaml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "3.0.0-nullsafety.0"
 sdks:
   dart: ">=2.12.0-29.10.beta <3.0.0"

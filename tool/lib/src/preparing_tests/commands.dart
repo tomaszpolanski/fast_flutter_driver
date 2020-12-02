@@ -25,10 +25,10 @@ class FlutterCommand {
     Map<String, String>? testArguments,
     String? dartArguments,
   }) {
-    final args = testArguments?.entries
-        ?.map((entry) =>
-            '${entry.key}${entry.value.isNotEmpty ? ' ${entry.value}' : ''}')
-        ?.join(' ');
+    final Iterable<MapEntry<String, String>>? entries = testArguments?.entries;
+    final Iterable<String>? mapped = entries?.map((entry) =>
+        '${entry.key}${entry.value.isNotEmpty ? ' ${entry.value}' : ''}');
+    final args = mapped?.join(' ');
 
     return 'dart'
         '${dartArguments != null ? ' $dartArguments' : ''}'

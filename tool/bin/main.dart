@@ -89,6 +89,7 @@ Future<void> run(
       dir.deleteSync(recursive: true);
     }
   }
+  // ignore: unnecessary_nullable_for_final_variable_declarations
   final String? testName = result.rest.length == 1 ? result.rest.first : null;
   final testFile = await testFileProviderFactory(logger).testFile(
     testName ?? 'test_driver',
