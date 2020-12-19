@@ -27,7 +27,7 @@ This tool allows you to run your `flutter driver` tests much faster and more rel
 The application flows that require Android/iOS plugins should still be run on a Simulator/Emulator or a real device.
 
 ## Running also on Android/iOS
-While running tests against Desktop will find the majority of bugs, it is recommended to run sometimes against actual devices. There are bugs in Dart (like implementing your generics in an invalid way) that can cause a native crash on a mobile device and work properly on the desktop.It's prudent to run `fastdriver` tests before every release on a mobile device.
+While running tests against Desktop will find the majority of bugs, it is recommended to run sometimes against actual devices. There are bugs in Dart (like implementing your generics in an invalid way) that can cause a native crash on a mobile device and work properly on the desktop.It's prudent to run `fastdriver` tests before every release on a mobile device.
 
 ## Example
 You can build and execute [the example][example] that works on any desktop system and [Docker][example_docker] as well.
