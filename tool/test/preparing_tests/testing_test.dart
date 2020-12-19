@@ -11,13 +11,18 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
     as test_executor;
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../mockito_nnbd.dart' as nnbd_mockito;
+import 'testing_test.mocks.dart';
+
+@GenerateMocks([Logger, File, Directory, streams.InputCommandLineStream])
 void main() {
   late Logger logger;
   setUp(() {
-    logger = _MockLogger();
+    logger = MockLogger();
   });
 
   group('setup', () {
@@ -39,18 +44,18 @@ void main() {
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('window_configuration.cc_copy')) {
-            final file = _MockFile();
+            final file = MockFile();
             when(file.existsSync()).thenReturn(false);
             return file;
           }
           File resolutionFile;
-          resolutionFile = _MockFile();
+          resolutionFile = MockFile();
           when(resolutionFile.existsSync()).thenReturn(true);
           when(resolutionFile.readAsString()).thenAnswer((_) async => '');
           return resolutionFile;
@@ -58,7 +63,7 @@ void main() {
       );
 
       expect(
-        verify(logger.trace(captureAny)).captured.single,
+        verify(logger.trace(nnbd_mockito.captureAny)).captured.single,
         'Overriding resolution',
       );
     });
@@ -75,7 +80,7 @@ void main() {
         logger: logger,
       );
 
-      verifyNever(logger.trace(any));
+      verifyNever(logger.trace(nnbd_mockito.any));
       expect(haveRunTests, isTrue);
     });
   });
@@ -110,6 +115,9 @@ void main() {
           platform: TestPlatform.android,
           device: devices.device,
           flavor: flavor,
+          dartArguments: '',
+          flutterArguments: '',
+          testArguments: '',
         ),
       );
 
@@ -131,9 +139,9 @@ void main() {
         inputFactory: streams.input,
         run: (
           String command, {
-          streams.OutputCommandLineStream stdout,
-          streams.InputCommandLineStream stdin,
-          streams.OutputCommandLineStream stderr,
+          required streams.OutputCommandLineStream stdout,
+          streams.InputCommandLineStream? stdin,
+          streams.OutputCommandLineStream? stderr,
         }) async {
           commands.add(command);
         },
@@ -150,6 +158,8 @@ void main() {
           platform: TestPlatform.android,
           device: devices.device,
           flutterArguments: arguments,
+          dartArguments: '',
+          testArguments: '',
         ),
       );
 
@@ -189,6 +199,9 @@ void main() {
           resolution: '800x600',
           platform: TestPlatform.android,
           device: device,
+          dartArguments: '',
+          flutterArguments: '',
+          testArguments: '',
         ),
       );
 
@@ -204,12 +217,12 @@ void main() {
         const url = 'http://127.0.0.1:50512/CKxutzePXlo/';
         tested = test_executor.TestExecutor(
           outputFactory: streams.output,
-          inputFactory: () => _MockInputCommandLineStream(),
+          inputFactory: () => MockInputCommandLineStream(),
           run: (
             String command, {
-            streams.OutputCommandLineStream stdout,
-            streams.InputCommandLineStream stdin,
-            streams.OutputCommandLineStream stderr,
+            required streams.OutputCommandLineStream stdout,
+            streams.InputCommandLineStream? stdin,
+            streams.OutputCommandLineStream? stderr,
           }) async {
             commands.add(command);
             if (command ==
@@ -229,6 +242,9 @@ void main() {
             resolution: '800x600',
             platform: TestPlatform.android,
             device: devices.device,
+            dartArguments: '',
+            flutterArguments: '',
+            testArguments: '',
           ),
         );
 
@@ -244,12 +260,12 @@ void main() {
         const url = 'ws://127.0.0.1:52464/rjc_-3ZH0N0=';
         tested = test_executor.TestExecutor(
           outputFactory: streams.output,
-          inputFactory: () => _MockInputCommandLineStream(),
+          inputFactory: () => MockInputCommandLineStream(),
           run: (
             String command, {
-            streams.OutputCommandLineStream stdout,
-            streams.InputCommandLineStream stdin,
-            streams.OutputCommandLineStream stderr,
+            required streams.OutputCommandLineStream stdout,
+            streams.InputCommandLineStream? stdin,
+            streams.OutputCommandLineStream? stderr,
           }) async {
             commands.add(command);
             if (command ==
@@ -269,6 +285,9 @@ void main() {
             resolution: '800x600',
             platform: TestPlatform.android,
             device: devices.device,
+            dartArguments: '',
+            flutterArguments: '',
+            testArguments: '',
           ),
         );
 
@@ -285,7 +304,7 @@ void main() {
       final commands = <String>[];
       tested = test_executor.TestExecutor(
         outputFactory: streams.output,
-        inputFactory: () => _MockInputCommandLineStream(),
+        inputFactory: () => MockInputCommandLineStream(),
         run: (
           String command, {
           required streams.OutputCommandLineStream stdout,
@@ -312,6 +331,8 @@ void main() {
           platform: TestPlatform.android,
           device: devices.device,
           dartArguments: dartArgs,
+          flutterArguments: '',
+          testArguments: '',
         ),
       );
 
@@ -328,12 +349,12 @@ void main() {
       final commands = <String>[];
       tested = test_executor.TestExecutor(
         outputFactory: streams.output,
-        inputFactory: () => _MockInputCommandLineStream(),
+        inputFactory: () => MockInputCommandLineStream(),
         run: (
           String command, {
-          streams.OutputCommandLineStream stdout,
-          streams.InputCommandLineStream stdin,
-          streams.OutputCommandLineStream stderr,
+          required streams.OutputCommandLineStream stdout,
+          streams.InputCommandLineStream? stdin,
+          streams.OutputCommandLineStream? stderr,
         }) async {
           commands.add(command);
           if (command ==
@@ -355,6 +376,8 @@ void main() {
           platform: TestPlatform.android,
           device: devices.device,
           testArguments: testArgs,
+          dartArguments: '',
+          flutterArguments: '',
         ),
       );
 
@@ -367,12 +390,3 @@ void main() {
     });
   });
 }
-
-class _MockDirectory extends Mock implements Directory {}
-
-class _MockFile extends Mock implements File {}
-
-class _MockLogger extends Mock implements Logger {}
-
-class _MockInputCommandLineStream extends Mock
-    implements streams.InputCommandLineStream {}

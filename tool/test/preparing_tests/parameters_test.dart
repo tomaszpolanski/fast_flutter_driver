@@ -1,12 +1,16 @@
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'parameters_test.mocks.dart';
+
+@GenerateMocks([Logger])
 void main() {
   group('printErrorHelp', () {
     test('writes help message', () {
-      final logger = _MockLogger();
+      final logger = MockLogger();
       const command = 'some_command';
 
       printErrorHelp(command, logger: logger);
@@ -26,5 +30,3 @@ void main() {
     });
   });
 }
-
-class _MockLogger extends Mock implements Logger {}

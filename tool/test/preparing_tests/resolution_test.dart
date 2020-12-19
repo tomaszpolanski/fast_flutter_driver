@@ -3,18 +3,21 @@ import 'dart:io';
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../mockito_nnbd.dart' as nnbd_mockito;
+import 'resolution_test.mocks.dart';
 
+@GenerateMocks([Logger, File, Directory])
 void main() {
   late File resolutionFile;
   late Logger logger;
 
   setUp(() {
-    logger = _MockLogger();
-    resolutionFile = _MockFile();
+    logger = MockLogger();
+    resolutionFile = MockFile();
     when(resolutionFile.existsSync()).thenReturn(true);
   });
 
@@ -43,13 +46,13 @@ void main() {
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = _MockFile();
+            final file = MockFile();
             when(file.existsSync()).thenReturn(true);
             return file;
           }
@@ -65,18 +68,18 @@ void main() {
           await overrideResolution('1x2', () async {}, logger: logger);
 
           expect(
-            verify(logger.stderr(captureAny)).captured.single,
+            verify(logger.stderr(nnbd_mockito.captureAny)).captured.single,
             'Was not able to restore native as the copy does not exist',
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = _MockFile();
+            final file = MockFile();
             when(file.existsSync()).thenReturn(false);
             return file;
           }
@@ -113,13 +116,13 @@ const unsigned int kFlutterWindowHeight = 2;
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = _MockFile();
+            final file = MockFile();
             when(file.existsSync()).thenReturn(true);
             return file;
           }
@@ -156,13 +159,13 @@ window_properties.height = 2;
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = _MockFile();
+            final file = MockFile();
             when(file.existsSync()).thenReturn(true);
             return file;
           }
@@ -172,9 +175,3 @@ window_properties.height = 2;
     });
   });
 }
-
-class _MockDirectory extends Mock implements Directory {}
-
-class _MockFile extends Mock implements File {}
-
-class _MockLogger extends Mock implements Logger {}
