@@ -1,8 +1,12 @@
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/utils/lazy_logger.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'lazy_logger_test.mocks.dart';
+
+@GenerateMocks([Logger])
 void main() {
   late LazyLogger tested;
 
@@ -11,7 +15,7 @@ void main() {
     tested = LazyLogger((_) {
       factoryWasCalled = true;
 
-      return _MockLogger();
+      return MockLogger();
     })
       ..flush();
 
@@ -23,7 +27,7 @@ void main() {
     tested = LazyLogger((_) {
       factoryWasCalled = true;
 
-      return _MockLogger();
+      return MockLogger();
     });
 
     expect(factoryWasCalled, isFalse);
@@ -35,7 +39,7 @@ void main() {
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
-        return _MockLogger();
+        return MockLogger();
       })
         ..flush();
 
@@ -47,7 +51,7 @@ void main() {
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
-        final logger = _MockLogger();
+        final logger = MockLogger();
         when(logger.isVerbose).thenReturn(isVerbose);
         return logger;
       })
@@ -60,9 +64,9 @@ void main() {
   });
 
   group('invokes methods', () {
-    late _MockLogger logger;
+    late MockLogger logger;
     setUp(() {
-      logger = _MockLogger();
+      logger = MockLogger();
       tested = LazyLogger((_) => logger);
     });
 
@@ -122,5 +126,3 @@ void main() {
     });
   });
 }
-
-class _MockLogger extends Mock implements Logger {}

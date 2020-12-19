@@ -9,12 +9,21 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
     hide setUp;
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../bin/main.dart' as main_file;
+import 'main_lib_test.mocks.dart';
 import 'mockito_nnbd.dart' as nnbd_mockito;
 
+@GenerateMocks([
+  Logger,
+  VersionChecker,
+  test_executor.TestExecutor,
+  TestFileProvider,
+  Directory
+])
 void main() {
   late VersionChecker versionChecker;
   late Logger logger;
@@ -22,10 +31,10 @@ void main() {
   late TestFileProvider testFileProvider;
 
   setUp(() {
-    versionChecker = _MockVersionChecker();
-    logger = _MockLogger();
-    testExecutor = _MockTestExecutor();
-    testFileProvider = _MockTestFileProvider();
+    versionChecker = MockVersionChecker();
+    logger = MockLogger();
+    testExecutor = MockTestExecutor();
+    testFileProvider = MockTestFileProvider();
   });
   group('commands', () {
     tearDown(() {
@@ -42,7 +51,7 @@ void main() {
       );
 
       expect(
-        verify(logger.stdout(captureAny)).captured.single,
+        verify(logger.stdout(nnbd_mockito.captureAny)).captured.single,
         startsWith('Usage: fastdriver <path>'),
       );
     });
@@ -59,7 +68,8 @@ void main() {
         testFileProviderFactory: (_) => testFileProvider,
       );
 
-      expect(verify(logger.stdout(captureAny)).captured.single, version);
+      expect(verify(logger.stdout(nnbd_mockito.captureAny)).captured.single,
+          version);
     });
 
     test('flavor', () async {
@@ -79,7 +89,7 @@ void main() {
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([File('pubspec.yaml')]);
           return mockDir;
@@ -99,7 +109,8 @@ void main() {
       const arguments = '--device-user=10 --host-vmservice-port';
       linuxOverride = false;
       when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
-      when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
+      when(testFileProvider.testFile(nnbd_mockito.any))
+          .thenAnswer((_) async => 'any');
 
       await main_file.run(
         ['--flutter-args', arguments],
@@ -110,7 +121,8 @@ void main() {
       );
 
       final ExecutorParameters parameters = verify(
-        testExecutor.test(any, parameters: captureAnyNamed('parameters')),
+        testExecutor.test(nnbd_mockito.any,
+            parameters: nnbd_mockito.captureAnyNamed('parameters')),
       ).captured.single;
       expect(parameters.flutterArguments, arguments);
     });
@@ -119,7 +131,8 @@ void main() {
       const arguments = '--enable-experiment=non-nullable';
       linuxOverride = false;
       when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
-      when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
+      when(testFileProvider.testFile(nnbd_mockito.any))
+          .thenAnswer((_) async => 'any');
 
       await main_file.run(
         ['--dart-args', arguments],
@@ -130,7 +143,8 @@ void main() {
       );
 
       final ExecutorParameters parameters = verify(
-        testExecutor.test(any, parameters: captureAnyNamed('parameters')),
+        testExecutor.test(nnbd_mockito.any,
+            parameters: nnbd_mockito.captureAnyNamed('parameters')),
       ).captured.single;
       expect(parameters.dartArguments, arguments);
     });
@@ -139,7 +153,8 @@ void main() {
       const arguments = 'special-arguments-that-will-be-passed-to-the-test';
       linuxOverride = false;
       when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
-      when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
+      when(testFileProvider.testFile(nnbd_mockito.any))
+          .thenAnswer((_) async => 'any');
 
       await main_file.run(
         ['--test-args', arguments],
@@ -150,7 +165,8 @@ void main() {
       );
 
       final ExecutorParameters parameters = verify(
-        testExecutor.test(any, parameters: captureAnyNamed('parameters')),
+        testExecutor.test(nnbd_mockito.any,
+            parameters: nnbd_mockito.captureAnyNamed('parameters')),
       ).captured.single;
       expect(parameters.testArguments, arguments);
     });
@@ -166,7 +182,7 @@ void main() {
       );
 
       expect(
-        verify(logger.stderr(captureAny)).captured.single,
+        verify(logger.stderr(nnbd_mockito.captureAny)).captured.single,
         '''
 Could not find an option named "$unknownCommand".
 Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
@@ -186,12 +202,12 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
             testFileProviderFactory: (_) => testFileProvider,
           );
           expect(
-            verify(logger.stderr(captureAny)).captured.single,
+            verify(logger.stderr(nnbd_mockito.captureAny)).captured.single,
             'Please run \x1B[1mfastdriver\x1B[0m from the root of your project (directory that contains \x1B[1mpubspec.yaml\x1B[0m)',
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([]);
           return mockDir;
@@ -219,14 +235,14 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([File('pubspec.yaml')]);
           return mockDir;
         },
       );
 
-      final messages = verify(logger.stdout(captureAny)).captured;
+      final messages = verify(logger.stdout(nnbd_mockito.captureAny)).captured;
       expect(
         messages[1],
         '\x1B[92mNew version\x1B[0m (\x1B[1m$remote\x1B[0m) available!',
@@ -255,14 +271,14 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([File('pubspec.yaml')]);
           return mockDir;
         },
       );
 
-      final messages = verify(logger.stdout(captureAny)).captured;
+      final messages = verify(logger.stdout(nnbd_mockito.captureAny)).captured;
       expect(messages[0], 'Starting tests');
     });
   });
@@ -284,7 +300,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
         verify(directory.deleteSync(recursive: true)).called(1);
       },
       createDirectory: (name) {
-        final mockDir = _MockDirectory();
+        final mockDir = MockDirectory();
         if (name == screenshotsArg) {
           directory = mockDir;
         }
@@ -297,7 +313,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
         return mockDir;
       },
       getCurrentDirectory: () {
-        final mockDir = _MockDirectory();
+        final mockDir = MockDirectory();
         when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
             .thenReturn([File('pubspec.yaml')]);
         return mockDir;
@@ -305,13 +321,3 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
     );
   });
 }
-
-class _MockDirectory extends Mock implements Directory {}
-
-class _MockLogger extends Mock implements Logger {}
-
-class _MockVersionChecker extends Mock implements VersionChecker {}
-
-class _MockTestExecutor extends Mock implements test_executor.TestExecutor {}
-
-class _MockTestFileProvider extends Mock implements TestFileProvider {}

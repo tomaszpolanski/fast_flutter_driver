@@ -20,6 +20,10 @@ jobs:
         working-directory: ${{ matrix.package }}
         run: pub get
 
+      - name: Generate mocks
+        working-directory: ${{ matrix.package }}
+        run: pub run build_runner build
+
       - name: Analyze
         working-directory: ${{ matrix.package }}
         run: dartanalyzer --enable-experiment=non-nullable --fatal-infos --fatal-warnings .
