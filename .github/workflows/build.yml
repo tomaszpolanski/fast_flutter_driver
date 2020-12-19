@@ -26,7 +26,7 @@ jobs:
 
       - name: Analyze
         working-directory: ${{ matrix.package }}
-        run: dartanalyzer --enable-experiment=non-nullable --fatal-infos --fatal-warnings .
+        run: dart analyze
 
       - name: Aggregate tests
         working-directory: ${{ matrix.package }}

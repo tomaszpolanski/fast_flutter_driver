@@ -13,6 +13,7 @@ analyzer:
     strict-raw-types: true
   exclude:
     - dependencies/**
+    - test/**_test.mocks.dart
 
     
 linter:
