@@ -18,9 +18,9 @@ import 'package:fast_flutter_driver_tool/src/utils/lazy_logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 
-Future<void> main(List<String> paths) {
+Future<void> main(List<String> paths) async {
   exitCode = 2;
-  return run(
+  await run(
     paths,
     loggerFactory: (verbose) => verbose ? Logger.verbose() : Logger.standard(),
     versionCheckerFactory: (logger) => VersionChecker(
