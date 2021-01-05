@@ -1,3 +1,6 @@
+## 1.5.1
+- [FIX] Wrong version number reporting due to pub.dev page changes
+
 ## 1.5.0
 - [ALPHA FEATURE] Supporting driver web tests
 - [FIX] Package was not able to detect new version due to pub.dev changing
