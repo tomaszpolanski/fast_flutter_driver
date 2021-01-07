@@ -8,9 +8,22 @@ import 'parameters_test.mocks.dart';
 
 @GenerateMocks([Logger])
 void main() {
+  MockLogger createLogger() {
+    final logger = MockLogger();
+    when(logger.trace(any)).thenAnswer((_) {});
+    when(logger.stdout(any)).thenAnswer((_) {});
+    when(logger.stderr(any)).thenAnswer((_) {});
+    when(logger.write(any)).thenAnswer((_) {});
+    when(logger.writeCharCode(any)).thenAnswer((_) {});
+    when(logger.flush()).thenAnswer((_) {});
+    when(logger.ansi).thenAnswer((_) => Ansi(false));
+    when(logger.isVerbose).thenAnswer((_) => false);
+    return logger;
+  }
+
   group('printErrorHelp', () {
     test('writes help message', () {
-      final logger = MockLogger();
+      final logger = createLogger();
       const command = 'some_command';
 
       printErrorHelp(command, logger: logger);
