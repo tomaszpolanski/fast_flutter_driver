@@ -27,10 +27,14 @@ jobs:
       - name: Analyze
         working-directory: ${{ matrix.package }}
         run: dart analyze
+
+      - name: Aggregate tests
+        working-directory: ${{ matrix.package }}
+        run: dart --no-sound-null-safety lib/src/preparing_tests/test_generator/test_merger.dart
         
       - name: Run tests
         working-directory: ${{ matrix.package }}
-        run: dart --no-sound-null-safety test
+        run: dart --no-sound-null-safety test/all_tests.dart
         
       - name: Gather coverage
         working-directory: ${{ matrix.package }}
