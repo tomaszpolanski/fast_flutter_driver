@@ -1,7 +1,6 @@
 import 'package:fast_flutter_driver/src/driver_helper.dart';
 import 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -9,7 +8,6 @@ void main() {
     <TestPlatform?, TargetPlatform>{
       TestPlatform.android: TargetPlatform.android,
       TestPlatform.iOS: TargetPlatform.iOS,
-      null: TargetPlatform.fuchsia,
     }.forEach((key, value) {
       test('when $key', () {
         expect(key?.targetPlatform, value);
@@ -23,8 +21,7 @@ void main() {
       macOsOverride = false;
       windowsOverride = false;
       linuxOverride = true;
-      config = _MockConfiguration();
-      when(config.resolution).thenReturn(Resolution.fromSize('1x1'));
+      config = _MockConfiguration()..resolution = Resolution.fromSize('1x1');
     });
 
     tearDown(() {
