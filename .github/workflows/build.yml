@@ -31,12 +31,8 @@ jobs:
       - name: Aggregate tests
         working-directory: ${{ matrix.package }}
         run: dart --no-sound-null-safety lib/src/preparing_tests/test_generator/test_merger.dart
-        
-      - name: Run tests
-        working-directory: ${{ matrix.package }}
-        run: dart --no-sound-null-safety test/all_tests.dart
-        
-      - name: Gather coverage
+                
+      - name: Test & Gather coverage
         working-directory: ${{ matrix.package }}
         run: ../dev/cov.sh
 
