@@ -14,6 +14,7 @@ analyzer:
   exclude:
     - dependencies/**
     - test/**_test.mocks.dart
+    - test/**_test.mocks_keep.dart
 
     
 linter:

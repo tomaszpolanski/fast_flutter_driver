@@ -14,7 +14,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../bin/main.dart' as main_file;
-import 'main_lib_test.mocks.dart';
+import 'main_lib_test.mocks_keep.dart';
 import 'mockito_nnbd.dart' as nnbd_mockito;
 
 @GenerateMocks([
