@@ -30,11 +30,46 @@ void main() {
   late test_executor.TestExecutor testExecutor;
   late TestFileProvider testFileProvider;
 
+  MockLogger createLogger() {
+    final logger = MockLogger();
+    when(logger.trace(any)).thenAnswer((_) {});
+    when(logger.stdout(any)).thenAnswer((_) {});
+    when(logger.stderr(any)).thenAnswer((_) {});
+    when(logger.write(any)).thenAnswer((_) {});
+    when(logger.writeCharCode(any)).thenAnswer((_) {});
+    when(logger.flush()).thenAnswer((_) {});
+    when(logger.ansi).thenAnswer((_) => Ansi(false));
+    when(logger.isVerbose).thenAnswer((_) => false);
+    return logger;
+  }
+
+  MockTestExecutor createTestExecutor() {
+    final mock = MockTestExecutor();
+    when(mock.test(any, parameters: anyNamed('parameters')))
+        .thenAnswer((_) async {});
+    return mock;
+  }
+
+  MockTestFileProvider createTestFileProvider() {
+    final mock = MockTestFileProvider();
+    when(mock.testFile(any)).thenAnswer((_) async => null);
+    return mock;
+  }
+
+  MockDirectory createDir() {
+    final mock = MockDirectory();
+    when(mock.createSync(recursive: anyNamed('recursive')))
+        .thenAnswer((_) async {});
+    when(mock.deleteSync(recursive: nnbd_mockito.anyNamed('recursive')))
+        .thenAnswer((_) async {});
+    return mock;
+  }
+
   setUp(() {
     versionChecker = MockVersionChecker();
-    logger = MockLogger();
-    testExecutor = MockTestExecutor();
-    testFileProvider = MockTestFileProvider();
+    logger = createLogger();
+    testExecutor = createTestExecutor();
+    testFileProvider = createTestFileProvider();
   });
   group('commands', () {
     tearDown(() {
@@ -89,7 +124,7 @@ void main() {
           );
         },
         getCurrentDirectory: () {
-          final mockDir = MockDirectory();
+          final mockDir = createDir();
           when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([File('pubspec.yaml')]);
           return mockDir;
@@ -207,7 +242,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
           );
         },
         getCurrentDirectory: () {
-          final mockDir = MockDirectory();
+          final mockDir = createDir();
           when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([]);
           return mockDir;
@@ -235,7 +270,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
           );
         },
         getCurrentDirectory: () {
-          final mockDir = MockDirectory();
+          final mockDir = createDir();
           when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([File('pubspec.yaml')]);
           return mockDir;
@@ -271,7 +306,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
           );
         },
         getCurrentDirectory: () {
-          final mockDir = MockDirectory();
+          final mockDir = createDir();
           when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
               .thenReturn([File('pubspec.yaml')]);
           return mockDir;
@@ -300,7 +335,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
         verify(directory.deleteSync(recursive: true)).called(1);
       },
       createDirectory: (name) {
-        final mockDir = MockDirectory();
+        final mockDir = createDir();
         if (name == screenshotsArg) {
           directory = mockDir;
         }
@@ -313,7 +348,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
         return mockDir;
       },
       getCurrentDirectory: () {
-        final mockDir = MockDirectory();
+        final mockDir = createDir();
         when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
             .thenReturn([File('pubspec.yaml')]);
         return mockDir;
