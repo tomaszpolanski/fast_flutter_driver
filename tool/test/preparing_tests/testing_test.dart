@@ -246,7 +246,6 @@ void main() {
             streams.InputCommandLineStream? stdin,
             streams.OutputCommandLineStream? stderr,
           }) async {
-            print('QQQQQQQ ${command}');
             commands.add(command);
             if (command.startsWith(
                 'flutter run -d ${devices.device} --target=generic.dart')) {

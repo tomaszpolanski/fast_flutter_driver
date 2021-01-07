@@ -6,16 +6,30 @@ import 'package:test/test.dart';
 
 import 'lazy_logger_test.mocks.dart';
 
-@GenerateMocks([Logger])
+@GenerateMocks([Logger, Progress])
 void main() {
   late LazyLogger tested;
+
+  MockLogger createLogger() {
+    final logger = MockLogger();
+    when(logger.trace(any)).thenAnswer((_) {});
+    when(logger.stdout(any)).thenAnswer((_) {});
+    when(logger.stderr(any)).thenAnswer((_) {});
+    when(logger.write(any)).thenAnswer((_) {});
+    when(logger.writeCharCode(any)).thenAnswer((_) {});
+    when(logger.flush()).thenAnswer((_) {});
+    when(logger.ansi).thenAnswer((_) => Ansi(false));
+    when(logger.isVerbose).thenAnswer((_) => false);
+    when(logger.progress(any)).thenReturn(MockProgress());
+    return logger;
+  }
 
   test('creates logger when calling for the first time', () {
     var factoryWasCalled = false;
     tested = LazyLogger((_) {
       factoryWasCalled = true;
 
-      return MockLogger();
+      return createLogger();
     })
       ..flush();
 
@@ -27,7 +41,7 @@ void main() {
     tested = LazyLogger((_) {
       factoryWasCalled = true;
 
-      return MockLogger();
+      return createLogger();
     });
 
     expect(factoryWasCalled, isFalse);
@@ -39,7 +53,7 @@ void main() {
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
-        return MockLogger();
+        return createLogger();
       })
         ..flush();
 
@@ -51,7 +65,7 @@ void main() {
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
-        final logger = MockLogger();
+        final logger = createLogger();
         when(logger.isVerbose).thenReturn(isVerbose);
         return logger;
       })
@@ -66,7 +80,7 @@ void main() {
   group('invokes methods', () {
     late MockLogger logger;
     setUp(() {
-      logger = MockLogger();
+      logger = createLogger();
       tested = LazyLogger((_) => logger);
     });
 
