@@ -14,7 +14,7 @@ build/
 test_driver/screenshots/
 /screenshots
 
-*_test.mocks.dart
+TODO user this after migration- *_test.mocks.dart
 linux/.generated_flutter_root
 windows/Generated.props
 lib/generated/i18n.dart
