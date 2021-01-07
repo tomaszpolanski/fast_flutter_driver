@@ -15,10 +15,28 @@ void main() {
   late File resolutionFile;
   late Logger logger;
 
+  MockFile createFile() {
+    final file = MockFile();
+    when(file.existsSync()).thenReturn(true);
+    when(file.copy(nnbd_mockito.any)).thenAnswer((_) async => MockFile());
+    when(file.writeAsString(nnbd_mockito.any))
+        .thenAnswer((_) async => MockFile());
+    when(file.delete()).thenAnswer((_) async => MockFile());
+    when(file.rename(nnbd_mockito.any)).thenAnswer((_) async => MockFile());
+    return file;
+  }
+
+  MockDirectory createDir() {
+    final dir = MockDirectory();
+    when(dir.path).thenReturn('');
+    when(dir.rename(nnbd_mockito.any)).thenAnswer((_) async => MockDirectory());
+    return dir;
+  }
+
   setUp(() {
     logger = MockLogger();
-    resolutionFile = MockFile();
-    when(resolutionFile.existsSync()).thenReturn(true);
+    when(logger.stderr(nnbd_mockito.any)).thenAnswer((_) {});
+    resolutionFile = createFile();
   });
 
   tearDown(() {
@@ -52,7 +70,7 @@ void main() {
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = MockFile();
+            final file = createFile();
             when(file.existsSync()).thenReturn(true);
             return file;
           }
@@ -73,13 +91,13 @@ void main() {
           );
         },
         getCurrentDirectory: () {
-          final mockDir = MockDirectory();
+          final mockDir = createDir();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = MockFile();
+            final file = createFile();
             when(file.existsSync()).thenReturn(false);
             return file;
           }
@@ -116,13 +134,13 @@ const unsigned int kFlutterWindowHeight = 2;
           );
         },
         getCurrentDirectory: () {
-          final mockDir = MockDirectory();
+          final mockDir = createDir();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = MockFile();
+            final file = createFile();
             when(file.existsSync()).thenReturn(true);
             return file;
           }
@@ -165,7 +183,7 @@ window_properties.height = 2;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = MockFile();
+            final file = createFile();
             when(file.existsSync()).thenReturn(true);
             return file;
           }
