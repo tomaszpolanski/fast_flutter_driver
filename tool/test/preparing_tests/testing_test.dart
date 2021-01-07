@@ -18,12 +18,34 @@ import 'package:test/test.dart';
 import '../mockito_nnbd.dart' as nnbd_mockito;
 import 'testing_test.mocks.dart';
 
-@GenerateMocks([Logger, File, Directory, streams.InputCommandLineStream])
+@GenerateMocks(
+    [Logger, File, Directory, streams.InputCommandLineStream, Progress])
 void main() {
   late Logger logger;
   setUp(() {
     logger = MockLogger();
+    when(logger.trace(nnbd_mockito.any)).thenAnswer((_) {});
+    when(logger.stdout(nnbd_mockito.any)).thenAnswer((_) {});
+    when(logger.progress(nnbd_mockito.any)).thenReturn(_MockProgress(''));
   });
+
+  MockFile createFile() {
+    final file = MockFile();
+    when(file.existsSync()).thenReturn(true);
+    when(file.copy(nnbd_mockito.any)).thenAnswer((_) async => MockFile());
+    when(file.writeAsString(nnbd_mockito.any))
+        .thenAnswer((_) async => MockFile());
+    when(file.delete()).thenAnswer((_) async => MockFile());
+    when(file.rename(nnbd_mockito.any)).thenAnswer((_) async => MockFile());
+    return file;
+  }
+
+  MockInputCommandLineStream createStream() {
+    final mock = MockInputCommandLineStream();
+    when(mock.write(any)).thenAnswer((_) {});
+    when(mock.dispose()).thenAnswer((_) async {});
+    return mock;
+  }
 
   group('setup', () {
     tearDown(() {
@@ -50,12 +72,12 @@ void main() {
         },
         createFile: (name) {
           if (name.endsWith('window_configuration.cc_copy')) {
-            final file = MockFile();
+            final file = createFile();
             when(file.existsSync()).thenReturn(false);
             return file;
           }
           File resolutionFile;
-          resolutionFile = MockFile();
+          resolutionFile = createFile();
           when(resolutionFile.existsSync()).thenReturn(true);
           when(resolutionFile.readAsString()).thenAnswer((_) async => '');
           return resolutionFile;
@@ -126,7 +148,7 @@ void main() {
         contains(
           'flutter run -d ${devices.device} '
           '--target=generic.dart '
-          '--flavor $flavor',
+          '--flavor $flavor ',
         ),
       );
     });
@@ -207,7 +229,7 @@ void main() {
 
       expect(
         commands,
-        contains('flutter run -d $device --target=generic.dart'),
+        contains('flutter run -d $device --target=generic.dart '),
       );
     });
 
@@ -217,16 +239,17 @@ void main() {
         const url = 'http://127.0.0.1:50512/CKxutzePXlo/';
         tested = test_executor.TestExecutor(
           outputFactory: streams.output,
-          inputFactory: () => MockInputCommandLineStream(),
+          inputFactory: createStream,
           run: (
             String command, {
             required streams.OutputCommandLineStream stdout,
             streams.InputCommandLineStream? stdin,
             streams.OutputCommandLineStream? stderr,
           }) async {
+            print('QQQQQQQ ${command}');
             commands.add(command);
-            if (command ==
-                'flutter run -d ${devices.device} --target=generic.dart') {
+            if (command.startsWith(
+                'flutter run -d ${devices.device} --target=generic.dart')) {
               stdout.stream.add(
                 utf8.encode('is available at: $url'),
               );
@@ -251,7 +274,7 @@ void main() {
         expect(
           commands,
           contains(
-              'dart generic_test.dart -u $url -r 800x600 -l pl -p android'),
+              'dart generic_test.dart -u http://127.0.0.1:50512/CKxutzePXlo/ -r 800x600 -l pl -p android'),
         );
       });
 
@@ -260,7 +283,7 @@ void main() {
         const url = 'ws://127.0.0.1:52464/rjc_-3ZH0N0=';
         tested = test_executor.TestExecutor(
           outputFactory: streams.output,
-          inputFactory: () => MockInputCommandLineStream(),
+          inputFactory: createStream,
           run: (
             String command, {
             required streams.OutputCommandLineStream stdout,
@@ -268,8 +291,8 @@ void main() {
             streams.OutputCommandLineStream? stderr,
           }) async {
             commands.add(command);
-            if (command ==
-                'flutter run -d ${devices.device} --target=generic.dart') {
+            if (command.startsWith(
+                'flutter run -d ${devices.device} --target=generic.dart')) {
               stdout.stream.add(
                 utf8.encode('Debug service listening on $url'),
               );
@@ -304,7 +327,7 @@ void main() {
       final commands = <String>[];
       tested = test_executor.TestExecutor(
         outputFactory: streams.output,
-        inputFactory: () => MockInputCommandLineStream(),
+        inputFactory: createStream,
         run: (
           String command, {
           required streams.OutputCommandLineStream stdout,
@@ -312,8 +335,8 @@ void main() {
           streams.OutputCommandLineStream? stderr,
         }) async {
           commands.add(command);
-          if (command ==
-              'flutter run -d ${devices.device} --target=generic.dart') {
+          if (command.startsWith(
+              'flutter run -d ${devices.device} --target=generic.dart')) {
             stdout.stream.add(
               utf8.encode(
                   'is available at: http://127.0.0.1:50512/CKxutzePXlo/'),
@@ -349,7 +372,7 @@ void main() {
       final commands = <String>[];
       tested = test_executor.TestExecutor(
         outputFactory: streams.output,
-        inputFactory: () => MockInputCommandLineStream(),
+        inputFactory: createStream,
         run: (
           String command, {
           required streams.OutputCommandLineStream stdout,
@@ -357,8 +380,8 @@ void main() {
           streams.OutputCommandLineStream? stderr,
         }) async {
           commands.add(command);
-          if (command ==
-              'flutter run -d ${devices.device} --target=generic.dart') {
+          if (command.startsWith(
+              'flutter run -d ${devices.device} --target=generic.dart')) {
             stdout.stream.add(
               utf8.encode(
                   'is available at: http://127.0.0.1:50512/CKxutzePXlo/'),
@@ -389,4 +412,18 @@ void main() {
       );
     });
   });
+}
+
+class _MockProgress extends Progress {
+  _MockProgress(String message) : super(message);
+
+  @override
+  void cancel() {
+    // TODO: implement cancel
+  }
+
+  @override
+  void finish({String? message, bool showTiming = false}) {
+    // TODO: implement finish
+  }
 }

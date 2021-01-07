@@ -31,7 +31,7 @@ class FlutterCommand {
     final args = mapped?.join(' ');
 
     return 'dart'
-        '${dartArguments != null ? ' $dartArguments' : ''}'
+        '${dartArguments?.isNotEmpty == true ? ' $dartArguments' : ''}'
         // ignore: missing_whitespace_between_adjacent_strings
         ' $file'
         '${args != null ? ' $args' : ''}';

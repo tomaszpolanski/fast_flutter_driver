@@ -100,7 +100,7 @@ class TestExecutor {
           '-${resolutionArg[0]}': parameters.resolution,
           '-${languageArg[0]}': parameters.language,
           if (platform != null) '-${platformArg[0]}': fromEnum(platform),
-          if (parameters.testArguments != null)
+          if (parameters.testArguments?.isNotEmpty == true)
             '--$testArg': '"${parameters.testArguments}"',
         },
       );
