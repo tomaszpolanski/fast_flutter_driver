@@ -1,14 +1,11 @@
 import 'package:fast_flutter_driver/src/window_utils/window_utils.dart';
 import 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-
-import '../mockito_nnbd.dart' as nnbd_mockito;
 
 void main() {
   group('setSize', () {
-    late SystemWindow systemWindow;
+    late _MockSystemWindow systemWindow;
     const size = Size(1, 1);
     setUp(() {
       systemWindow = _MockSystemWindow();
@@ -30,9 +27,7 @@ void main() {
 
       await tested.setSize(size);
 
-      expect(
-          verify(systemWindow.setSize(nnbd_mockito.captureAny)).captured.single,
-          size);
+      expect(systemWindow.size, size);
     });
 
     test('windows', () async {
@@ -47,9 +42,7 @@ void main() {
 
       await tested.setSize(size);
 
-      expect(
-          verify(systemWindow.setSize(nnbd_mockito.captureAny)).captured.single,
-          size);
+      expect(systemWindow.size, size);
     });
 
     test('other', () async {
@@ -64,11 +57,17 @@ void main() {
 
       await tested.setSize(size);
 
-      expect(
-          verify(systemWindow.setSize(nnbd_mockito.captureAny)).captured.single,
-          size);
+      expect(systemWindow.size, size);
     });
   });
 }
 
-class _MockSystemWindow extends Mock implements SystemWindow {}
+class _MockSystemWindow implements SystemWindow {
+  Size? size;
+
+  @override
+  Future<bool> setSize(Size size) async {
+    this.size = size;
+    return false;
+  }
+}
