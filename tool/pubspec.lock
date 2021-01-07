@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "14.0.0"
   analyzer:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
@@ -21,14 +21,14 @@ packages:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.0"
+    version: "2.0.0-nullsafety.0"
   async:
     dependency: "direct overridden"
     description:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0-nullsafety.1"
+    version: "2.5.0-nullsafety.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -127,13 +127,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0-nullsafety.5"
-  colorize:
-    dependency: "direct main"
-    description:
-      name: colorize
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   convert:
     dependency: transitive
     description:
@@ -147,7 +140,7 @@ packages:
       name: coverage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.0"
+    version: "0.14.2"
   crypto:
     dependency: transitive
     description:
@@ -259,21 +252,21 @@ packages:
       name: mime
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.6+3"
+    version: "0.9.7"
   mockito:
     dependency: "direct dev"
     description:
       name: mockito
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.3"
+    version: "5.0.0-nullsafety.1"
   node_interop:
     dependency: transitive
     description:
       name: node_interop
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.1"
   node_io:
     dependency: transitive
     description:
@@ -308,28 +301,28 @@ packages:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.10.0-nullsafety.1"
+    version: "1.10.0-nullsafety.3"
   pool:
     dependency: "direct overridden"
     description:
       name: pool
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.0-nullsafety.1"
+    version: "1.5.0-nullsafety.3"
   process_run:
     dependency: "direct main"
     description:
       name: process_run
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.10+2"
+    version: "0.10.12+3"
   pub_semver:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.4"
+    version: "2.0.0-nullsafety.0"
   pubspec_parse:
     dependency: transitive
     description:
@@ -350,7 +343,7 @@ packages:
       name: shelf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.7"
+    version: "0.7.9"
   shelf_packages_handler:
     dependency: transitive
     description:
@@ -364,7 +357,7 @@ packages:
       name: shelf_static
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.8"
+    version: "0.2.9+1"
   shelf_web_socket:
     dependency: transitive
     description:
@@ -392,21 +385,21 @@ packages:
       name: source_maps
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.10-nullsafety.1"
+    version: "0.10.10-nullsafety.3"
   source_span:
     dependency: "direct overridden"
     description:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0-nullsafety.2"
+    version: "1.8.0-nullsafety.4"
   stack_trace:
     dependency: "direct overridden"
     description:
       name: stack_trace
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.10.0-nullsafety.2"
+    version: "1.10.0-nullsafety.6"
   stream_channel:
     dependency: transitive
     description:
@@ -441,21 +434,21 @@ packages:
       name: test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.16.0-nullsafety.12"
+    version: "1.16.0-nullsafety.13"
   test_api:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.19-nullsafety.6"
   test_core:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: test_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.12-nullsafety.11"
+    version: "0.3.12-nullsafety.12"
   timing:
     dependency: transitive
     description:
@@ -476,7 +469,7 @@ packages:
       name: vm_service
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.1.0"
+    version: "5.5.0"
   watcher:
     dependency: transitive
     description:
@@ -497,7 +490,7 @@ packages:
       name: webkit_inspection_protocol
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.3"
+    version: "0.7.4"
   yaml:
     dependency: "direct main"
     description:

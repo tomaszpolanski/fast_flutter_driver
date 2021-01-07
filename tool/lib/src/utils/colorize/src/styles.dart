@@ -1,5 +1,3 @@
-part of colorize;
-
 enum Styles {
   RESET,
   BOLD,

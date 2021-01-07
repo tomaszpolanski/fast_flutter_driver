@@ -1,14 +1,17 @@
-part of colorize;
+import 'package:fast_flutter_driver_tool/src/utils/colorize/src/colorize.dart';
+import 'package:fast_flutter_driver_tool/src/utils/colorize/src/styles.dart';
 
-void color(String text,
-    {Styles front,
-    Styles back,
-    bool isUnderline: false,
-    bool isBold: false,
-    bool isDark: false,
-    bool isItalic: false,
-    bool isReverse: false}) {
-  Colorize string = new Colorize(text);
+void color(
+  String text, {
+  Styles? front,
+  Styles? back,
+  bool isUnderline = false,
+  bool isBold = false,
+  bool isDark = false,
+  bool isItalic = false,
+  bool isReverse = false,
+}) {
+  final string = Colorize(text);
 
   if (front != null) {
     string.apply(front);
@@ -38,5 +41,6 @@ void color(String text,
     string.apply(Styles.REVERSE);
   }
 
+  // ignore: avoid_print
   print(string);
 }

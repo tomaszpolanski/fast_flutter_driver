@@ -1,19 +1,16 @@
-part of colorize;
+import 'package:fast_flutter_driver_tool/src/utils/colorize/src/styles.dart';
 
 class Colorize {
-  static final String ESC = "\u{1B}";
+  Colorize([this.initial = '']);
+
+  static const String ESC = '\u{1B}';
 
   String initial = '';
 
-  Colorize([this.initial = '']);
-
-  Colorize apply(Styles style, [String text]) {
-    if (text == null) {
-      text = initial;
-    }
+  void apply(Styles style, [String? text]) {
+    text ??= initial;
 
     initial = _applyStyle(style, text);
-    return this;
   }
 
   void bgBlack() {
@@ -101,13 +98,12 @@ class Colorize {
   }
 
   String buildEscSeq(Styles style) {
-    return ESC + "[${getStyle(style)}m";
+    return "$ESC${"[${getStyle(style)}m"}";
   }
 
-  Colorize call(String text) {
-    initial = text;
-    return this;
-  }
+  // void call(String text) {
+  //   initial = text;
+  // }
 
   void concealed() {
     apply(Styles.CONCEALED);
@@ -125,7 +121,7 @@ class Colorize {
     apply(Styles.DARK_GRAY);
   }
 
-  void default_slyle() {
+  void defaultStyle() {
     apply(Styles.DEFAULT);
   }
 
@@ -177,6 +173,7 @@ class Colorize {
     apply(Styles.REVERSE);
   }
 
+  @override
   String toString() {
     return initial;
   }
@@ -283,7 +280,6 @@ class Colorize {
         return '106';
       case Styles.BG_WHITE:
         return '107';
-      default: return '';
     }
   }
 }
