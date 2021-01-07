@@ -19,10 +19,10 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ matrix.package }}
         run: pub get
-
-      - name: Generate mocks
-        working-directory: ${{ matrix.package }}
-        run: pub run build_runner build
+#      Skipping until build_runner is migrated
+#      - name: Generate mocks
+#        working-directory: ${{ matrix.package }}
+#        run: pub run build_runner build
 
       - name: Analyze
         working-directory: ${{ matrix.package }}

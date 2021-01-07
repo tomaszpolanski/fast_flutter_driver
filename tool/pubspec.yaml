@@ -14,7 +14,7 @@ dependencies:
   cli_util: ^0.3.0-nullsafety.0
   meta: ^1.3.0-nullsafety.4
   path: ^1.8.0-nullsafety.3
-  process_run: ^0.11.2+8
+  process_run: ^0.10.0+1
   yaml: ^3.0.0-nullsafety.0
   http: ^0.12.2
 
@@ -27,14 +27,4 @@ dev_dependencies:
 
 dependency_overrides:
   args: ^2.0.0-nullsafety.0
-  async: ^2.5.0-nullsafety.1
   cli_util: ^0.3.0-nullsafety.0
-  charcode: 1.2.0-nullsafety.1
-  pedantic: ^1.10.0-nullsafety.1
-  pool: ^1.5.0-nullsafety.1
-  source_maps: ^0.10.10-nullsafety.1
-  source_span: ^1.8.0-nullsafety.2
-  stack_trace: ^1.10.0-nullsafety.2
-  term_glyph: 1.2.0-nullsafety.1
-  http_parser: 4.0.0-nullsafety
-  pub_semver: ^2.0.0-nullsafety.0

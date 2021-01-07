@@ -23,7 +23,7 @@ packages:
     source: hosted
     version: "2.0.0-nullsafety.0"
   async:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: async
       url: "https://pub.dartlang.org"
@@ -58,12 +58,12 @@ packages:
     source: hosted
     version: "7.1.0"
   charcode:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: charcode
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0-nullsafety.1"
+    version: "1.2.0-nullsafety.3"
   cli_util:
     dependency: "direct main"
     description:
@@ -149,12 +149,12 @@ packages:
     source: hosted
     version: "2.2.0"
   http_parser:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0-nullsafety"
+    version: "3.1.4"
   io:
     dependency: transitive
     description:
@@ -240,14 +240,14 @@ packages:
     source: hosted
     version: "1.8.0-nullsafety.3"
   pedantic:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0-nullsafety.3"
   pool:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: pool
       url: "https://pub.dartlang.org"
@@ -259,14 +259,14 @@ packages:
       name: process_run
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.2+8"
+    version: "0.10.12+3"
   pub_semver:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: pub_semver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-nullsafety.0"
+    version: "1.4.4"
   quiver:
     dependency: transitive
     description:
@@ -317,21 +317,21 @@ packages:
     source: hosted
     version: "2.1.0-nullsafety.4"
   source_maps:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: source_maps
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.10-nullsafety.3"
   source_span:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0-nullsafety.4"
   stack_trace:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: stack_trace
       url: "https://pub.dartlang.org"
@@ -351,20 +351,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety.3"
-  synchronized:
-    dependency: transitive
-    description:
-      name: synchronized
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0+2"
   term_glyph:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: term_glyph
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0-nullsafety.1"
+    version: "1.2.0-nullsafety.3"
   test:
     dependency: "direct dev"
     description:
