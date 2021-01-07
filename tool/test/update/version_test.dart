@@ -64,7 +64,7 @@ void main() {
     test('looks up the package name in the html', () async {
       const expectedVersion = '1.0.0+1';
       Future<Response> get(String url) async => Response(
-            '<div class="pkg-page-title-copy-item">fast_flutter_driver_tool: ^$expectedVersion</div>',
+            '<span class="code">fast_flutter_driver_tool: ^$expectedVersion</span>',
             200,
           );
       tested = VersionChecker(
@@ -158,7 +158,7 @@ void main() {
       await IOOverrides.runZoned(
         () async {
           Future<Response> get(String url) async => Response(
-                '<div class="pkg-page-title-copy-item">fast_flutter_driver_tool: ^$remoteVersion</div>',
+                '<span class="code">fast_flutter_driver_tool: ^$remoteVersion</span>',
                 200,
               );
           tested = VersionChecker(
@@ -216,7 +216,7 @@ void main() {
       await IOOverrides.runZoned(
         () async {
           Future<Response> get(String url) async => Response(
-                '<div class="pkg-page-title-copy-item">fast_flutter_driver_tool: ^$remoteVersion</div>',
+                '<span class="code">fast_flutter_driver_tool: ^$remoteVersion</span>',
                 200,
               );
           tested = VersionChecker(
