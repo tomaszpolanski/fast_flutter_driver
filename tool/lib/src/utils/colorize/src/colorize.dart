@@ -1,194 +1,20 @@
 import 'package:fast_flutter_driver_tool/src/utils/colorize/src/styles.dart';
 
 class Colorize {
-  Colorize([this.initial = '']);
+  Colorize(this.initial);
 
   static const String ESC = '\u{1B}';
 
   String initial = '';
 
-  void apply(Styles style, [String? text]) {
-    text ??= initial;
-
-    initial = _applyStyle(style, text);
+  void apply(Styles style) {
+    initial = _applyStyle(style, initial);
   }
 
-  void bgBlack() {
-    apply(Styles.BG_BLACK);
-  }
-
-  void bgBlue() {
-    apply(Styles.BG_BLUE);
-  }
-
-  void bgCyan() {
-    apply(Styles.BG_CYAN);
-  }
-
-  void bgDarkGray() {
-    apply(Styles.BG_DARK_GRAY);
-  }
-
-  void bgDefault() {
-    apply(Styles.BG_DEFAULT);
-  }
-
-  void bgGreen() {
-    apply(Styles.BG_GREEN);
-  }
-
-  void bgLightBlue() {
-    apply(Styles.BG_LIGHT_BLUE);
-  }
-
-  void bgLightCyan() {
-    apply(Styles.BG_LIGHT_CYAN);
-  }
-
-  void bgLightGray() {
-    apply(Styles.BG_LIGHT_GRAY);
-  }
-
-  void bgLightGreen() {
-    apply(Styles.BG_LIGHT_GREEN);
-  }
-
-  void bgLightMagenta() {
-    apply(Styles.BG_LIGHT_MAGENTA);
-  }
-
-  void bgLightRed() {
-    apply(Styles.BG_LIGHT_RED);
-  }
-
-  void bgLightYellow() {
-    apply(Styles.BG_LIGHT_YELLOW);
-  }
-
-  void bgMagenta() {
-    apply(Styles.BG_MAGENTA);
-  }
-
-  void bgRed() {
-    apply(Styles.BG_RED);
-  }
-
-  void bgWhite() {
-    apply(Styles.BG_WHITE);
-  }
-
-  void bgYellow() {
-    apply(Styles.BG_YELLOW);
-  }
-
-  void black() {
-    apply(Styles.BLACK);
-  }
-
-  void blink() {
-    apply(Styles.BLINK);
-  }
-
-  void blue() {
-    apply(Styles.BLUE);
-  }
-
-  void bold() {
-    apply(Styles.BOLD);
-  }
-
-  String buildEscSeq(Styles style) {
-    return "$ESC${"[${getStyle(style)}m"}";
-  }
-
-  // void call(String text) {
-  //   initial = text;
-  // }
-
-  void concealed() {
-    apply(Styles.CONCEALED);
-  }
-
-  void cyan() {
-    apply(Styles.CYAN);
-  }
-
-  void dark() {
-    apply(Styles.DARK);
-  }
-
-  void darkGray() {
-    apply(Styles.DARK_GRAY);
-  }
-
-  void defaultStyle() {
-    apply(Styles.DEFAULT);
-  }
-
-  void green() {
-    apply(Styles.GREEN);
-  }
-
-  void italic() {
-    apply(Styles.ITALIC);
-  }
-
-  void lightBlue() {
-    apply(Styles.LIGHT_BLUE);
-  }
-
-  void lightCyan() {
-    apply(Styles.LIGHT_CYAN);
-  }
-
-  void lightGray() {
-    apply(Styles.LIGHT_GRAY);
-  }
-
-  void lightGreen() {
-    apply(Styles.LIGHT_GREEN);
-  }
-
-  void lightMagenta() {
-    apply(Styles.LIGHT_MAGENTA);
-  }
-
-  void lightRed() {
-    apply(Styles.LIGHT_RED);
-  }
-
-  void lightYellow() {
-    apply(Styles.LIGHT_YELLOW);
-  }
-
-  void magenta() {
-    apply(Styles.MAGENTA);
-  }
-
-  void red() {
-    apply(Styles.RED);
-  }
-
-  void reverse() {
-    apply(Styles.REVERSE);
-  }
+  String buildEscSeq(Styles style) => "$ESC${"[${getStyle(style)}m"}";
 
   @override
-  String toString() {
-    return initial;
-  }
-
-  void underline() {
-    apply(Styles.UNDERLINE);
-  }
-
-  void white() {
-    apply(Styles.WHITE);
-  }
-
-  void yellow() {
-    apply(Styles.YELLOW);
-  }
+  String toString() => initial;
 
   String _applyStyle(Styles style, String text) {
     return buildEscSeq(style) + text + buildEscSeq(Styles.RESET);
