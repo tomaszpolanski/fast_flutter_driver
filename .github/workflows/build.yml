@@ -34,7 +34,7 @@ jobs:
         
       - name: Run tests
         working-directory: ${{ matrix.package }}
-        run: dart --no-sound-null-safety test/all_tests.dart
+        run: dart --no-sound-null-safety test
         
       - name: Gather coverage
         working-directory: ${{ matrix.package }}
