@@ -10,10 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   args: ^2.0.0-nullsafety.0
-  csv: ^4.0.0
   fast_flutter_driver_tool: ^1.4.0
   mockito: ^5.0.0-nullsafety.1
-  process_run: ^0.10.0+1
   win32: ^2.0.0-nullsafety.7
 
 dev_dependencies:
