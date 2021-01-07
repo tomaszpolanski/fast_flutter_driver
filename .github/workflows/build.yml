@@ -27,10 +27,6 @@ jobs:
       - name: Analyze
         working-directory: ${{ matrix.package }}
         run: dart analyze
-
-      - name: Aggregate tests
-        working-directory: ${{ matrix.package }}
-        run: dart --no-sound-null-safety lib/src/preparing_tests/test_generator/test_merger.dart
         
       - name: Run tests
         working-directory: ${{ matrix.package }}
@@ -53,7 +49,7 @@ jobs:
     strategy:
       matrix:
         package: ["driver"]
-        channel: ["stable"]
+        channel: ["beta"]
 
     steps:
       - uses: actions/checkout@v2
