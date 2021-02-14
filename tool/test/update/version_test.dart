@@ -3,15 +3,22 @@ import 'dart:io';
 import 'package:fast_flutter_driver_tool/src/update/path_provider_impl.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:http/http.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'version_test.mocks.dart';
+
+@GenerateMocks([
+  File,
+  PathProvider,
+])
 void main() {
   late VersionChecker tested;
-  late PathProvider pathProvider;
+  late MockPathProvider pathProvider;
 
   setUp(() {
-    pathProvider = _MockPathProvider();
+    pathProvider = MockPathProvider();
   });
 
   group('remoteVersion', () {
@@ -96,8 +103,7 @@ void main() {
           },
           createFile: (name) {
             if (name == '/root/../pubspec.yaml') {
-              final File file = _MockFile();
-              when(file.existsSync()).thenReturn(true);
+              final File file = _MockFile()..fieldExistsSync = true;
               when(file.readAsString())
                   .thenAnswer((_) async => 'version: 1.0.0+1');
               return file;
@@ -131,15 +137,12 @@ void main() {
           },
           createFile: (name) {
             if (name == '/root/../pubspec.lock') {
-              final File file = _MockFile();
-              when(file.existsSync()).thenReturn(true);
+              final File file = _MockFile()..fieldExistsSync = true;
               when(file.readAsLines())
                   .thenAnswer((_) async => lockFileContent.split('\n'));
               return file;
             } else {
-              final File file = _MockFile();
-              when(file.existsSync()).thenReturn(false);
-              return file;
+              return _MockFile()..fieldExistsSync = false;
             }
           },
         );
@@ -172,8 +175,7 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
+            final File file = _MockFile()..fieldExistsSync = true;
             when(file.readAsString())
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
@@ -200,8 +202,7 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
+            final File file = _MockFile()..fieldExistsSync = true;
             when(file.readAsString()).thenAnswer((_) async => '');
             return file;
           }
@@ -231,8 +232,7 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
+            final File file = _MockFile()..fieldExistsSync = true;
             when(file.readAsString())
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
@@ -258,8 +258,7 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
+            final File file = _MockFile()..fieldExistsSync = true;
             when(file.readAsString())
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
@@ -271,6 +270,16 @@ void main() {
   });
 }
 
-class _MockFile extends Mock implements File {}
+class _MockFile extends MockFile {
+  bool fieldExistsSync = false;
 
-class _MockPathProvider extends Mock implements PathProvider {}
+  @override
+  bool existsSync() {
+    return fieldExistsSync;
+  }
+
+  @override
+  Future<FileSystemEntity> delete({bool recursive = false}) async {
+    return _MockFile();
+  }
+}
