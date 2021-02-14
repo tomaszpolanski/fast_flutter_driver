@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:fast_flutter_driver_tool/src/preparing_tests/file_system.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../mockito_nnbd.dart' as nnbd_mockito;
+import 'file_system_test.mocks.dart';
 
+@GenerateMocks([File, Directory])
 void main() {
   group('validRootDirectory', () {
     test('no pubspec found', () {
@@ -15,8 +17,8 @@ void main() {
           expect(isValidRootDirectory, isFalse);
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
-          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
+          final mockDir = MockDirectory();
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
               .thenReturn([]);
           return mockDir;
         },
@@ -29,8 +31,8 @@ void main() {
           expect(isValidRootDirectory, isTrue);
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
-          when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
+          final mockDir = MockDirectory();
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
               .thenReturn([File('pubspec.yaml')]);
           return mockDir;
         },
@@ -51,24 +53,25 @@ void main() {
       test('legacy linux/main.cc config file', () {
         IOOverrides.runZoned(
           () async {
+            resetMockitoState();
             final tested = nativeResolutionFile;
 
             expect(tested, endsWith('main.cc'));
           },
           getCurrentDirectory: () {
-            final mockDir = _MockDirectory();
+            final mockDir = MockDirectory();
             when(mockDir.path).thenReturn('');
             return mockDir;
           },
           createFile: (name) {
-            final file = _MockFile();
-            when(file.existsSync()).thenReturn(name == 'linux/main.cc');
-            return file;
+            return _MockFile()..fieldExistsSync = name == 'linux/main.cc';
           },
         );
       });
 
       test('legacy window_configuration.cc config file', () {
+        final mockDir = MockDirectory();
+        when(mockDir.path).thenReturn('');
         IOOverrides.runZoned(
           () async {
             final tested = nativeResolutionFile;
@@ -76,16 +79,11 @@ void main() {
             expect(tested, endsWith('window_configuration.cc'));
           },
           getCurrentDirectory: () {
-            final mockDir = _MockDirectory();
-            when(mockDir.path).thenReturn('');
             return mockDir;
           },
           createFile: (name) {
-            final file = _MockFile();
-            when(file.existsSync()).thenReturn(
-              name.endsWith('window_configuration.cc'),
-            );
-            return file;
+            return _MockFile()
+              ..fieldExistsSync = name.endsWith('window_configuration.cc');
           },
         );
       });
@@ -98,16 +96,13 @@ void main() {
             expect(tested, endsWith('my_application.cc'));
           },
           getCurrentDirectory: () {
-            final mockDir = _MockDirectory();
+            final mockDir = MockDirectory();
             when(mockDir.path).thenReturn('');
             return mockDir;
           },
           createFile: (name) {
-            final file = _MockFile();
-            when(file.existsSync()).thenReturn(
-              name.endsWith('my_application.cc'),
-            );
-            return file;
+            return _MockFile()
+              ..fieldExistsSync = name.endsWith('my_application.cc');
           },
         );
       });
@@ -127,6 +122,7 @@ void main() {
       });
     });
   });
+
   group('exists', () {
     test('path is null', () {
       final tested = exists(null);
@@ -142,9 +138,7 @@ void main() {
           expect(tested, isFalse);
         },
         createFile: (name) {
-          final file = _MockFile();
-          when(file.existsSync()).thenReturn(false);
-          return file;
+          return _MockFile()..fieldExistsSync = false;
         },
       );
     });
@@ -157,15 +151,18 @@ void main() {
           expect(tested, isTrue);
         },
         createFile: (name) {
-          final file = _MockFile();
-          when(file.existsSync()).thenReturn(true);
-          return file;
+          return _MockFile()..fieldExistsSync = true;
         },
       );
     });
   });
 }
 
-class _MockDirectory extends Mock implements Directory {}
+class _MockFile extends MockFile {
+  bool fieldExistsSync = false;
 
-class _MockFile extends Mock implements File {}
+  @override
+  bool existsSync() {
+    return fieldExistsSync;
+  }
+}

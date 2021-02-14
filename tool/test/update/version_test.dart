@@ -18,7 +18,7 @@ void main() {
     test('integration test', () async {
       tested = VersionChecker(
         pathProvider: pathProvider,
-        httpGet: get,
+        httpGet: (url) => get(Uri.parse(url)),
       );
 
       final version = await tested.remoteVersion();

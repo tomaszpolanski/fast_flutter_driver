@@ -7,35 +7,33 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../mockito_nnbd.dart' as nnbd_mockito;
 import 'resolution_test.mocks.dart';
 
 @GenerateMocks([Logger, File, Directory])
 void main() {
-  late File resolutionFile;
-  late Logger logger;
+  late MockFile resolutionFile;
+  late MockLogger logger;
 
   MockFile createFile() {
-    final file = MockFile();
+    final MockFile file = MockFile();
     when(file.existsSync()).thenReturn(true);
-    when(file.copy(nnbd_mockito.any)).thenAnswer((_) async => MockFile());
-    when(file.writeAsString(nnbd_mockito.any))
-        .thenAnswer((_) async => MockFile());
+    when(file.copy(any)).thenAnswer((_) async => MockFile());
+    when(file.writeAsString(any)).thenAnswer((_) async => MockFile());
     when(file.delete()).thenAnswer((_) async => MockFile());
-    when(file.rename(nnbd_mockito.any)).thenAnswer((_) async => MockFile());
+    when(file.rename(any)).thenAnswer((_) async => MockFile());
     return file;
   }
 
   MockDirectory createDir() {
     final dir = MockDirectory();
     when(dir.path).thenReturn('');
-    when(dir.rename(nnbd_mockito.any)).thenAnswer((_) async => MockDirectory());
+    when(dir.rename(any)).thenAnswer((_) async => MockDirectory());
     return dir;
   }
 
   setUp(() {
     logger = MockLogger();
-    when(logger.stderr(nnbd_mockito.any)).thenAnswer((_) {});
+    when(logger.stderr(any)).thenAnswer((_) {});
     resolutionFile = createFile();
   });
 
@@ -57,9 +55,7 @@ void main() {
 
           const content = 'gtk_window_set_default_size(window, 1, 2);';
           expect(
-            verify(resolutionFile.writeAsString(nnbd_mockito.captureAny))
-                .captured
-                .single,
+            verify(resolutionFile.writeAsString(captureAny)).captured.single,
             content,
           );
         },
@@ -86,7 +82,7 @@ void main() {
           await overrideResolution('1x2', () async {}, logger: logger);
 
           expect(
-            verify(logger.stderr(nnbd_mockito.captureAny)).captured.single,
+            verify(logger.stderr(captureAny)).captured.single,
             'Was not able to restore native as the copy does not exist',
           );
         },
@@ -127,9 +123,7 @@ const unsigned int kFlutterWindowWidth = 1;
 const unsigned int kFlutterWindowHeight = 2;
 ''';
           expect(
-            verify(resolutionFile.writeAsString(nnbd_mockito.captureAny))
-                .captured
-                .single,
+            verify(resolutionFile.writeAsString(captureAny)).captured.single,
             content,
           );
         },
@@ -170,9 +164,7 @@ window_properties.width = 1;
 window_properties.height = 2;
 ''';
           expect(
-            verify(resolutionFile.writeAsString(nnbd_mockito.captureAny))
-                .captured
-                .single,
+            verify(resolutionFile.writeAsString(captureAny)).captured.single,
             content,
           );
         },

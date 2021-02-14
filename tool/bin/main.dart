@@ -24,7 +24,7 @@ Future<void> main(List<String> paths) async {
     loggerFactory: (verbose) => verbose ? Logger.verbose() : Logger.standard(),
     versionCheckerFactory: (logger) => VersionChecker(
       pathProvider: PathProvider(),
-      httpGet: http.get,
+      httpGet: (url) => http.get(Uri.parse(url)),
     ),
     testExecutorFactory: (logger) => TestExecutor(
       outputFactory: output,
