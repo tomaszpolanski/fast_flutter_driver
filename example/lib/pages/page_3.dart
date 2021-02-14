@@ -9,7 +9,7 @@ class Page3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const BasePage(
       title: routes.page3,
-      color: Colors.blue,
+      color: Colors.red,
     );
   }
 }
