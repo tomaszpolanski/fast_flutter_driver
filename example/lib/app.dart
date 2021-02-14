@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:example/pages/base_page.dart';
 import 'package:example/pages/page_1.dart';
 import 'package:example/pages/page_2.dart';
@@ -5,7 +7,6 @@ import 'package:example/pages/page_3.dart';
 import 'package:example/pages/page_4.dart';
 import 'package:example/routes.dart' as routes;
 import 'package:flutter/material.dart';
-import 'package:random_color/random_color.dart';
 
 class ExampleApp extends StatelessWidget {
   const ExampleApp({Key key, this.route}) : super(key: key);
@@ -24,7 +25,7 @@ class ExampleApp extends StatelessWidget {
           settings: settings,
           builder: (_) => BasePage(
             title: route,
-            color: RandomColor().randomColor(),
+            color: Color.lerp(Colors.red, Colors.orange, Random().nextDouble()),
           ),
         );
       },

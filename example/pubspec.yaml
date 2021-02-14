@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  random_color: ^1.0.3
 
 dev_dependencies:
   flutter_driver:
