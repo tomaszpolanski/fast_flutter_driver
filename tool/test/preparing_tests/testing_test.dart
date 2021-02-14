@@ -15,28 +15,29 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../mockito_nnbd.dart' as nnbd_mockito;
 import 'testing_test.mocks.dart';
 
-@GenerateMocks(
-    [Logger, File, Directory, streams.InputCommandLineStream, Progress])
+@GenerateMocks([
+  Logger,
+  File,
+  Directory,
+  streams.InputCommandLineStream,
+  Progress,
+])
 void main() {
-  late Logger logger;
+  late MockLogger logger;
   setUp(() {
     logger = MockLogger();
-    when(logger.trace(nnbd_mockito.any)).thenAnswer((_) {});
-    when(logger.stdout(nnbd_mockito.any)).thenAnswer((_) {});
-    when(logger.progress(nnbd_mockito.any)).thenReturn(_MockProgress(''));
+    when(logger.trace(any)).thenAnswer((_) {});
+    when(logger.stdout(any)).thenAnswer((_) {});
+    when(logger.progress(any)).thenReturn(_MockProgress(''));
   });
 
-  MockFile createFile() {
-    final file = MockFile();
-    when(file.existsSync()).thenReturn(true);
-    when(file.copy(nnbd_mockito.any)).thenAnswer((_) async => MockFile());
-    when(file.writeAsString(nnbd_mockito.any))
-        .thenAnswer((_) async => MockFile());
-    when(file.delete()).thenAnswer((_) async => MockFile());
-    when(file.rename(nnbd_mockito.any)).thenAnswer((_) async => MockFile());
+  _MockFile createFile() {
+    final file = _MockFile()..fieldExistsSync = true;
+    when(file.copy(any)).thenAnswer((_) async => MockFile());
+    when(file.writeAsString(any)).thenAnswer((_) async => MockFile());
+    when(file.rename(any)).thenAnswer((_) async => MockFile());
     return file;
   }
 
@@ -72,20 +73,17 @@ void main() {
         },
         createFile: (name) {
           if (name.endsWith('window_configuration.cc_copy')) {
-            final file = createFile();
-            when(file.existsSync()).thenReturn(false);
-            return file;
+            return createFile()..fieldExistsSync = false;
           }
           File resolutionFile;
-          resolutionFile = createFile();
-          when(resolutionFile.existsSync()).thenReturn(true);
+          resolutionFile = createFile()..fieldExistsSync = true;
           when(resolutionFile.readAsString()).thenAnswer((_) async => '');
           return resolutionFile;
         },
       );
 
       expect(
-        verify(logger.trace(nnbd_mockito.captureAny)).captured.single,
+        verify(logger.trace(captureAny)).captured.single,
         'Overriding resolution',
       );
     });
@@ -102,7 +100,7 @@ void main() {
         logger: logger,
       );
 
-      verifyNever(logger.trace(nnbd_mockito.any));
+      verifyNever(logger.trace(any));
       expect(haveRunTests, isTrue);
     });
   });
@@ -424,5 +422,19 @@ class _MockProgress extends Progress {
   @override
   void finish({String? message, bool showTiming = false}) {
     // TODO: implement finish
+  }
+}
+
+class _MockFile extends MockFile {
+  bool fieldExistsSync = false;
+
+  @override
+  bool existsSync() {
+    return fieldExistsSync;
+  }
+
+  @override
+  Future<FileSystemEntity> delete({bool recursive = false}) async {
+    return _MockFile();
   }
 }
