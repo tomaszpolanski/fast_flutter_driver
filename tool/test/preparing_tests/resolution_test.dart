@@ -14,13 +14,11 @@ void main() {
   late MockFile resolutionFile;
   late MockLogger logger;
 
-  MockFile createFile() {
-    final MockFile file = MockFile();
-    when(file.existsSync()).thenReturn(true);
-    when(file.copy(any)).thenAnswer((_) async => MockFile());
-    when(file.writeAsString(any)).thenAnswer((_) async => MockFile());
-    when(file.delete()).thenAnswer((_) async => MockFile());
-    when(file.rename(any)).thenAnswer((_) async => MockFile());
+  _MockFile createFile() {
+    final file = _MockFile()..fieldExistsSync = true;
+    when(file.copy(any)).thenAnswer((_) async => _MockFile());
+    when(file.writeAsString(any)).thenAnswer((_) async => _MockFile());
+    when(file.rename(any)).thenAnswer((_) async => _MockFile());
     return file;
   }
 
@@ -66,9 +64,7 @@ void main() {
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = createFile();
-            when(file.existsSync()).thenReturn(true);
-            return file;
+            return createFile()..fieldExistsSync = true;
           }
           return resolutionFile;
         },
@@ -93,9 +89,7 @@ void main() {
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = createFile();
-            when(file.existsSync()).thenReturn(false);
-            return file;
+            return createFile()..fieldExistsSync = false;
           }
           return resolutionFile;
         },
@@ -134,9 +128,7 @@ const unsigned int kFlutterWindowHeight = 2;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = createFile();
-            when(file.existsSync()).thenReturn(true);
-            return file;
+            return createFile()..fieldExistsSync = true;
           }
           return resolutionFile;
         },
@@ -175,13 +167,25 @@ window_properties.height = 2;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = createFile();
-            when(file.existsSync()).thenReturn(true);
-            return file;
+            return createFile()..fieldExistsSync = true;
           }
           return resolutionFile;
         },
       );
     });
   });
+}
+
+class _MockFile extends MockFile {
+  bool fieldExistsSync = false;
+
+  @override
+  bool existsSync() {
+    return fieldExistsSync;
+  }
+
+  @override
+  Future<FileSystemEntity> delete({bool recursive = false}) async {
+    return _MockFile();
+  }
 }
