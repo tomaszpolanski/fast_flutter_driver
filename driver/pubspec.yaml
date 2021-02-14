@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   args: ^2.0.0-nullsafety.0
   fast_flutter_driver_tool: ^1.4.0
-  mockito: ^5.0.0-nullsafety.1
+  mockito: ^5.0.0-nullsafety.7
   win32: ^2.0.0-nullsafety.7
 
 dev_dependencies:
@@ -28,7 +28,5 @@ flutter:
 
 
 dependency_overrides:
-  args: ^2.0.0-nullsafety.0
-  cli_util: ^0.3.0-nullsafety.0
   fast_flutter_driver_tool:
     path: ../tool
