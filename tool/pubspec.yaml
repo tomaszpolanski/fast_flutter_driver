@@ -23,4 +23,4 @@ dev_dependencies:
   mockito: ^5.0.0-nullsafety.7
   coverage: ^0.15.2
   file: ^6.0.0-nullsafety.2
-  build_runner: ^1.10.0 # TODO to be added when they migrate and we need to create mocks again
+  build_runner: ^1.11.1
