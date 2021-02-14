@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/test_generator/test_merger.dart'
     as main_file;
 import 'package:file/memory.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../../mockito_nnbd.dart' as nnbd_mockito;
+import 'test_merger_test.mocks.dart';
 
+@GenerateMocks([File, Directory])
 void main() {
   test('creates test file', () {
     late File mergedFile;
@@ -31,12 +33,12 @@ void main() {
         expect(mergedFile.readAsStringSync(), content);
       },
       createDirectory: (name) {
-        final mockDir = _MockDirectory();
+        final mockDir = MockDirectory();
 
         when(mockDir.path).thenReturn(name);
-        final file = _MockFile();
+        final file = MockFile();
         when(file.path).thenReturn('my_test.dart');
-        when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
+        when(mockDir.listSync(recursive: anyNamed('recursive')))
             .thenReturn([file]);
 
         return mockDir;
@@ -46,16 +48,16 @@ void main() {
         if (name.endsWith(testFile)) {
           return mergedFile = MemoryFileSystem.test().file(testFile);
         } else {
-          final file = _MockFile();
+          final file = MockFile();
           when(file.path).thenReturn(name);
           return file;
         }
       },
       getCurrentDirectory: () {
-        final file = _MockFile();
+        final file = MockFile();
         when(file.path).thenReturn('my_test.dart');
-        final mockDir = _MockDirectory();
-        when(mockDir.listSync(recursive: nnbd_mockito.anyNamed('recursive')))
+        final mockDir = MockDirectory();
+        when(mockDir.listSync(recursive: anyNamed('recursive')))
             .thenReturn([file]);
         when(mockDir.path).thenReturn('/');
         return mockDir;
@@ -63,7 +65,3 @@ void main() {
     );
   });
 }
-
-class _MockDirectory extends Mock implements Directory {}
-
-class _MockFile extends Mock implements File {}
