@@ -10,11 +10,12 @@ build/
 .flutter-plugins
 *.iml
 *.lock
+*.mocks.dart
 .vscode/launch.json
 test_driver/screenshots/
 /screenshots
 
-TODO user this after migration- *_test.mocks.dart
+
 linux/.generated_flutter_root
 windows/Generated.props
 lib/generated/i18n.dart
