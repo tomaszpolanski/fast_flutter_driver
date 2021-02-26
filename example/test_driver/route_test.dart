@@ -10,7 +10,7 @@ import 'generic/screenshots.dart';
 import 'generic/test_configuration.dart';
 
 void main(List<String> args) {
-  FlutterDriver driver;
+  late FlutterDriver driver;
   final properties = TestProperties(args);
 
   setUpAll(() async {
@@ -18,7 +18,7 @@ void main(List<String> args) {
   });
 
   tearDownAll(() async {
-    await driver?.close();
+    await driver.close();
   });
 
   Future<void> restart(String route) {
@@ -58,7 +58,7 @@ void main(List<String> args) {
     });
 
     group('with screenshots', () {
-      Screenshot screenshot;
+      late Screenshot screenshot;
 
       setUpAll(() async {
         screenshot = await Screenshot.create(driver, 'route_test',

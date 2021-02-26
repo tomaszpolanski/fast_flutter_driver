@@ -15,8 +15,12 @@ dev_dependencies:
     sdk: flutter
   fast_flutter_driver:
     path: ../driver
+  test: ^1.16.4
   driver_extensions: ^1.0.0+1
 
 
 flutter:
   uses-material-design: true
+
+dependency_overrides:
+  args: ^2.0.0

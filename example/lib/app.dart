@@ -9,23 +9,25 @@ import 'package:example/routes.dart' as routes;
 import 'package:flutter/material.dart';
 
 class ExampleApp extends StatelessWidget {
-  const ExampleApp({Key key, this.route}) : super(key: key);
+  const ExampleApp({Key? key, this.route}) : super(key: key);
 
-  final String route;
+  final String? route;
 
   @override
   Widget build(BuildContext context) {
+    final r = route ?? routes.page1;
     return MaterialApp(
       title: 'Example',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: route ?? routes.page1,
+      initialRoute: r,
       onUnknownRoute: (settings) {
         return MaterialPageRoute<void>(
           settings: settings,
           builder: (_) => BasePage(
-            title: route,
-            color: Color.lerp(Colors.red, Colors.orange, Random().nextDouble()),
+            title: r,
+            color:
+                Color.lerp(Colors.red, Colors.orange, Random().nextDouble())!,
           ),
         );
       },
