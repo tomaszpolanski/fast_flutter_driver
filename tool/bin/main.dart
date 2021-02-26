@@ -74,7 +74,8 @@ Future<void> run(
           ..stdout(
               '${green('New version')} (${bold(version.remote)}) available!')
           ..stdout(
-            "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
+            'To update, run '
+            "${green("'pub global activate fast_flutter_driver_tool'")}",
           );
       }
     }

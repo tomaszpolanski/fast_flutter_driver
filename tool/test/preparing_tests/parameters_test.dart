@@ -35,7 +35,8 @@ void main() {
         '  • Clean workspace by running:\n'
         '    \x1B[92mflutter clean\x1B[0m\n'
         '  • Enable desktop by running: \n'
-        '    \x1B[92mflutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop\x1B[0m\n'
+        '    \x1B[92mflutter config --enable-linux-desktop '
+        '--enable-macos-desktop --enable-windows-desktop\x1B[0m\n'
         '  • Run the tests again in verbose mode:\n'
         '    \x1B[92msome_command -v\x1B[0m',
       );

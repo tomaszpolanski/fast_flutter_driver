@@ -228,7 +228,8 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
           );
           expect(
             verify(logger.stderr(captureAny)).captured.single,
-            'Please run \x1B[1mfastdriver\x1B[0m from the root of your project (directory that contains \x1B[1mpubspec.yaml\x1B[0m)',
+            'Please run \x1B[1mfastdriver\x1B[0m from the root of your project '
+            '(directory that contains \x1B[1mpubspec.yaml\x1B[0m)',
           );
         },
         getCurrentDirectory: () {
@@ -274,7 +275,8 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
       );
       expect(
         messages[2],
-        "To update, run \x1B[92m'pub global activate fast_flutter_driver_tool'\x1B[0m",
+        'To update, run '
+        "\x1B[92m'pub global activate fast_flutter_driver_tool'\x1B[0m",
       );
     });
 

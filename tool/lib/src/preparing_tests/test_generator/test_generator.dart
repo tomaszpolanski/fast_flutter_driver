@@ -127,7 +127,9 @@ class TestGenerator {
       ..writeln();
     for (final test in testFiles) {
       file.writeln(
-          "import '$importPrefix${test.replaceAll(r'\', '/')}' as ${_importName(test)};");
+        "import '$importPrefix${test.replaceAll(r'\', '/')}' "
+        'as ${_importName(test)};',
+      );
     }
     file
       ..writeln()

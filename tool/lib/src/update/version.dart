@@ -26,8 +26,9 @@ class VersionChecker {
     final pathToYaml = join(scriptDir, '../pubspec.yaml');
     final file = File(pathToYaml);
     if (file.existsSync()) {
-      final yaml = loadYaml(await file.readAsString());
-      return yaml['version'];
+      final Map<String, dynamic> yaml = loadYaml(await file.readAsString());
+      final String version = yaml['version'];
+      return version;
     }
     return null;
   }
@@ -55,7 +56,7 @@ class VersionChecker {
 
     final match =
         RegExp(r'<span class="code">fast_flutter_driver_tool: \^(.*)</span>')
-        .firstMatch(response.body);
+            .firstMatch(response.body);
     final version = match?.group(1);
     if (version == null) {
       throw PackageNotFound();

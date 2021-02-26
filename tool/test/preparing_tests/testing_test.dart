@@ -415,14 +415,10 @@ class _MockProgress extends Progress {
   _MockProgress(String message) : super(message);
 
   @override
-  void cancel() {
-    // TODO: implement cancel
-  }
+  void cancel() {}
 
   @override
-  void finish({String? message, bool showTiming = false}) {
-    // TODO: implement finish
-  }
+  void finish({String? message, bool showTiming = false}) {}
 }
 
 class _MockFile extends MockFile {
