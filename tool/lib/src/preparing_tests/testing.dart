@@ -148,6 +148,7 @@ class TestExecutor {
     logger.trace('Running $command');
     run(command, output, stdin: input).then((_) {
       output.dispose();
+      // ignore: return_of_invalid_type_from_catch_error
     }).catchError((dynamic _) => printErrorHelp(command, logger: logger));
 
     return completer.future;

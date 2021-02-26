@@ -17,7 +17,6 @@ void main() {
     when(logger.stderr(any)).thenAnswer((_) {});
     when(logger.write(any)).thenAnswer((_) {});
     when(logger.writeCharCode(any)).thenAnswer((_) {});
-    when(logger.flush()).thenAnswer((_) {});
     when(logger.ansi).thenAnswer((_) => Ansi(false));
     when(logger.isVerbose).thenAnswer((_) => false);
     when(logger.progress(any)).thenReturn(MockProgress());
