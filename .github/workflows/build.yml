@@ -22,7 +22,7 @@ jobs:
 
       - name: Generate mocks
         working-directory: ${{ matrix.package }}
-        run: pub run build_runner build
+        run: pub run build_runner build --delete-conflicting-outputs
 
       - name: Analyze
         working-directory: ${{ matrix.package }}
