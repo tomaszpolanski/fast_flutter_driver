@@ -115,8 +115,8 @@ void main() {
         outputFactory: streams.output,
         inputFactory: streams.input,
         run: (
-          String command, {
-          streams.OutputCommandLineStream? stdout,
+          String command,
+          streams.OutputCommandLineStream stdout, {
           streams.InputCommandLineStream? stdin,
           streams.OutputCommandLineStream? stderr,
         }) async {
@@ -158,8 +158,8 @@ void main() {
         outputFactory: streams.output,
         inputFactory: streams.input,
         run: (
-          String command, {
-          required streams.OutputCommandLineStream stdout,
+          String command,
+          streams.OutputCommandLineStream stdout, {
           streams.InputCommandLineStream? stdin,
           streams.OutputCommandLineStream? stderr,
         }) async {
@@ -200,8 +200,8 @@ void main() {
         outputFactory: streams.output,
         inputFactory: streams.input,
         run: (
-          String command, {
-          required streams.OutputCommandLineStream stdout,
+          String command,
+          streams.OutputCommandLineStream stdout, {
           streams.InputCommandLineStream? stdin,
           streams.OutputCommandLineStream? stderr,
         }) async {
@@ -239,8 +239,8 @@ void main() {
           outputFactory: streams.output,
           inputFactory: createStream,
           run: (
-            String command, {
-            required streams.OutputCommandLineStream stdout,
+            String command,
+            streams.OutputCommandLineStream stdout, {
             streams.InputCommandLineStream? stdin,
             streams.OutputCommandLineStream? stderr,
           }) async {
@@ -282,8 +282,8 @@ void main() {
           outputFactory: streams.output,
           inputFactory: createStream,
           run: (
-            String command, {
-            required streams.OutputCommandLineStream stdout,
+            String command,
+            streams.OutputCommandLineStream stdout, {
             streams.InputCommandLineStream? stdin,
             streams.OutputCommandLineStream? stderr,
           }) async {
@@ -326,8 +326,8 @@ void main() {
         outputFactory: streams.output,
         inputFactory: createStream,
         run: (
-          String command, {
-          required streams.OutputCommandLineStream stdout,
+          String command,
+          streams.OutputCommandLineStream stdout, {
           streams.InputCommandLineStream? stdin,
           streams.OutputCommandLineStream? stderr,
         }) async {
@@ -371,8 +371,8 @@ void main() {
         outputFactory: streams.output,
         inputFactory: createStream,
         run: (
-          String command, {
-          required streams.OutputCommandLineStream stdout,
+          String command,
+          streams.OutputCommandLineStream stdout, {
           streams.InputCommandLineStream? stdin,
           streams.OutputCommandLineStream? stderr,
         }) async {

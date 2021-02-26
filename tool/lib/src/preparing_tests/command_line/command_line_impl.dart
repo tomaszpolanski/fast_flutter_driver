@@ -2,15 +2,15 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/command_line/stream
 import 'package:process_run/shell.dart';
 
 typedef RunCommand = Future<void> Function(
-  String command, {
-  required OutputCommandLineStream stdout,
+  String command,
+  OutputCommandLineStream stdout, {
   InputCommandLineStream? stdin,
   OutputCommandLineStream? stderr,
 });
 
 Future<void> run(
-  String command, {
-  required OutputCommandLineStream stdout,
+  String command,
+  OutputCommandLineStream stdout, {
   InputCommandLineStream? stdin,
   OutputCommandLineStream? stderr,
 }) async {

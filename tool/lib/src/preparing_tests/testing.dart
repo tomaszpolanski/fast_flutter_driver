@@ -146,7 +146,7 @@ class TestExecutor {
     });
 
     logger.trace('Running $command');
-    run(command, stdout: output, stdin: input).then((_) {
+    run(command, output, stdin: input).then((_) {
       output.dispose();
     }).catchError((dynamic _) => printErrorHelp(command, logger: logger));
 
@@ -180,7 +180,7 @@ class TestExecutor {
     try {
       await run(
         command,
-        stdout: testOutput,
+        testOutput,
         stderr: testErrorOutput,
       );
     } finally {
