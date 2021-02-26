@@ -9,7 +9,6 @@ echo "Collecting coverage on port $OBS_PORT..."
 # Start tests in one VM.
 echo "Starting tests..."
 dart \
-  --no-sound-null-safety \
   --disable-service-auth-codes \
   --pause-isolates-on-exit \
   --enable_asserts \
