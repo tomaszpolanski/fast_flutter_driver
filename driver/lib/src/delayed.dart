@@ -4,11 +4,9 @@ import 'package:flutter/widgets.dart';
 class Delayed extends StatelessWidget {
   const Delayed({
     this.delay = const Duration(seconds: 10),
-    @required this.child,
-    Key key,
-  })  : assert(delay != null),
-        assert(child != null),
-        super(key: key);
+    required this.child,
+    Key? key,
+  }) : super(key: key);
 
   final Duration delay;
   final Widget child;

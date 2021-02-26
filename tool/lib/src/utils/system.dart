@@ -42,10 +42,10 @@ abstract class System {
 }
 
 /// Used to override behavior of [System.isLinux]
-bool linuxOverride;
+bool? linuxOverride;
 
 /// Used to override behavior of [System.isWindows]
-bool windowsOverride;
+bool? windowsOverride;
 
 /// Used to override behavior of [System.isMacOS]
-bool macOsOverride;
+bool? macOsOverride;

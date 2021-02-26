@@ -4,25 +4,25 @@ import 'package:flutter/widgets.dart';
 
 class RestartWidget<T> extends StatefulWidget {
   const RestartWidget({
-    @required Widget Function(BuildContext, T) builder,
+    required Widget Function(BuildContext, T) builder,
     this.initial,
     this.backgroundColor,
-    Key key,
+    Key? key,
   })  : _builder = builder,
         super(key: key);
 
-  final T initial;
+  final T? initial;
 
   /// The color of the background when switching between tests
   /// If not set, the background will be black
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   final Widget Function(BuildContext, T) _builder;
 
-  static Future<void> restartApp<T>(T configuration) {
+  static Future<void> restartApp<T>(T configuration) async {
     final state = _RestartWidgetState.global.currentContext
         ?.findAncestorStateOfType<_RestartWidgetState<T>>();
-    return state?.restartApp(configuration);
+    await state?.restartApp(configuration);
   }
 
   @override
@@ -39,7 +39,7 @@ class RestartWidget<T> extends StatefulWidget {
 
 class _RestartWidgetState<T> extends State<RestartWidget<T>> {
   bool _restarting = false;
-  T _configuration;
+  T? _configuration;
   static final global = GlobalKey();
 
   Future<void> restartApp(T configuration) async {
@@ -54,15 +54,16 @@ class _RestartWidgetState<T> extends State<RestartWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final config = widget.initial ?? _configuration;
     return SizedBox(
       key: global,
       child: _restarting
           ? widget.backgroundColor != null
               ? Container(color: widget.backgroundColor)
               : const SizedBox()
-          : (widget.initial ?? _configuration) == null
+          : config == null
               ? _StartingTests()
-              : widget._builder(context, _configuration ?? widget.initial),
+              : widget._builder(context, config),
     );
   }
 }
@@ -124,7 +125,7 @@ class _CountDown extends StatelessWidget {
         initialData: '',
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           return Text(
-            snapshot.data,
+            snapshot.data ?? '',
             style: const TextStyle(fontSize: 80),
           );
         },

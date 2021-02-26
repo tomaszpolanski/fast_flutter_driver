@@ -7,7 +7,7 @@ class LazyLogger implements Logger {
 
   bool _verbose = false;
 
-  Logger _instance;
+  Logger? _instance;
 
   Logger get _logger => _instance ??= _loggerFactory(_verbose);
 

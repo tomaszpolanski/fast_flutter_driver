@@ -3,17 +3,36 @@ import 'dart:io';
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'resolution_test.mocks.dart';
+
+@GenerateMocks([Logger, File, Directory])
 void main() {
-  File resolutionFile;
-  Logger logger;
+  late MockFile resolutionFile;
+  late MockLogger logger;
+
+  _MockFile createFile() {
+    final file = _MockFile()..fieldExistsSync = true;
+    when(file.copy(any)).thenAnswer((_) async => _MockFile());
+    when(file.writeAsString(any)).thenAnswer((_) async => _MockFile());
+    when(file.rename(any)).thenAnswer((_) async => _MockFile());
+    return file;
+  }
+
+  MockDirectory createDir() {
+    final dir = MockDirectory();
+    when(dir.path).thenReturn('');
+    when(dir.rename(any)).thenAnswer((_) async => MockDirectory());
+    return dir;
+  }
 
   setUp(() {
-    logger = _MockLogger();
-    resolutionFile = _MockFile();
-    when(resolutionFile.existsSync()).thenReturn(true);
+    logger = MockLogger();
+    when(logger.stderr(any)).thenAnswer((_) {});
+    resolutionFile = createFile();
   });
 
   tearDown(() {
@@ -39,15 +58,13 @@ void main() {
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
-            return file;
+            return createFile()..fieldExistsSync = true;
           }
           return resolutionFile;
         },
@@ -66,15 +83,13 @@ void main() {
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = createDir();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = _MockFile();
-            when(file.existsSync()).thenReturn(false);
-            return file;
+            return createFile()..fieldExistsSync = false;
           }
           return resolutionFile;
         },
@@ -107,15 +122,13 @@ const unsigned int kFlutterWindowHeight = 2;
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = createDir();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
-            return file;
+            return createFile()..fieldExistsSync = true;
           }
           return resolutionFile;
         },
@@ -148,15 +161,13 @@ window_properties.height = 2;
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = MockDirectory();
           when(mockDir.path).thenReturn('');
           return mockDir;
         },
         createFile: (name) {
           if (name.endsWith('my_application.cc_copy')) {
-            final file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
-            return file;
+            return createFile()..fieldExistsSync = true;
           }
           return resolutionFile;
         },
@@ -165,8 +176,16 @@ window_properties.height = 2;
   });
 }
 
-class _MockDirectory extends Mock implements Directory {}
+class _MockFile extends MockFile {
+  bool fieldExistsSync = false;
 
-class _MockFile extends Mock implements File {}
+  @override
+  bool existsSync() {
+    return fieldExistsSync;
+  }
 
-class _MockLogger extends Mock implements Logger {}
+  @override
+  Future<FileSystemEntity> delete({bool recursive = false}) async {
+    return _MockFile();
+  }
+}

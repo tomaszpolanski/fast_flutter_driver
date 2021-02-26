@@ -3,22 +3,29 @@ import 'dart:io';
 import 'package:fast_flutter_driver_tool/src/update/path_provider_impl.dart';
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:http/http.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'version_test.mocks.dart';
+
+@GenerateMocks([
+  File,
+  PathProvider,
+])
 void main() {
-  VersionChecker tested;
-  PathProvider pathProvider;
+  late VersionChecker tested;
+  late MockPathProvider pathProvider;
 
   setUp(() {
-    pathProvider = _MockPathProvider();
+    pathProvider = MockPathProvider();
   });
 
   group('remoteVersion', () {
     test('integration test', () async {
       tested = VersionChecker(
         pathProvider: pathProvider,
-        httpGet: get,
+        httpGet: (url) => get(Uri.parse(url)),
       );
 
       final version = await tested.remoteVersion();
@@ -42,7 +49,7 @@ void main() {
     });
 
     test('fetches data from the pub.dev', () async {
-      String requestUrl;
+      late String requestUrl;
       Future<Response> get(String url) async {
         requestUrl = url;
         return Response('', 200);
@@ -86,7 +93,7 @@ void main() {
       test('reads yaml file', () async {
         tested = VersionChecker(
           pathProvider: pathProvider,
-          httpGet: (_) => null,
+          httpGet: (_) async => Response('', 418),
         );
         await IOOverrides.runZoned(
           () async {
@@ -96,13 +103,12 @@ void main() {
           },
           createFile: (name) {
             if (name == '/root/../pubspec.yaml') {
-              final File file = _MockFile();
-              when(file.existsSync()).thenReturn(true);
+              final File file = _MockFile()..fieldExistsSync = true;
               when(file.readAsString())
                   .thenAnswer((_) async => 'version: 1.0.0+1');
               return file;
             }
-            return null;
+            throw Exception('No file');
           },
         );
       });
@@ -121,7 +127,7 @@ void main() {
       test('reads lock file', () async {
         tested = VersionChecker(
           pathProvider: pathProvider,
-          httpGet: (_) => null,
+          httpGet: (_) async => Response('', 418),
         );
         await IOOverrides.runZoned(
           () async {
@@ -131,15 +137,12 @@ void main() {
           },
           createFile: (name) {
             if (name == '/root/../pubspec.lock') {
-              final File file = _MockFile();
-              when(file.existsSync()).thenReturn(true);
+              final File file = _MockFile()..fieldExistsSync = true;
               when(file.readAsLines())
                   .thenAnswer((_) async => lockFileContent.split('\n'));
               return file;
             } else {
-              final File file = _MockFile();
-              when(file.existsSync()).thenReturn(false);
-              return file;
+              return _MockFile()..fieldExistsSync = false;
             }
           },
         );
@@ -152,7 +155,7 @@ void main() {
       when(pathProvider.scriptDir).thenReturn('/root/');
     });
 
-    test('when available', () async {
+    test('when yaml available', () async {
       const remoteVersion = '2.0.0';
       const currentVersion = '1.0.0';
       await IOOverrides.runZoned(
@@ -167,18 +170,43 @@ void main() {
           );
           final result = await tested.checkForUpdates();
 
-          expect(result.local, currentVersion);
-          expect(result.remote, remoteVersion);
+          expect(result?.local, currentVersion);
+          expect(result?.remote, remoteVersion);
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
+            final File file = _MockFile()..fieldExistsSync = true;
             when(file.readAsString())
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
           }
-          return null;
+          throw Exception('No file');
+        },
+      );
+    });
+    test('when yaml available but no version', () async {
+      const remoteVersion = '2.0.0';
+      await IOOverrides.runZoned(
+        () async {
+          Future<Response> get(String url) async => Response(
+                '<h2 class="title">fast_flutter_driver_tool $remoteVersion</h2>',
+                200,
+              );
+          tested = VersionChecker(
+            pathProvider: pathProvider,
+            httpGet: get,
+          );
+          final result = await tested.checkForUpdates();
+
+          expect(result, isNull);
+        },
+        createFile: (name) {
+          if (name == '/root/../pubspec.yaml') {
+            final File file = _MockFile()..fieldExistsSync = true;
+            when(file.readAsString()).thenAnswer((_) async => '');
+            return file;
+          }
+          throw Exception('No file');
         },
       );
     });
@@ -199,18 +227,17 @@ void main() {
 
           final result = await tested.checkForUpdates();
 
-          expect(result.local, currentVersion);
-          expect(result.remote, remoteVersion);
+          expect(result?.local, currentVersion);
+          expect(result?.remote, remoteVersion);
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
+            final File file = _MockFile()..fieldExistsSync = true;
             when(file.readAsString())
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
           }
-          return null;
+          throw Exception('No file');
         },
       );
     });
@@ -231,19 +258,28 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile();
-            when(file.existsSync()).thenReturn(true);
+            final File file = _MockFile()..fieldExistsSync = true;
             when(file.readAsString())
                 .thenAnswer((_) async => 'version: $currentVersion');
             return file;
           }
-          return null;
+          throw Exception('No file');
         },
       );
     });
   });
 }
 
-class _MockFile extends Mock implements File {}
+class _MockFile extends MockFile {
+  bool fieldExistsSync = false;
 
-class _MockPathProvider extends Mock implements PathProvider {}
+  @override
+  bool existsSync() {
+    return fieldExistsSync;
+  }
+
+  @override
+  Future<FileSystemEntity> delete({bool recursive = false}) async {
+    return _MockFile();
+  }
+}

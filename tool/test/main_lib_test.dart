@@ -9,22 +9,65 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/testing.dart'
     hide setUp;
 import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import '../bin/main.dart' as main_file;
+import 'main_lib_test.mocks.dart';
 
+@GenerateMocks([
+  Logger,
+  VersionChecker,
+  test_executor.TestExecutor,
+  TestFileProvider,
+  Directory
+])
 void main() {
-  VersionChecker versionChecker;
-  Logger logger;
-  test_executor.TestExecutor testExecutor;
-  TestFileProvider testFileProvider;
+  late VersionChecker versionChecker;
+  late MockLogger logger;
+  late MockTestExecutor testExecutor;
+  late MockTestFileProvider testFileProvider;
+
+  MockLogger createLogger() {
+    final logger = MockLogger();
+    when(logger.trace(any)).thenAnswer((_) {});
+    when(logger.stdout(any)).thenAnswer((_) {});
+    when(logger.stderr(any)).thenAnswer((_) {});
+    when(logger.write(any)).thenAnswer((_) {});
+    when(logger.writeCharCode(any)).thenAnswer((_) {});
+    // ignore: deprecated_member_use
+    when(logger.flush()).thenAnswer((_) {});
+    when(logger.ansi).thenAnswer((_) => Ansi(false));
+    when(logger.isVerbose).thenAnswer((_) => false);
+    return logger;
+  }
+
+  MockTestExecutor createTestExecutor() {
+    final mock = MockTestExecutor();
+    when(mock.test(any, parameters: anyNamed('parameters')))
+        .thenAnswer((_) async {});
+    return mock;
+  }
+
+  MockTestFileProvider createTestFileProvider() {
+    final mock = MockTestFileProvider();
+    when(mock.testFile(any)).thenAnswer((_) async => null);
+    return mock;
+  }
+
+  _MockDirectory createDir() {
+    final mock = _MockDirectory();
+    when(mock.createSync(recursive: anyNamed('recursive')))
+        .thenAnswer((_) async {});
+    return mock;
+  }
 
   setUp(() {
-    versionChecker = _MockVersionChecker();
-    logger = _MockLogger();
-    testExecutor = _MockTestExecutor();
-    testFileProvider = _MockTestFileProvider();
+    versionChecker = MockVersionChecker();
+    logger = createLogger();
+    testExecutor = createTestExecutor();
+    testFileProvider = createTestFileProvider();
   });
   group('commands', () {
     tearDown(() {
@@ -66,17 +109,29 @@ void main() {
       when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
       when(testFileProvider.testFile(any)).thenAnswer((_) async => 'any');
       const flavor = 'chocolate';
-
-      await main_file.run(
-        ['--flavor', flavor],
-        loggerFactory: (_) => logger,
-        versionCheckerFactory: (_) => versionChecker,
-        testExecutorFactory: (_) => testExecutor,
-        testFileProviderFactory: (_) => testFileProvider,
+      await IOOverrides.runZoned(
+        () async {
+          await main_file.run(
+            ['--flavor', flavor],
+            loggerFactory: (_) => logger,
+            versionCheckerFactory: (_) => versionChecker,
+            testExecutorFactory: (_) => testExecutor,
+            testFileProviderFactory: (_) => testFileProvider,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = createDir();
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
+              .thenReturn([File('pubspec.yaml')]);
+          return mockDir;
+        },
       );
 
       final ExecutorParameters parameters = verify(
-        testExecutor.test(any, parameters: captureAnyNamed('parameters')),
+        testExecutor.test(
+          any,
+          parameters: captureAnyNamed('parameters'),
+        ),
       ).captured.single;
       expect(parameters.flavor, flavor);
     });
@@ -173,11 +228,12 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
           );
           expect(
             verify(logger.stderr(captureAny)).captured.single,
-            'Please run \x1B[1mfastdriver\x1B[0m from the root of your project (directory that contains \x1B[1mpubspec.yaml\x1B[0m)',
+            'Please run \x1B[1mfastdriver\x1B[0m from the root of your project '
+            '(directory that contains \x1B[1mpubspec.yaml\x1B[0m)',
           );
         },
         getCurrentDirectory: () {
-          final mockDir = _MockDirectory();
+          final mockDir = createDir();
           when(mockDir.listSync(recursive: anyNamed('recursive')))
               .thenReturn([]);
           return mockDir;
@@ -193,12 +249,23 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
       when(versionChecker.checkForUpdates()).thenAnswer(
         (_) async => const AppVersion(local: local, remote: remote),
       );
-      await main_file.run(
-        [''],
-        loggerFactory: (_) => logger,
-        versionCheckerFactory: (_) => versionChecker,
-        testExecutorFactory: (_) => testExecutor,
-        testFileProviderFactory: (_) => testFileProvider,
+
+      await IOOverrides.runZoned(
+        () async {
+          await main_file.run(
+            [''],
+            loggerFactory: (_) => logger,
+            versionCheckerFactory: (_) => versionChecker,
+            testExecutorFactory: (_) => testExecutor,
+            testFileProviderFactory: (_) => testFileProvider,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = createDir();
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
+              .thenReturn([File('pubspec.yaml')]);
+          return mockDir;
+        },
       );
 
       final messages = verify(logger.stdout(captureAny)).captured;
@@ -208,7 +275,8 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
       );
       expect(
         messages[2],
-        "To update, run \x1B[92m'pub global activate fast_flutter_driver_tool'\x1B[0m",
+        'To update, run '
+        "\x1B[92m'pub global activate fast_flutter_driver_tool'\x1B[0m",
       );
     });
 
@@ -218,12 +286,23 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
       when(versionChecker.checkForUpdates()).thenAnswer(
         (_) async => const AppVersion(local: local, remote: remote),
       );
-      await main_file.run(
-        [''],
-        loggerFactory: (_) => logger,
-        versionCheckerFactory: (_) => versionChecker,
-        testExecutorFactory: (_) => testExecutor,
-        testFileProviderFactory: (_) => testFileProvider,
+
+      await IOOverrides.runZoned(
+        () async {
+          await main_file.run(
+            [''],
+            loggerFactory: (_) => logger,
+            versionCheckerFactory: (_) => versionChecker,
+            testExecutorFactory: (_) => testExecutor,
+            testFileProviderFactory: (_) => testFileProvider,
+          );
+        },
+        getCurrentDirectory: () {
+          final mockDir = createDir();
+          when(mockDir.listSync(recursive: anyNamed('recursive')))
+              .thenReturn([File('pubspec.yaml')]);
+          return mockDir;
+        },
       );
 
       final messages = verify(logger.stdout(captureAny)).captured;
@@ -232,7 +311,7 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
   });
 
   test('deletes screenshots if the folder exists and passing the flag', () {
-    Directory directory;
+    late _MockDirectory directory;
 
     when(versionChecker.checkForUpdates()).thenAnswer((_) async => null);
     IOOverrides.runZoned(
@@ -245,22 +324,21 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
           testFileProviderFactory: (_) => testFileProvider,
         );
 
-        verify(directory.deleteSync(recursive: true)).called(1);
+        expect(directory.deleteSyncCalled, isTrue);
       },
       createDirectory: (name) {
-        final mockDir = _MockDirectory();
+        final mockDir = createDir();
         if (name == screenshotsArg) {
           directory = mockDir;
         }
 
         when(mockDir.path).thenReturn(name);
-        when(mockDir.existsSync()).thenReturn(true);
         when(mockDir.listSync(recursive: anyNamed('recursive'))).thenReturn([]);
 
-        return mockDir;
+        return mockDir..fieldExistsSync = true;
       },
       getCurrentDirectory: () {
-        final mockDir = _MockDirectory();
+        final mockDir = createDir();
         when(mockDir.listSync(recursive: anyNamed('recursive')))
             .thenReturn([File('pubspec.yaml')]);
         return mockDir;
@@ -269,12 +347,17 @@ Try '\x1B[92mfastdriver --help\x1B[0m' for more information.''',
   });
 }
 
-class _MockDirectory extends Mock implements Directory {}
+class _MockDirectory extends MockDirectory {
+  bool fieldExistsSync = false;
+  bool deleteSyncCalled = false;
 
-class _MockLogger extends Mock implements Logger {}
+  @override
+  bool existsSync() {
+    return fieldExistsSync;
+  }
 
-class _MockVersionChecker extends Mock implements VersionChecker {}
-
-class _MockTestExecutor extends Mock implements test_executor.TestExecutor {}
-
-class _MockTestFileProvider extends Mock implements TestFileProvider {}
+  @override
+  void deleteSync({bool recursive = false}) {
+    deleteSyncCalled = true;
+  }
+}

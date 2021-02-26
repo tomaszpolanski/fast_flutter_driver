@@ -16,7 +16,6 @@ import 'package:fast_flutter_driver_tool/src/update/version.dart';
 import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:fast_flutter_driver_tool/src/utils/lazy_logger.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 Future<void> main(List<String> paths) async {
   exitCode = 2;
@@ -25,7 +24,7 @@ Future<void> main(List<String> paths) async {
     loggerFactory: (verbose) => verbose ? Logger.verbose() : Logger.standard(),
     versionCheckerFactory: (logger) => VersionChecker(
       pathProvider: PathProvider(),
-      httpGet: http.get,
+      httpGet: (url) => http.get(Uri.parse(url)),
     ),
     testExecutorFactory: (logger) => TestExecutor(
       outputFactory: output,
@@ -41,10 +40,10 @@ Future<void> main(List<String> paths) async {
 
 Future<void> run(
   List<String> paths, {
-  @required Logger Function(bool) loggerFactory,
-  @required VersionChecker Function(Logger) versionCheckerFactory,
-  @required TestExecutor Function(Logger) testExecutorFactory,
-  @required TestFileProvider Function(Logger) testFileProviderFactory,
+  required Logger Function(bool) loggerFactory,
+  required VersionChecker Function(Logger) versionCheckerFactory,
+  required TestExecutor Function(Logger) testExecutorFactory,
+  required TestFileProvider Function(Logger) testFileProviderFactory,
 }) async {
   final logger = LazyLogger(loggerFactory);
   final parser = scriptParameters;
@@ -59,7 +58,7 @@ Future<void> run(
     logger.stdout('Usage: fastdriver <path>\n${parser.usage}');
     return;
   } else if (result[versionArg] == true) {
-    logger.stdout(await versionChecker.currentVersion());
+    logger.stdout(await versionChecker.currentVersion() ?? 'Not Found');
     return;
   } else if (!isValidRootDirectory) {
     logger.stderr(
@@ -68,21 +67,21 @@ Future<void> run(
     return;
   }
   // ignore: unawaited_futures
-  versionChecker.checkForUpdates().then((AppVersion version) {
+  versionChecker.checkForUpdates().then((AppVersion? version) {
     if (version != null && version.local != version.remote) {
       {
         logger
           ..stdout(
               '${green('New version')} (${bold(version.remote)}) available!')
           ..stdout(
-            "To update, run ${green("'pub global activate fast_flutter_driver_tool'")}",
+            'To update, run '
+            "${green("'pub global activate fast_flutter_driver_tool'")}",
           );
       }
     }
   });
 
   logger.stdout('Starting tests');
-
   Directory('build').createSync(recursive: true);
   if (result[screenshotsArg]) {
     final dir = Directory(screenshotsArg);
@@ -91,9 +90,10 @@ Future<void> run(
       dir.deleteSync(recursive: true);
     }
   }
-
+  // ignore: unnecessary_nullable_for_final_variable_declarations
+  final String? testName = result.rest.length == 1 ? result.rest.first : null;
   final testFile = await testFileProviderFactory(logger).testFile(
-    (result.rest.length == 1 ? result.rest.first : null) ?? 'test_driver',
+    testName ?? 'test_driver',
   );
 
   if (testFile != null) {
@@ -124,7 +124,7 @@ Future<void> run(
   exitCode = 0;
 }
 
-ArgResults _createArguments(ArgResults Function() parse, Logger logger) {
+ArgResults? _createArguments(ArgResults Function() parse, Logger logger) {
   try {
     return parse();
   } on FormatException catch (e) {

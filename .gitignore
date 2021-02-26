@@ -10,9 +10,11 @@ build/
 .flutter-plugins
 *.iml
 *.lock
+*.mocks.dart
 .vscode/launch.json
 test_driver/screenshots/
 /screenshots
+
 
 linux/.generated_flutter_root
 windows/Generated.props

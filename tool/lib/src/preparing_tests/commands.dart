@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 class Commands {
   FlutterCommand get flutter => const FlutterCommand._();
 }
@@ -10,8 +8,8 @@ class FlutterCommand {
   String run(
     String target,
     String device, {
-    @required String flavor,
-    String additionalArguments,
+    required String? flavor,
+    required String? additionalArguments,
   }) {
     // ignore: missing_whitespace_between_adjacent_strings
     return 'flutter run -d $device --target=$target'
@@ -24,16 +22,16 @@ class FlutterCommand {
 
   String dart(
     String file, {
-    Map<String, String> testArguments,
-    String dartArguments,
+    Map<String, String>? testArguments,
+    String? dartArguments,
   }) {
-    final args = testArguments?.entries
-        ?.map((entry) =>
-            '${entry.key}${entry.value.isNotEmpty ? ' ${entry.value}' : ''}')
-        ?.join(' ');
+    final Iterable<MapEntry<String, String>>? entries = testArguments?.entries;
+    final Iterable<String>? mapped = entries?.map((entry) =>
+        '${entry.key}${entry.value.isNotEmpty ? ' ${entry.value}' : ''}');
+    final args = mapped?.join(' ');
 
     return 'dart'
-        '${dartArguments != null ? ' $dartArguments' : ''}'
+        '${dartArguments?.isNotEmpty == true ? ' $dartArguments' : ''}'
         // ignore: missing_whitespace_between_adjacent_strings
         ' $file'
         '${args != null ? ' $args' : ''}';

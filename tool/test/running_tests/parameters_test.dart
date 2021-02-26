@@ -20,7 +20,7 @@ void main() {
 
   group('TestPlatform', () {
     group('fromString', () {
-      <String, TestPlatform>{
+      <String, TestPlatform?>{
         'android': TestPlatform.android,
         'Android': TestPlatform.android,
         'ios': TestPlatform.iOS,

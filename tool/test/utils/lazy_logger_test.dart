@@ -1,17 +1,34 @@
 import 'package:cli_util/cli_logging.dart';
 import 'package:fast_flutter_driver_tool/src/utils/lazy_logger.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'lazy_logger_test.mocks.dart';
+
+@GenerateMocks([Logger, Progress])
 void main() {
-  LazyLogger tested;
+  late LazyLogger tested;
+
+  MockLogger createLogger() {
+    final logger = MockLogger();
+    when(logger.trace(any)).thenAnswer((_) {});
+    when(logger.stdout(any)).thenAnswer((_) {});
+    when(logger.stderr(any)).thenAnswer((_) {});
+    when(logger.write(any)).thenAnswer((_) {});
+    when(logger.writeCharCode(any)).thenAnswer((_) {});
+    when(logger.ansi).thenAnswer((_) => Ansi(false));
+    when(logger.isVerbose).thenAnswer((_) => false);
+    when(logger.progress(any)).thenReturn(MockProgress());
+    return logger;
+  }
 
   test('creates logger when calling for the first time', () {
     var factoryWasCalled = false;
     tested = LazyLogger((_) {
       factoryWasCalled = true;
 
-      return _MockLogger();
+      return createLogger();
     })
       ..flush();
 
@@ -23,7 +40,7 @@ void main() {
     tested = LazyLogger((_) {
       factoryWasCalled = true;
 
-      return _MockLogger();
+      return createLogger();
     });
 
     expect(factoryWasCalled, isFalse);
@@ -31,11 +48,11 @@ void main() {
 
   group('verbosity', () {
     test('by default logger is created not verbose', () {
-      bool isVerbose;
+      late bool isVerbose;
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
-        return _MockLogger();
+        return createLogger();
       })
         ..flush();
 
@@ -43,11 +60,11 @@ void main() {
     });
 
     test('verbose property changes logger to be verbose', () {
-      bool isVerbose;
+      late bool isVerbose;
       tested = LazyLogger((verbose) {
         isVerbose = verbose;
 
-        final logger = _MockLogger();
+        final logger = createLogger();
         when(logger.isVerbose).thenReturn(isVerbose);
         return logger;
       })
@@ -60,9 +77,9 @@ void main() {
   });
 
   group('invokes methods', () {
-    _MockLogger logger;
+    late MockLogger logger;
     setUp(() {
-      logger = _MockLogger();
+      logger = createLogger();
       tested = LazyLogger((_) => logger);
     });
 
@@ -122,5 +139,3 @@ void main() {
     });
   });
 }
-
-class _MockLogger extends Mock implements Logger {}

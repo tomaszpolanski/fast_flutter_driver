@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         package: ["tool"]
-        version: ["latest"]
+        version: ["beta"]
 
     steps:
       - uses: actions/checkout@v2
@@ -20,6 +20,10 @@ jobs:
         working-directory: ${{ matrix.package }}
         run: pub get
 
+      - name: Generate mocks
+        working-directory: ${{ matrix.package }}
+        run: pub run build_runner build --delete-conflicting-outputs
+
       - name: Analyze
         working-directory: ${{ matrix.package }}
         run: dart analyze
@@ -27,12 +31,8 @@ jobs:
       - name: Aggregate tests
         working-directory: ${{ matrix.package }}
         run: dart lib/src/preparing_tests/test_generator/test_merger.dart
-        
-      - name: Run tests
-        working-directory: ${{ matrix.package }}
-        run: pub run test
-        
-      - name: Gather coverage
+                
+      - name: Test & Gather coverage
         working-directory: ${{ matrix.package }}
         run: ../dev/cov.sh
 
@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix:
         package: ["driver"]
-        channel: ["stable"]
+        channel: ["beta"]
 
     steps:
       - uses: actions/checkout@v2

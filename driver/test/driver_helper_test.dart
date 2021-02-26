@@ -1,30 +1,27 @@
 import 'package:fast_flutter_driver/src/driver_helper.dart';
 import 'package:fast_flutter_driver_tool/fast_flutter_driver_tool.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('TestFlutterEx', () {
-    <TestPlatform, TargetPlatform>{
+    <TestPlatform?, TargetPlatform>{
       TestPlatform.android: TargetPlatform.android,
       TestPlatform.iOS: TargetPlatform.iOS,
-      null: TargetPlatform.fuchsia,
     }.forEach((key, value) {
       test('when $key', () {
-        expect(key.targetPlatform, value);
+        expect(key?.targetPlatform, value);
       });
     });
   });
   group('configureTest', () {
-    BaseConfiguration config;
+    late _MockConfiguration config;
 
     setUp(() {
       macOsOverride = false;
       windowsOverride = false;
       linuxOverride = true;
-      config = _MockConfiguration();
-      when(config.resolution).thenReturn(Resolution.fromSize('1x1'));
+      config = _MockConfiguration()..resolution = Resolution.fromSize('1x1');
     });
 
     tearDown(() {
@@ -37,7 +34,7 @@ void main() {
       test('when platform is not passed then do not override it', () async {
         const platform = TargetPlatform.android;
         debugDefaultTargetPlatformOverride = platform;
-        when(config.platform).thenReturn(null);
+        config.platform = null;
 
         await configureTest(config);
 
@@ -47,7 +44,7 @@ void main() {
       test('when platform is passed then do override it', () async {
         const platform = TestPlatform.android;
         debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
-        when(config.platform).thenReturn(platform);
+        config.platform = platform;
 
         await configureTest(config);
 
@@ -57,4 +54,13 @@ void main() {
   });
 }
 
-class _MockConfiguration extends Mock implements BaseConfiguration {}
+class _MockConfiguration extends BaseConfiguration {
+  @override
+  TestPlatform? platform;
+
+  @override
+  late Resolution resolution;
+
+  @override
+  Map<String, dynamic> toJson() => {};
+}

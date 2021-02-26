@@ -45,26 +45,7 @@ void main() {
 
     widget.debugFillProperties(tested);
 
-    final DiagnosticsProperty<Duration> property = tested.properties.first;
+    final property = tested.properties.first;
     expect(property.value, delay);
-  });
-
-  group('argument cannot be null', () {
-    testWidgets('delay', (tester) async {
-      expect(
-        () => Delayed(
-          delay: null,
-          child: const Placeholder(),
-        ),
-        throwsA(isA<AssertionError>()),
-      );
-    });
-
-    testWidgets('child', (tester) async {
-      expect(
-        () => Delayed(child: null),
-        throwsA(isA<AssertionError>()),
-      );
-    });
   });
 }

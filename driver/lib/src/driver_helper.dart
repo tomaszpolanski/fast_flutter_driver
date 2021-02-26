@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
 
-Future<String> configureTest(BaseConfiguration config) async {
+Future<void> configureTest(BaseConfiguration config) async {
   await WindowUtils(
     macOs: () => MacOsWindow(),
     win32: () => Win32Window(),
@@ -17,14 +17,12 @@ Future<String> configureTest(BaseConfiguration config) async {
     Size(config.resolution.width, config.resolution.height),
   );
 
-  final platform = config.platform.targetPlatform;
-  if (platform != TargetPlatform.fuchsia &&
-      debugDefaultTargetPlatformOverride != platform) {
+  final platform = config.platform?.targetPlatform;
+  if (platform != null && debugDefaultTargetPlatformOverride != platform) {
     debugDefaultTargetPlatformOverride = platform;
   }
 
   await RestartWidget.restartApp(config);
-  return null;
 }
 
 extension TestFlutterEx on TestPlatform {
@@ -35,6 +33,5 @@ extension TestFlutterEx on TestPlatform {
       case TestPlatform.iOS:
         return TargetPlatform.iOS;
     }
-    return TargetPlatform.fuchsia;
   }
 }
