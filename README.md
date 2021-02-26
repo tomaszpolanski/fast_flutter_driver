@@ -42,7 +42,6 @@ dev_dependencies:
 
 - Create configuration class `test_driver/generic/test_configuration.dart`
 ```dart
-// @dart=2.9
 import 'package:fast_flutter_driver/tool.dart';
 import 'package:meta/meta.dart';
 
@@ -72,7 +71,6 @@ class TestConfiguration implements BaseConfiguration {
 ```
 - Create dart file `test_driver/generic/generic.dart` with content and `MyApplication` as your main (root) application widget.
 ```dart
-// @dart=2.9
 import 'dart:convert';
 
 import 'package:fast_flutter_driver/driver.dart';
