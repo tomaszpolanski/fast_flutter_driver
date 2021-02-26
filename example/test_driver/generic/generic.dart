@@ -21,7 +21,7 @@ void main() {
 
   runApp(
     RestartWidget<TestConfiguration>(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.red,
       builder: (_, config) => ExampleApp(route: config.route),
     ),
   );

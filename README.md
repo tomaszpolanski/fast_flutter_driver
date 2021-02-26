@@ -42,6 +42,7 @@ dev_dependencies:
 
 - Create configuration class `test_driver/generic/test_configuration.dart`
 ```dart
+// @dart=2.9
 import 'package:fast_flutter_driver/tool.dart';
 import 'package:meta/meta.dart';
 
@@ -71,6 +72,7 @@ class TestConfiguration implements BaseConfiguration {
 ```
 - Create dart file `test_driver/generic/generic.dart` with content and `MyApplication` as your main (root) application widget.
 ```dart
+// @dart=2.9
 import 'dart:convert';
 
 import 'package:fast_flutter_driver/driver.dart';
@@ -153,6 +155,17 @@ All done!
 This was the simplest setup of tests, next you would like to pass different application configuration so every time you run tests, they could be run with a different configuration (eg different page). To do that you need to add more properties to `TestConfiguration`.
 
 A full example of how to do that can be found in [the example][example] folder.
+
+## Dart's null safety
+`fastdriver` supports running the tests for not migrated, partially migrated and fully migrated projects.
+In case your project is only partially migrated, you will see the following error while trying to run the tests:
+```
+Cannot run with sound null safety, because the following dependencies
+```
+You need to pass via `fastdriver` arguments saying that your tests/app does not have sound null safety yet - pass following arguments: `--dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"`, eg
+```
+fastdriver --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"
+```
 
 
 [example]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#fast-flutter-driver-example
