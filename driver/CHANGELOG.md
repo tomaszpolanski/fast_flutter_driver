@@ -1,5 +1,5 @@
 ## 2.0.0-nullsafety.3
-- Cleanlup in dev dependencies
+- Cleanup in dev dependencies
 
 ## 2.0.0-nullsafety.2
 - When using Flutter version `1.26.0-17.8.pre` or higher you need to pass `--dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"` parameters to `fastdriver` as `flutter driver` itself is not yet migrated
