@@ -37,20 +37,19 @@ You can build and execute [the example][example] that works on any desktop syste
 - Add `dev_dependency` to your `pubspec.yaml`
 ```yaml
 dev_dependencies:
-  fast_flutter_driver: ^1.1.0
+  fast_flutter_driver: ^2.0.0
 ```
 
 - Create configuration class `test_driver/generic/test_configuration.dart`
 ```dart
-// @dart=2.9
 import 'package:fast_flutter_driver/tool.dart';
 import 'package:meta/meta.dart';
 
 class TestConfiguration implements BaseConfiguration {
   const TestConfiguration({
-    @required this.resolution,
+    required this.resolution,
     this.platform,
-  }) : assert(resolution != null);
+  });
 
   factory TestConfiguration.fromJson(Map<String, dynamic> json) {
     return TestConfiguration(
@@ -59,20 +58,23 @@ class TestConfiguration implements BaseConfiguration {
     );
   }
   @override
-  final TestPlatform platform;
+  final TestPlatform? platform;
   @override
   final Resolution resolution;
+  
   @override
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'resolution': resolution,
-        if (platform != null) 'platform': platform.asString(),
-      };
+  Map<String, dynamic> toJson() {
+    final p = platform;
+    return <String, dynamic>{
+      'resolution': resolution,
+      if (p != null) 'platform': p.asString(),
+    };
+  }
 }
 
 ```
 - Create dart file `test_driver/generic/generic.dart` with content and `MyApplication` as your main (root) application widget.
 ```dart
-// @dart=2.9
 import 'dart:convert';
 
 import 'package:fast_flutter_driver/driver.dart';
@@ -86,9 +88,12 @@ import 'test_configuration.dart';
 void main() {
   timeDilation = 0.1;
   enableFlutterDriverExtension(
-    handler: (playload) => configureTest(
-      TestConfiguration.fromJson(json.decode(playload)),
-    ),
+    handler: (playload) async {
+      await configureTest(
+        TestConfiguration.fromJson(json.decode(playload ?? '{}')),
+      );
+      return '';
+    },
   );
 
   runApp(
@@ -99,7 +104,7 @@ void main() {
 }
 
 ```
-- Create a test, eg `test_driver/example_test.dart` 
+- Create a test, eg `test_driver/example_test.dart`
 ```dart
 import 'dart:convert';
 
@@ -110,7 +115,7 @@ import 'package:test/test.dart';
 import 'generic/test_configuration.dart';
 
 void main(List<String> args) {
-  FlutterDriver driver;
+  late FlutterDriver driver;
   final properties = TestProperties(args);
 
   setUpAll(() async {
@@ -118,7 +123,7 @@ void main(List<String> args) {
   });
 
   tearDownAll(() async {
-    await driver?.close();
+    await driver.close();
   });
 
   Future<void> restart() {
@@ -146,7 +151,7 @@ pub global activate fast_flutter_driver_tool
 ```
 - Run:
 ```shell script
-fastdriver
+fastdriver --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"
 ```
 
 All done!
@@ -156,16 +161,9 @@ This was the simplest setup of tests, next you would like to pass different appl
 
 A full example of how to do that can be found in [the example][example] folder.
 
-## Dart's null safety
-`fastdriver` supports running the tests for not migrated, partially migrated and fully migrated projects.
-In case your project is only partially migrated, you will see the following error while trying to run the tests:
-```
-Cannot run with sound null safety, because the following dependencies
-```
-You need to pass via `fastdriver` arguments saying that your tests/app does not have sound null safety yet - pass following arguments: `--dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"`, eg
-```
-fastdriver --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"
-```
+## Null Safety
+The package supports building project that are migrated to null safety but until `flutter driver` is migrated to null safety, we need to pass the above flags to the command line tool.
+
 
 
 [example]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#fast-flutter-driver-example
