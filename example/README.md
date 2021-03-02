@@ -37,7 +37,7 @@ Latest tested version of Flutter that works with this repo is `1.26.0-17.8.pre`.
 If you don't specify the device you want to run the tests against, then desktop device is used by default:
 ```bash
 flutter pub get
-fastdriver
+fastdriver --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"
 ```
 
 
@@ -57,7 +57,7 @@ docker exec -d <containerId> sh -c "Xvfb :0 -screen 0 1920x1920x24"
 ```
 5) Execute Flutter tests
 ```
-docker exec <containerId> sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1300x1000 -s"
+docker exec <containerId> sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1300x1000 -s --dart-args \"--no-sound-null-safety\ --flutter-args \"--no-sound-null-safety\""
 ```
 6) Copy screenshots to local `screenshots` folder so you can preview them
 ```
@@ -71,6 +71,9 @@ All tests located files that end with `_test.dart` in `test_driver` folder will 
 
 Check out [simple_test.dart][simple_test] to see the basic structure of a test.
 
+## Known Issues
+* Windows Desktop - Due to Flutter changes, Desktop Flutter apps crash when they try to change their own size as now the size is not changed on UI thread.
+Please check the changes in `windows/runner/win32_window.cpp` for the fix in the example.
 
 [fast_flutter_driver]: https://github.com/tomaszpolanski/fast_flutter_driver
 [simple_test]: test_driver/simple_test.dart

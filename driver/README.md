@@ -151,7 +151,7 @@ pub global activate fast_flutter_driver_tool
 ```
 - Run:
 ```shell script
-fastdriver
+fastdriver --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"
 ```
 
 All done!
@@ -160,6 +160,9 @@ All done!
 This was the simplest setup of tests, next you would like to pass different application configuration so every time you run tests, they could be run with a different configuration (eg different page). To do that you need to add more properties to `TestConfiguration`.
 
 A full example of how to do that can be found in [the example][example] folder.
+
+## Null Safety
+The package supports building project that are migrated to null safety but until `flutter driver` is migrated to null safety, we need to pass the above flags to the command line tool.
 
 
 [example]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#fast-flutter-driver-example
