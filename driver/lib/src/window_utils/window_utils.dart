@@ -18,8 +18,11 @@ class WindowUtils implements SystemWindow {
     required this.macOs,
     required this.win32,
     required this.other,
-  }) : _systemWindow =
-            System.isMacOS ? macOs() : System.isWindows ? win32() : other();
+  }) : _systemWindow = System.isMacOS
+            ? macOs()
+            : System.isWindows
+                ? win32()
+                : other();
 
   final WindowFactory macOs;
   final WindowFactory win32;
