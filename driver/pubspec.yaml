@@ -5,14 +5,15 @@ homepage: https://github.com/tomaszpolanski/fast_flutter_driver
 
 environment:
   sdk: '>=2.12.0-29.10.beta <3.0.0'
+  flutter: ">=1.12.0"
 
 dependencies:
   flutter:
     sdk: flutter
   args: ^2.0.0-nullsafety.0
-  fast_flutter_driver_tool: ^1.4.0
+  fast_flutter_driver_tool: ^2.0.0-nullsafety.1
   mockito: ^5.0.0-nullsafety.7
-  win32: ^2.0.0-nullsafety.7
+  win32: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -25,8 +26,3 @@ flutter:
     platforms:
       macos:
         pluginClass: WindowUtils
-
-
-dependency_overrides:
-  fast_flutter_driver_tool:
-    path: ../tool

@@ -21,12 +21,12 @@ fastdriver --device emulator-5554
 
 ## Enabling and running on Desktop
 You need first setup Flutter for desktop if you had not done it before.
-Latest tested version of Flutter that works with this repo is `1.25.0-8.1.pre`.
+Latest tested version of Flutter that works with this repo is `1.26.0-17.8.pre`.
 
 ### Enable desktop builds
 
 * Checkout the latest changes in Flutter by running `flutter channel master` OR going into Flutter folder and running `git pull`
-* **Important**: Use `git checkout <tag>` inside `flutter` folder otherwise desktop won't be picked up: `git checkout 1.25.0-8.1.pre`
+* **Important**: Use `git checkout <tag>` inside `flutter` folder otherwise desktop won't be picked up: `git checkout 1.26.0-17.8.pre`
 * Run `flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop`
 * Check what desktop components are missing by running `flutter doctor`
 * Install missing components that you can see under Flutter doctor's  `Linux`/`Window`/`MacOS` section
@@ -37,7 +37,7 @@ Latest tested version of Flutter that works with this repo is `1.25.0-8.1.pre`.
 If you don't specify the device you want to run the tests against, then desktop device is used by default:
 ```bash
 flutter pub get
-fastdriver
+fastdriver --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"
 ```
 
 
@@ -45,7 +45,7 @@ fastdriver
 1) Install `docker`
 2) Build docker image (will take a couple of minutes)
 ```
-./build_docker.sh 1.25.0-8.1.pre ./
+./build_docker.sh 1.26.0-17.8.pre ./
 ```
 3) Run docker container and get it's `id`
 ```
@@ -57,7 +57,7 @@ docker exec -d <containerId> sh -c "Xvfb :0 -screen 0 1920x1920x24"
 ```
 5) Execute Flutter tests
 ```
-docker exec <containerId> sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1300x1000 -s"
+docker exec <containerId> sh -c "cd /home/user/fast_flutter_driver/example && fastdriver -r 1300x1000 -s --dart-args \"--no-sound-null-safety\ --flutter-args \"--no-sound-null-safety\""
 ```
 6) Copy screenshots to local `screenshots` folder so you can preview them
 ```
@@ -71,6 +71,9 @@ All tests located files that end with `_test.dart` in `test_driver` folder will 
 
 Check out [simple_test.dart][simple_test] to see the basic structure of a test.
 
+## Known Issues
+* Windows Desktop - Due to Flutter changes, Desktop Flutter apps crash when they try to change their own size as now the size is not changed on UI thread.
+Please check the changes in `windows/runner/win32_window.cpp` for the fix in the example.
 
 [fast_flutter_driver]: https://github.com/tomaszpolanski/fast_flutter_driver
 [simple_test]: test_driver/simple_test.dart

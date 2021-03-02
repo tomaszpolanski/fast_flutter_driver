@@ -10,12 +10,10 @@ class Win32Window implements SystemWindow {
   Future<bool> setSize(Size size) {
     final window =
         FindWindowEx(0, 0, TEXT('FLUTTER_RUNNER_WIN32_WINDOW'), nullptr);
-
     if (window == 0) {
       throw Exception('Cannot find flutter window');
     } else {
-      ShowWindow(window, SW_MAXIMIZE);
-      MoveWindow(window, 0, 0, size.width.round(), size.height.round(), 0);
+      MoveWindow(window, 0, 0, size.width.round(), size.height.round(), FALSE);
       return Future.value(true);
     }
   }

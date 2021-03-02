@@ -37,7 +37,7 @@ You can build and execute [the example][example] that works on any desktop syste
 - Add `dev_dependency` to your `pubspec.yaml`
 ```yaml
 dev_dependencies:
-  fast_flutter_driver: ^1.1.0
+  fast_flutter_driver: ^2.0.0
 ```
 
 - Create configuration class `test_driver/generic/test_configuration.dart`
@@ -47,9 +47,9 @@ import 'package:meta/meta.dart';
 
 class TestConfiguration implements BaseConfiguration {
   const TestConfiguration({
-    @required this.resolution,
+    required this.resolution,
     this.platform,
-  }) : assert(resolution != null);
+  });
 
   factory TestConfiguration.fromJson(Map<String, dynamic> json) {
     return TestConfiguration(
@@ -58,14 +58,18 @@ class TestConfiguration implements BaseConfiguration {
     );
   }
   @override
-  final TestPlatform platform;
+  final TestPlatform? platform;
   @override
   final Resolution resolution;
+  
   @override
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'resolution': resolution,
-        if (platform != null) 'platform': platform.asString(),
-      };
+  Map<String, dynamic> toJson() {
+    final p = platform;
+    return <String, dynamic>{
+      'resolution': resolution,
+      if (p != null) 'platform': p.asString(),
+    };
+  }
 }
 
 ```
@@ -82,12 +86,14 @@ import 'package:flutter_driver/driver_extension.dart';
 import 'test_configuration.dart';
 
 void main() {
-  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   timeDilation = 0.1;
   enableFlutterDriverExtension(
-    handler: (playload) => configureTest(
-      TestConfiguration.fromJson(json.decode(playload)),
-    ),
+    handler: (playload) async {
+      await configureTest(
+        TestConfiguration.fromJson(json.decode(playload ?? '{}')),
+      );
+      return '';
+    },
   );
 
   runApp(
@@ -109,7 +115,7 @@ import 'package:test/test.dart';
 import 'generic/test_configuration.dart';
 
 void main(List<String> args) {
-  FlutterDriver driver;
+  late FlutterDriver driver;
   final properties = TestProperties(args);
 
   setUpAll(() async {
@@ -117,7 +123,7 @@ void main(List<String> args) {
   });
 
   tearDownAll(() async {
-    await driver?.close();
+    await driver.close();
   });
 
   Future<void> restart() {
@@ -145,7 +151,7 @@ pub global activate fast_flutter_driver_tool
 ```
 - Run:
 ```shell script
-fastdriver
+fastdriver --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"
 ```
 
 All done!
@@ -154,6 +160,9 @@ All done!
 This was the simplest setup of tests, next you would like to pass different application configuration so every time you run tests, they could be run with a different configuration (eg different page). To do that you need to add more properties to `TestConfiguration`.
 
 A full example of how to do that can be found in [the example][example] folder.
+
+## Null Safety
+The package supports building project that are migrated to null safety but until `flutter driver` is migrated to null safety, we need to pass the above flags to the command line tool.
 
 
 [example]: https://github.com/tomaszpolanski/fast_flutter_driver/tree/master/example#fast-flutter-driver-example

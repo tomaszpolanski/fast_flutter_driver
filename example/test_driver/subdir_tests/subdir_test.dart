@@ -10,7 +10,7 @@ import '../generic/test_configuration.dart';
 /// Every file that ends with '_text.dart' that is located in 'test_driver'
 /// folder will be run in separation.
 void main(List<String> args) {
-  FlutterDriver driver;
+  late FlutterDriver driver;
   final properties = TestProperties(args);
 
   setUpAll(() async {
@@ -20,7 +20,7 @@ void main(List<String> args) {
   });
 
   tearDownAll(() async {
-    await driver?.close();
+    await driver.close();
   });
 
   Future<void> restart(String route) {

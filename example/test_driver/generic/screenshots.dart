@@ -1,8 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:fake_async/fake_async.dart';
 import 'package:flutter_driver/flutter_driver.dart';
-import 'package:meta/meta.dart';
 
 const _dirPath = 'screenshots';
 
@@ -10,7 +9,7 @@ class Screenshot {
   Screenshot._(
     this._dir,
     this._driver, {
-    @required bool enabled,
+    required bool enabled,
   }) : _enabled = enabled;
 
   final String _dir;
@@ -20,7 +19,7 @@ class Screenshot {
   static Future<Screenshot> create(
     FlutterDriver driver,
     String group, {
-    bool enabled,
+    required bool enabled,
   }) async {
     final ss = Screenshot._(
       '$_dirPath/$group',
@@ -45,12 +44,8 @@ class Screenshot {
       Directory(_dir).create(recursive: true);
 
   Future<List<int>> _fastScreenshot(FlutterDriver driver) async {
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-
-    return FakeAsync().run((async) {
-      final result = driver.screenshot();
-      async.elapse(const Duration(minutes: 1));
-      return result;
-    });
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    final result = await driver.serviceClient.callMethod('_flutter.screenshot');
+    return const Base64Codec().decode(result.json['screenshot']);
   }
 }

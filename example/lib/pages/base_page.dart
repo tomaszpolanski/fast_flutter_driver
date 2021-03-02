@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class BasePage extends StatelessWidget {
   const BasePage({
-    Key key,
-    @required this.title,
-    @required this.color,
+    Key? key,
+    required this.title,
+    required this.color,
   }) : super(key: key);
 
   final String title;
