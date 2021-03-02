@@ -47,9 +47,9 @@ import 'package:meta/meta.dart';
 
 class TestConfiguration implements BaseConfiguration {
   const TestConfiguration({
-    @required this.resolution,
+    required this.resolution,
     this.platform,
-  }) : assert(resolution != null);
+  });
 
   factory TestConfiguration.fromJson(Map<String, dynamic> json) {
     return TestConfiguration(
@@ -58,14 +58,18 @@ class TestConfiguration implements BaseConfiguration {
     );
   }
   @override
-  final TestPlatform platform;
+  final TestPlatform? platform;
   @override
   final Resolution resolution;
+  
   @override
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'resolution': resolution,
-        if (platform != null) 'platform': platform.asString(),
-      };
+  Map<String, dynamic> toJson() {
+    final p = platform;
+    return <String, dynamic>{
+      'resolution': resolution,
+      if (p != null) 'platform': p.asString(),
+    };
+  }
 }
 
 ```
@@ -82,12 +86,14 @@ import 'package:flutter_driver/driver_extension.dart';
 import 'test_configuration.dart';
 
 void main() {
-  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   timeDilation = 0.1;
   enableFlutterDriverExtension(
-    handler: (playload) => configureTest(
-      TestConfiguration.fromJson(json.decode(playload)),
-    ),
+    handler: (playload) async {
+      await configureTest(
+        TestConfiguration.fromJson(json.decode(playload ?? '{}')),
+      );
+      return '';
+    },
   );
 
   runApp(
@@ -109,7 +115,7 @@ import 'package:test/test.dart';
 import 'generic/test_configuration.dart';
 
 void main(List<String> args) {
-  FlutterDriver driver;
+  late FlutterDriver driver;
   final properties = TestProperties(args);
 
   setUpAll(() async {
@@ -117,7 +123,7 @@ void main(List<String> args) {
   });
 
   tearDownAll(() async {
-    await driver?.close();
+    await driver.close();
   });
 
   Future<void> restart() {
