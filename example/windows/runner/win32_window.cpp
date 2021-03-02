@@ -4,6 +4,8 @@
 
 #include "resource.h"
 
+#define WM_UI_SIZE 999999
+
 namespace {
 
 constexpr const wchar_t kWindowClassName[] = L"FLUTTER_RUNNER_WIN32_WINDOW";
@@ -174,6 +176,9 @@ Win32Window::MessageHandler(HWND hwnd,
       return 0;
     }
     case WM_SIZE:
+      PostMessage(hwnd, WM_UI_SIZE, 0, 0);
+      return 0;
+    case WM_UI_SIZE:
       RECT rect = GetClientArea();
       if (child_content_ != nullptr) {
         // Size and position the child window.
