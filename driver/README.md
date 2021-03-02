@@ -37,7 +37,7 @@ You can build and execute [the example][example] that works on any desktop syste
 - Add `dev_dependency` to your `pubspec.yaml`
 ```yaml
 dev_dependencies:
-  fast_flutter_driver: ^1.1.0
+  fast_flutter_driver: ^2.0.0
 ```
 
 - Create configuration class `test_driver/generic/test_configuration.dart`
