@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         package: ["tool"]
-        version: ["beta"]
+        version: ["stable"]
 
     steps:
       - uses: actions/checkout@v2
@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix:
         package: ["driver"]
-        channel: ["beta"]
+        channel: ["stable"]
 
     steps:
       - uses: actions/checkout@v2
