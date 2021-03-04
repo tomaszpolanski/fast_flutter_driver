@@ -26,7 +26,7 @@ class VersionChecker {
     final pathToYaml = join(scriptDir, '../pubspec.yaml');
     final file = File(pathToYaml);
     if (file.existsSync()) {
-      final Map<String, dynamic> yaml = loadYaml(await file.readAsString());
+      final YamlMap yaml = loadYaml(await file.readAsString());
       final String version = yaml['version'];
       return version;
     }
