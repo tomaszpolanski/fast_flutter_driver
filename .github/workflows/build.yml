@@ -5,16 +5,17 @@ on: [push, pull_request]
 jobs:
   build_dart_packages:
     runs-on: ubuntu-latest
-    container:
-      image: google/dart:${{ matrix.version }}
 
     strategy:
       matrix:
         package: ["tool"]
-        version: ["beta"]
+        version: ["stable"]
 
     steps:
       - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: ${{ matrix.channel }}
 
       - name: Install dependencies
         working-directory: ${{ matrix.package }}
