@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         package: ["tool"]
-        version: ["stable"]
+        version: ["beta"]
 
     steps:
       - uses: actions/checkout@v2
