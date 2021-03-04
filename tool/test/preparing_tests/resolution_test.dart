@@ -44,7 +44,7 @@ void main() {
   group('current', () {
     setUp(() {
       const content = 'gtk_window_set_default_size(window, 1280, 720);';
-      when(resolutionFile.readAsString()).thenAnswer((_) async => content);
+      resolutionFile.readAsStringMock = content;
     });
 
     test('replace resolution', () async {
@@ -105,7 +105,7 @@ void main() {
 const unsigned int kFlutterWindowWidth = 800;
 const unsigned int kFlutterWindowHeight = 600;
 ''';
-      when(resolutionFile.readAsString()).thenAnswer((_) async => content);
+      resolutionFile.readAsStringMock = content;
     });
 
     test('replace resolution', () async {
@@ -144,7 +144,7 @@ const unsigned int kFlutterWindowHeight = 2;
 window_properties.width = 500;
 window_properties.height = 900;
 ''';
-      when(resolutionFile.readAsString()).thenAnswer((_) async => content);
+      resolutionFile.readAsStringMock = content;
     });
 
     test('replace resolution', () async {

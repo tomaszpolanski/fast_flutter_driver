@@ -36,9 +36,9 @@ void main() {
   _MockFile createFile() {
     final file = _MockFile()
       ..fieldExistsSync = true
-      ..copyMock = MockFile()
-      ..writeAsStringMock = MockFile()
-      ..renameMock = MockFile();
+      ..copyMock = _MockFile()
+      ..writeAsStringMock = _MockFile()
+      ..renameMock = _MockFile();
     return file;
   }
 
@@ -77,9 +77,9 @@ void main() {
             return createFile()..fieldExistsSync = false;
           }
           File resolutionFile;
-          resolutionFile = createFile()..fieldExistsSync = true;
-          when(resolutionFile.readAsString()).thenAnswer((_) async => '');
-          return resolutionFile;
+          return resolutionFile = createFile()
+            ..fieldExistsSync = true
+            ..readAsStringMock = '';
         },
       );
 

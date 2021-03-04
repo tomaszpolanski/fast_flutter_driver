@@ -175,9 +175,9 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile()..fieldExistsSync = true;
-            when(file.readAsString())
-                .thenAnswer((_) async => 'version: $currentVersion');
+            final File file = _MockFile()
+              ..fieldExistsSync = true
+              ..readAsStringMock = 'version: $currentVersion';
             return file;
           }
           throw Exception('No file');
