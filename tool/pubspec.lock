@@ -161,7 +161,7 @@ packages:
       name: file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.0"
+    version: "6.1.0"
   fixnum:
     dependency: transitive
     description:
@@ -315,7 +315,7 @@ packages:
       name: process_run
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.0-nullsafety.0"
+    version: "0.12.0+1"
   pub_semver:
     dependency: transitive
     description:
@@ -420,7 +420,7 @@ packages:
       name: synchronized
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0-nullsafety.1"
+    version: "3.0.0"
   term_glyph:
     dependency: transitive
     description:
@@ -497,6 +497,6 @@ packages:
       name: yaml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "3.1.0"
 sdks:
   dart: ">=2.12.0-29.10.beta <3.0.0"

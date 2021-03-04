@@ -13,6 +13,7 @@ import 'package:fast_flutter_driver_tool/src/preparing_tests/logger_extensions.d
 import 'package:fast_flutter_driver_tool/src/preparing_tests/parameters.dart';
 import 'package:fast_flutter_driver_tool/src/preparing_tests/resolution.dart';
 import 'package:fast_flutter_driver_tool/src/running_tests/parameters.dart';
+import 'package:fast_flutter_driver_tool/src/utils/colorizing.dart';
 import 'package:fast_flutter_driver_tool/src/utils/enum.dart';
 import 'package:fast_flutter_driver_tool/src/utils/list.dart';
 import 'package:fast_flutter_driver_tool/src/utils/system.dart';
@@ -107,6 +108,15 @@ class TestExecutor {
 
       try {
         await _runTests(runTestCommand, outputFactory, run, logger);
+      } catch (e) {
+        logger.stderr(
+          '${red('Failed')} to run:\n'
+          'If you are using not yet migrated ${bold('flutter driver')} '
+          'please pass ${bold('no-sound')} null safety flags:\n'
+          '${green('fastdriver --dart-args "--no-sound-null-safety" '
+              '--flutter-args "--no-sound-null-safety"')}\n',
+        );
+        rethrow;
       } finally {
         input.write('q');
         await input.dispose();
