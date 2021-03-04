@@ -28,6 +28,10 @@ jobs:
         working-directory: ${{ matrix.package }}
         run: dart analyze
 
+      - name: Run tests
+        working-directory: ${{ matrix.package }}
+        run: flutter test
+
       - name: Aggregate tests
         working-directory: ${{ matrix.package }}
         run: dart lib/src/preparing_tests/test_generator/test_merger.dart
