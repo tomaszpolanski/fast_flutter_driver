@@ -7,10 +7,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../../mocks/mock_file.dart';
 import 'test_generator_test.mocks.dart';
 
 @GenerateMocks([
-  File,
   Directory,
   Logger,
   TestGenerator,
@@ -137,8 +137,7 @@ void main(List<String> args) {
         createDirectory: (name) {
           const absolutePath =
               r'c:\Users\tpolanski\Documents\GitHub\flutter-project';
-          final file = _MockFile();
-          when(file.path).thenReturn('$name$setupMainFile');
+          final file = _MockFile()..pathMock = '$name$setupMainFile';
           final absoluteDir = _MockDirectory();
           when(absoluteDir.path).thenReturn('$absolutePath\\$name');
           final mockDir = _MockDirectory();
@@ -170,9 +169,9 @@ void main(List<String> args) {
           );
         },
         createDirectory: (name) {
-          final file = _MockFile();
-          when(file.path).thenReturn(
-              '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath);
+          final file = _MockFile()
+            ..pathMock =
+                '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath;
           final absoluteDir = _MockDirectory();
           when(absoluteDir.path)
               .thenReturn('$absolutePath/$name'.toPlatformPath);
@@ -184,12 +183,11 @@ void main(List<String> args) {
         },
         createFile: (name) {
           if (name.endsWith(aggregatedTestFile)) {
-            final absolute = _MockFile();
-            when(absolute.path).thenReturn(name);
-            final file = _MockFile()..fieldExistsSync = true;
-            when(file.path).thenReturn(name);
-            when(file.absolute).thenReturn(absolute);
-            return file;
+            final absolute = _MockFile()..pathMock = name;
+            return _MockFile()
+              ..fieldExistsSync = true
+              ..pathMock = name
+              ..absoluteMock = absolute;
           }
           return MemoryFileSystem().file('$absolutePath\\$setupMainFile');
         },
@@ -217,9 +215,9 @@ void main(List<String> args) {
           );
         },
         createDirectory: (name) {
-          final file = _MockFile();
-          when(file.path).thenReturn(
-              '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath);
+          final file = _MockFile()
+            ..pathMock =
+                '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath;
           final absoluteDir = _MockDirectory();
           when(absoluteDir.path).thenReturn('$absolutePath/$name'
               .toPlatformPath
@@ -232,12 +230,11 @@ void main(List<String> args) {
         },
         createFile: (name) {
           if (name.endsWith(aggregatedTestFile)) {
-            final absolute = _MockFile();
-            when(absolute.path).thenReturn(name);
-            final file = _MockFile();
-            when(file.path).thenReturn(name);
-            file.fieldExistsSync = true;
-            when(file.absolute).thenReturn(absolute);
+            final absolute = _MockFile()..pathMock = name;
+            final file = _MockFile()
+              ..pathMock = name
+              ..fieldExistsSync = true
+              ..absoluteMock = absolute;
             return file;
           }
           return MemoryFileSystem().file('$absolutePath\\$setupMainFile');
@@ -263,9 +260,9 @@ void main(List<String> args) {
           );
         },
         createDirectory: (name) {
-          final file = _MockFile();
-          when(file.path).thenReturn(
-              '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath);
+          final file = _MockFile()
+            ..pathMock =
+                '$absolutePath/test_driver/generic/generic.dart'.toPlatformPath;
           final absoluteDir = _MockDirectory();
           when(absoluteDir.path)
               .thenReturn('$absolutePath/$name'.toPlatformPath);
@@ -277,12 +274,12 @@ void main(List<String> args) {
         },
         createFile: (name) {
           if (name.endsWith(aggregatedTestFile)) {
-            final absolute = _MockFile();
-            when(absolute.path).thenReturn(name);
-            final file = _MockFile();
-            when(file.path).thenReturn(name);
-            file.fieldExistsSync = true;
-            when(file.absolute).thenReturn(absolute);
+            final absolute = _MockFile()..pathMock = name;
+            final file = _MockFile()
+              ..pathMock = name
+              ..fieldExistsSync = true
+              ..absoluteMock = absolute;
+
             return file;
           }
           return MemoryFileSystem()
@@ -312,8 +309,9 @@ void main(List<String> args) {
           return _MockDirectory()..fieldExistsSync = false;
         },
         createFile: (name) {
-          final file = _MockFile()..fieldExistsSync = true;
-          when(file.path).thenReturn(name);
+          final file = _MockFile()
+            ..fieldExistsSync = true
+            ..pathMock = name;
           return file;
         },
       );
@@ -328,8 +326,9 @@ void main(List<String> args) {
           return _MockDirectory()..fieldExistsSync = false;
         },
         createFile: (name) {
-          final file = _MockFile()..fieldExistsSync = false;
-          when(file.path).thenReturn(name);
+          final file = _MockFile()
+            ..fieldExistsSync = false
+            ..pathMock = name;
           return file;
         },
       );
@@ -357,7 +356,7 @@ class _MockDirectory extends MockDirectory {
   }
 }
 
-class _MockFile extends MockFile {
+class _MockFile extends NonMockitoFile {
   bool fieldExistsSync = false;
 
   @override

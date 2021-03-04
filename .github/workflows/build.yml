@@ -5,16 +5,17 @@ on: [push, pull_request]
 jobs:
   build_dart_packages:
     runs-on: ubuntu-latest
-    container:
-      image: google/dart:${{ matrix.version }}
 
     strategy:
       matrix:
         package: ["tool"]
-        version: ["beta"]
+        version: ["stable"]
 
     steps:
       - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: ${{ matrix.channel }}
 
       - name: Install dependencies
         working-directory: ${{ matrix.package }}
@@ -27,6 +28,10 @@ jobs:
       - name: Analyze
         working-directory: ${{ matrix.package }}
         run: dart analyze
+
+      - name: Run tests
+        working-directory: ${{ matrix.package }}
+        run: flutter test
 
       - name: Aggregate tests
         working-directory: ${{ matrix.package }}
@@ -49,7 +54,7 @@ jobs:
     strategy:
       matrix:
         package: ["driver"]
-        channel: ["beta"]
+        channel: ["stable"]
 
     steps:
       - uses: actions/checkout@v2

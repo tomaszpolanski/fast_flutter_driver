@@ -15,11 +15,11 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../mocks/mock_file.dart';
 import 'testing_test.mocks.dart';
 
 @GenerateMocks([
   Logger,
-  File,
   Directory,
   streams.InputCommandLineStream,
   Progress,
@@ -34,10 +34,11 @@ void main() {
   });
 
   _MockFile createFile() {
-    final file = _MockFile()..fieldExistsSync = true;
-    when(file.copy(any)).thenAnswer((_) async => MockFile());
-    when(file.writeAsString(any)).thenAnswer((_) async => MockFile());
-    when(file.rename(any)).thenAnswer((_) async => MockFile());
+    final file = _MockFile()
+      ..fieldExistsSync = true
+      ..copyMock = _MockFile()
+      ..writeAsStringMock = _MockFile()
+      ..renameMock = _MockFile();
     return file;
   }
 
@@ -76,9 +77,9 @@ void main() {
             return createFile()..fieldExistsSync = false;
           }
           File resolutionFile;
-          resolutionFile = createFile()..fieldExistsSync = true;
-          when(resolutionFile.readAsString()).thenAnswer((_) async => '');
-          return resolutionFile;
+          return resolutionFile = createFile()
+            ..fieldExistsSync = true
+            ..readAsStringMock = '';
         },
       );
 
@@ -421,7 +422,7 @@ class _MockProgress extends Progress {
   void finish({String? message, bool showTiming = false}) {}
 }
 
-class _MockFile extends MockFile {
+class _MockFile extends NonMockitoFile {
   bool fieldExistsSync = false;
 
   @override

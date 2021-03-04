@@ -7,18 +7,20 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../mocks/mock_file.dart';
 import 'resolution_test.mocks.dart';
 
-@GenerateMocks([Logger, File, Directory])
+@GenerateMocks([Logger, Directory])
 void main() {
-  late MockFile resolutionFile;
+  late _MockFile resolutionFile;
   late MockLogger logger;
 
   _MockFile createFile() {
-    final file = _MockFile()..fieldExistsSync = true;
-    when(file.copy(any)).thenAnswer((_) async => _MockFile());
-    when(file.writeAsString(any)).thenAnswer((_) async => _MockFile());
-    when(file.rename(any)).thenAnswer((_) async => _MockFile());
+    final file = _MockFile()
+      ..fieldExistsSync = true
+      ..copyMock = _MockFile()
+      ..writeAsStringMock = _MockFile()
+      ..renameMock = _MockFile();
     return file;
   }
 
@@ -42,7 +44,7 @@ void main() {
   group('current', () {
     setUp(() {
       const content = 'gtk_window_set_default_size(window, 1280, 720);';
-      when(resolutionFile.readAsString()).thenAnswer((_) async => content);
+      resolutionFile.readAsStringMock = content;
     });
 
     test('replace resolution', () async {
@@ -53,7 +55,7 @@ void main() {
 
           const content = 'gtk_window_set_default_size(window, 1, 2);';
           expect(
-            verify(resolutionFile.writeAsString(captureAny)).captured.single,
+            resolutionFile.writeAsStringResult,
             content,
           );
         },
@@ -103,7 +105,7 @@ void main() {
 const unsigned int kFlutterWindowWidth = 800;
 const unsigned int kFlutterWindowHeight = 600;
 ''';
-      when(resolutionFile.readAsString()).thenAnswer((_) async => content);
+      resolutionFile.readAsStringMock = content;
     });
 
     test('replace resolution', () async {
@@ -117,7 +119,7 @@ const unsigned int kFlutterWindowWidth = 1;
 const unsigned int kFlutterWindowHeight = 2;
 ''';
           expect(
-            verify(resolutionFile.writeAsString(captureAny)).captured.single,
+            resolutionFile.writeAsStringResult,
             content,
           );
         },
@@ -142,7 +144,7 @@ const unsigned int kFlutterWindowHeight = 2;
 window_properties.width = 500;
 window_properties.height = 900;
 ''';
-      when(resolutionFile.readAsString()).thenAnswer((_) async => content);
+      resolutionFile.readAsStringMock = content;
     });
 
     test('replace resolution', () async {
@@ -156,7 +158,7 @@ window_properties.width = 1;
 window_properties.height = 2;
 ''';
           expect(
-            verify(resolutionFile.writeAsString(captureAny)).captured.single,
+            resolutionFile.writeAsStringResult,
             content,
           );
         },
@@ -176,7 +178,7 @@ window_properties.height = 2;
   });
 }
 
-class _MockFile extends MockFile {
+class _MockFile extends NonMockitoFile {
   bool fieldExistsSync = false;
 
   @override

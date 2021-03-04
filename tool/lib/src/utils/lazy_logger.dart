@@ -15,8 +15,7 @@ class LazyLogger implements Logger {
   Ansi get ansi => _logger.ansi;
 
   @override
-  // ignore: deprecated_member_use
-  void flush() => _logger.flush();
+  void flush() {}
 
   @override
   bool get isVerbose => _logger.isVerbose;
