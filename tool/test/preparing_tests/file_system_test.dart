@@ -6,9 +6,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../mocks/mock_file.dart';
 import 'file_system_test.mocks.dart';
 
-@GenerateMocks([File, Directory])
+@GenerateMocks([Directory])
 void main() {
   group('validRootDirectory', () {
     test('no pubspec found', () {
@@ -158,7 +159,7 @@ void main() {
   });
 }
 
-class _MockFile extends MockFile {
+class _MockFile extends NonMockitoFile {
   bool fieldExistsSync = false;
 
   @override

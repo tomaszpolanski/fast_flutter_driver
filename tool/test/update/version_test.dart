@@ -7,10 +7,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../mocks/mock_file.dart';
 import 'version_test.mocks.dart';
 
 @GenerateMocks([
-  File,
   PathProvider,
 ])
 void main() {
@@ -103,9 +103,9 @@ void main() {
           },
           createFile: (name) {
             if (name == '/root/../pubspec.yaml') {
-              final File file = _MockFile()..fieldExistsSync = true;
-              when(file.readAsString())
-                  .thenAnswer((_) async => 'version: 1.0.0+1');
+              final File file = _MockFile()
+                ..fieldExistsSync = true
+                ..readAsStringMock = 'version: 1.0.0+1';
               return file;
             }
             throw Exception('No file');
@@ -137,9 +137,9 @@ void main() {
           },
           createFile: (name) {
             if (name == '/root/../pubspec.lock') {
-              final File file = _MockFile()..fieldExistsSync = true;
-              when(file.readAsLines())
-                  .thenAnswer((_) async => lockFileContent.split('\n'));
+              final File file = _MockFile()
+                ..fieldExistsSync = true
+                ..readAsLinesMock = lockFileContent.split('\n');
               return file;
             } else {
               return _MockFile()..fieldExistsSync = false;
@@ -202,8 +202,9 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile()..fieldExistsSync = true;
-            when(file.readAsString()).thenAnswer((_) async => '');
+            final File file = _MockFile()
+              ..fieldExistsSync = true
+              ..readAsStringMock = '';
             return file;
           }
           throw Exception('No file');
@@ -232,9 +233,9 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile()..fieldExistsSync = true;
-            when(file.readAsString())
-                .thenAnswer((_) async => 'version: $currentVersion');
+            final File file = _MockFile()
+              ..fieldExistsSync = true
+              ..readAsStringMock = 'version: $currentVersion';
             return file;
           }
           throw Exception('No file');
@@ -258,9 +259,9 @@ void main() {
         },
         createFile: (name) {
           if (name == '/root/../pubspec.yaml') {
-            final File file = _MockFile()..fieldExistsSync = true;
-            when(file.readAsString())
-                .thenAnswer((_) async => 'version: $currentVersion');
+            final File file = _MockFile()
+              ..fieldExistsSync = true
+              ..readAsStringMock = 'version: $currentVersion';
             return file;
           }
           throw Exception('No file');
@@ -270,7 +271,7 @@ void main() {
   });
 }
 
-class _MockFile extends MockFile {
+class _MockFile extends NonMockitoFile {
   bool fieldExistsSync = false;
 
   @override

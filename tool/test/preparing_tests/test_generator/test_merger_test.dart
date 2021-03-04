@@ -7,9 +7,10 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import '../../mocks/mock_file.dart';
 import 'test_merger_test.mocks.dart';
 
-@GenerateMocks([File, Directory])
+@GenerateMocks([Directory])
 void main() {
   test('creates test file', () {
     late File mergedFile;
@@ -36,8 +37,7 @@ void main() {
         final mockDir = MockDirectory();
 
         when(mockDir.path).thenReturn(name);
-        final file = MockFile();
-        when(file.path).thenReturn('my_test.dart');
+        final file = NonMockitoFile()..pathMock = 'my_test.dart';
         when(mockDir.listSync(recursive: anyNamed('recursive')))
             .thenReturn([file]);
 
@@ -48,14 +48,12 @@ void main() {
         if (name.endsWith(testFile)) {
           return mergedFile = MemoryFileSystem.test().file(testFile);
         } else {
-          final file = MockFile();
-          when(file.path).thenReturn(name);
+          final file = NonMockitoFile()..pathMock = name;
           return file;
         }
       },
       getCurrentDirectory: () {
-        final file = MockFile();
-        when(file.path).thenReturn('my_test.dart');
+        final file = NonMockitoFile()..pathMock = 'my_test.dart';
         final mockDir = MockDirectory();
         when(mockDir.listSync(recursive: anyNamed('recursive')))
             .thenReturn([file]);
