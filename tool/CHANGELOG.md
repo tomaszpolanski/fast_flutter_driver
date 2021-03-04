@@ -1,3 +1,10 @@
+## 2.0.0
+- [BREAKING CHANGES] `flutter driver` is not yet migrated to sound null safety therefore you need to pass the following arguments:
+```bash
+fastdriver  --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"
+```
+- [FEATURE] Made `fastdriver` null safe
+
 ## 2.0.0-nullsafety.2
 - When using Flutter version `1.26.0-17.8.pre` or higher you need to pass `--dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-safety"` parameters to `fastdriver` as `flutter driver` itself is not yet migrated
 ```bash
