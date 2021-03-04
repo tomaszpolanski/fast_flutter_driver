@@ -30,7 +30,7 @@ void main() {
 
       return createLogger();
     })
-      ..flush();
+      ..isVerbose;
 
     expect(factoryWasCalled, isTrue);
   });
@@ -54,7 +54,7 @@ void main() {
 
         return createLogger();
       })
-        ..flush();
+        ..isVerbose;
 
       expect(isVerbose, isFalse);
     });
@@ -69,7 +69,7 @@ void main() {
         return logger;
       })
         ..isVerbose = true
-        ..flush();
+        ..ansi;
 
       expect(isVerbose, isTrue);
       expect(tested.isVerbose, isTrue);
@@ -81,13 +81,6 @@ void main() {
     setUp(() {
       logger = createLogger();
       tested = LazyLogger((_) => logger);
-    });
-
-    test('flush', () {
-      tested.flush();
-
-      // ignore: deprecated_member_use
-      verify(logger.flush()).called(1);
     });
 
     test('ansi', () {
