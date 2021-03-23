@@ -1,3 +1,9 @@
+## 3.0.0
+- [BREAKING CHANGES] Reapply fix for Window that depends on the new platform interface
+
+## 2.0.2
+- [FIX] Reverting Windows change do you breaking changes dependencies
+
 ## 2.0.1
 - [FIX] Fixed changing resolution of the window on Windows
 
