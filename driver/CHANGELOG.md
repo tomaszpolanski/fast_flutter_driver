@@ -1,3 +1,9 @@
+## 2.0.2
+- [FIX] Reverting Windows change do you breaking changes dependencies
+
+## 2.0.1
+- [FIX] Fixed changing resolution of the window on Windows
+
 ## 2.0.0
 - [BREAKING CHANGES] `flutter driver` is not yet migrated to sound null safety therefore you need to pass the following arguments:
 ```bash
