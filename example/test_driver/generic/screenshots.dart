@@ -46,6 +46,6 @@ class Screenshot {
   Future<List<int>> _fastScreenshot(FlutterDriver driver) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
     final result = await driver.serviceClient.callMethod('_flutter.screenshot');
-    return const Base64Codec().decode(result.json['screenshot']);
+    return const Base64Codec().decode(result.json!['screenshot']);
   }
 }

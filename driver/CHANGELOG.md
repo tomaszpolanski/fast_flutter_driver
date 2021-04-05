@@ -1,3 +1,6 @@
+## 3.0.0+1
+- Adding deprecation warning as Flutter Driver is being deprecated itself in favor of [Integration Tests](https://flutter.dev/docs/testing/integration-tests)
+
 ## 3.0.0
 - [BREAKING CHANGES] Reapply fix for Window that depends on the new platform interface
 
