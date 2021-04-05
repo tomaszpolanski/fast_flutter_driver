@@ -1,3 +1,6 @@
+## 2.0.0+1
+- Adding deprecation warning as Flutter Driver is being deprecated itself in favor of [Integration Tests](https://flutter.dev/docs/testing/integration-tests)
+
 ## 2.0.0
 - [BREAKING CHANGES] `flutter driver` is not yet migrated to sound null safety therefore you need to pass the following arguments:
 ```bash

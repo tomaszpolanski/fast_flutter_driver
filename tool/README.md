@@ -9,6 +9,12 @@
 | [Command Line Tool][command_line_tool] | [![pub package](https://img.shields.io/pub/v/fast_flutter_driver_tool.svg)][command_line_tool_package] |
 | [UI Helper][ui_driver]| [![pub package](https://img.shields.io/pub/v/fast_flutter_driver.svg)][ui_driver_package] |
 
+## Deprecation Warning
+Flutter Driver tests are being deprecated in favor of new Integration Tests.
+I will continue to support this package as long it's feasible but it is recommended to start using [Integration Tests](https://flutter.dev/docs/testing/integration-tests).
+
+You can read more Pros and Cons [here](https://tomek-polanski.medium.com/the-new-flutter-integration-tests-are-they-any-good-a7c0fc506d6b).
+
 
 ![][example_gif]
 
