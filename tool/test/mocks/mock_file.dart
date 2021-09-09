@@ -199,15 +199,12 @@ class NonMockitoFile implements File {
   @override
   Future<File> writeAsBytes(List<int> bytes,
       {FileMode mode = FileMode.write, bool flush = false}) {
-    // TODO: implement writeAsBytes
     throw UnimplementedError();
   }
 
   @override
   void writeAsBytesSync(List<int> bytes,
-      {FileMode mode = FileMode.write, bool flush = false}) {
-    // TODO: implement writeAsBytesSync
-  }
+      {FileMode mode = FileMode.write, bool flush = false}) {}
 
   late File writeAsStringMock;
   late String writeAsStringResult;

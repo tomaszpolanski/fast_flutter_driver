@@ -21,12 +21,12 @@ fastdriver --device emulator-5554
 
 ## Enabling and running on Desktop
 You need first setup Flutter for desktop if you had not done it before.
-Latest tested version of Flutter that works with this repo is `1.26.0-17.8.pre`.
+Latest tested version of Flutter that works with this repo is `2.5.0`.
 
 ### Enable desktop builds
 
 * Checkout the latest changes in Flutter by running `flutter channel master` OR going into Flutter folder and running `git pull`
-* **Important**: Use `git checkout <tag>` inside `flutter` folder otherwise desktop won't be picked up: `git checkout 1.26.0-17.8.pre`
+* **Important**: Use `git checkout <tag>` inside `flutter` folder otherwise desktop won't be picked up: `git checkout 2.5.0`
 * Run `flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-desktop`
 * Check what desktop components are missing by running `flutter doctor`
 * Install missing components that you can see under Flutter doctor's  `Linux`/`Window`/`MacOS` section
@@ -45,7 +45,7 @@ fastdriver --dart-args "--no-sound-null-safety" --flutter-args "--no-sound-null-
 1) Install `docker`
 2) Build docker image (will take a couple of minutes)
 ```
-./build_docker.sh 1.26.0-17.8.pre ./
+./build_docker.sh 2.5.0 ./
 ```
 3) Run docker container and get it's `id`
 ```

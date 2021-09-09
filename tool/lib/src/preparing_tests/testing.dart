@@ -142,8 +142,9 @@ class TestExecutor {
         buildProgress.finish(showTiming: true);
         syncingProgress = logger.progress('Syncing files');
       }
-      final nativeMatch =
-          RegExp('is available at: (http://.*/)').firstMatch(line);
+      final nativeMatch = RegExp(
+              'An Observatory debugger and profiler on .* is available at: (http://.*/)')
+          .firstMatch(line);
       final webMatch =
           RegExp('service listening on (ws://.*)').firstMatch(line);
       final match = nativeMatch ?? webMatch;

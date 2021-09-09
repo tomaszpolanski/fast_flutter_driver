@@ -17,9 +17,7 @@ class BasePage extends StatelessWidget {
       body: Center(
         child: Text(
           title,
-          // TODO(tomek) switch to headline5 when stable is 1.14.6+
-          // ignore: deprecated_member_use
-          style: Theme.of(context).textTheme.headline,
+          style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
     );
