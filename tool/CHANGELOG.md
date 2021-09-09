@@ -1,3 +1,8 @@
+## 3.0.0
+- [BREAKING CHANGES] Supporting flutter 2.5.0+ (@DaveBubenik Thank you for reporting)
+
+This version of `fast_flutter_driver_tool` is not compatibile with Flutter earlier than 2.5.0
+
 ## 2.0.0+1
 - Adding deprecation warning as Flutter Driver is being deprecated itself in favor of [Integration Tests](https://flutter.dev/docs/testing/integration-tests)
 

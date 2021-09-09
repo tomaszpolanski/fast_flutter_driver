@@ -48,6 +48,7 @@ extension TestPlatformEnum on TestPlatform {
   String asString() => fromEnum(this);
 }
 
+// ignore: avoid_classes_with_only_static_members
 /// Extension method to make converting String to [TestPlatform] easier.
 abstract class TestPlatformEx {
   /// Converts user readable string to [TestPlatform]

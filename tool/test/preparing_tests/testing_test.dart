@@ -76,8 +76,7 @@ void main() {
           if (name.endsWith('window_configuration.cc_copy')) {
             return createFile()..fieldExistsSync = false;
           }
-          File resolutionFile;
-          return resolutionFile = createFile()
+          return createFile()
             ..fieldExistsSync = true
             ..readAsStringMock = '';
         },
@@ -249,7 +248,10 @@ void main() {
             if (command.startsWith(
                 'flutter run -d ${devices.device} --target=generic.dart')) {
               stdout.stream.add(
-                utf8.encode('is available at: $url'),
+                utf8.encode(
+                  ' An Observatory debugger and profiler '
+                  'on Windows is available at: $url',
+                ),
               );
             }
           },
@@ -337,7 +339,9 @@ void main() {
               'flutter run -d ${devices.device} --target=generic.dart')) {
             stdout.stream.add(
               utf8.encode(
-                  'is available at: http://127.0.0.1:50512/CKxutzePXlo/'),
+                'An Observatory debugger and profiler '
+                'on Windows is available at: http://127.0.0.1:50512/CKxutzePXlo/',
+              ),
             );
           }
         },
@@ -382,7 +386,9 @@ void main() {
               'flutter run -d ${devices.device} --target=generic.dart')) {
             stdout.stream.add(
               utf8.encode(
-                  'is available at: http://127.0.0.1:50512/CKxutzePXlo/'),
+                'An Observatory debugger and profiler '
+                'on Windows is available at: http://127.0.0.1:50512/CKxutzePXlo/',
+              ),
             );
           }
         },

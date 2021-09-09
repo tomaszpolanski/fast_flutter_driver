@@ -161,7 +161,7 @@ void main() {
       await IOOverrides.runZoned(
         () async {
           Future<Response> get(String url) async => Response(
-                '<span class="code">fast_flutter_driver_tool: ^$remoteVersion</span>',
+                'data-copy-content="fast_flutter_driver_tool: ^$remoteVersion"',
                 200,
               );
           tested = VersionChecker(
