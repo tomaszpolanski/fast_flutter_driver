@@ -357,7 +357,7 @@ class _MockDirectory extends MockDirectory {
   }
 
   @override
-  void deleteSync({bool recursive = false}) {
+  void deleteSync({bool? recursive = false}) {
     deleteSyncCalled = true;
   }
 }
